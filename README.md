@@ -6,7 +6,7 @@ Aplicacion desarollada para la clase de Proyecto de desarollo para dispositivos 
 ### Requerimientos funcionales de la aplciacion
 
 - [ ] Registrar correo electrónico
-- [ ] Veisualizar eventos y noticias
+- [ ] Visualizar eventos y noticias
 - [ ] Marcar un evento como favorito
 - [ ] Marcar una noticia como favorita
 - [ ] Visualizar las mascotas disponibles para adopción
