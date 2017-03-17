@@ -1,9 +1,11 @@
 package itesm.mx.perritos;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +31,8 @@ public class MascotaFragment extends ListFragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private OnPetSelectedListener mListener;
 
     public MascotaFragment() {
         // Required empty public constructor
@@ -59,12 +63,36 @@ public class MascotaFragment extends ListFragment {
         return inflater.inflate(R.layout.fragment_mascota, container, false);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
 
     @Override
     public void onDetach() {
         super.onDetach();
+        mListener = null;
     }
 
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        Log.d("POSITION: ", String.valueOf(position));
+        Pet pet = new Pet("Oliver","M",1,"Bonito",0,R.mipmap.ic_launcher);
+        mListener.onPetSelectedListener(pet);
+    }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof  OnPetSelectedListener) {
+            mListener = (OnPetSelectedListener) context;
+        } else {
+            throw new RuntimeException(context.toString() + " must implement OnPetSelectedListener");
+        }
+    }
+
+    /**
+     * This interface must be implemented by activities that contains this fragment to allow
+     * interaction in this fragment to be communicated to the activity
+     */
+    public interface OnPetSelectedListener {
+        void onPetSelectedListener(Pet pet);
+    }
 }

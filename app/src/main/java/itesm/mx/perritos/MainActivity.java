@@ -13,7 +13,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
+public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, MascotaFragment.OnPetSelectedListener {
 
     private TabLayout tlTabLayout;
     private ViewPager vpViewPager;
@@ -57,7 +57,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         viewPager.setAdapter(adapter);
     }
 
-
+    @Override
+    public void onPetSelectedListener(Pet pet) {
+        Log.d(DEBUG_TAG, "onPetSelectedListener");
+    }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
