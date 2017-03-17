@@ -4,7 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,7 +12,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, MascotaFragment.OnPetSelectedListener {
+public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, PetFragment.OnPetSelectedListener {
 
     private TabLayout tlTabLayout;
     private ViewPager vpViewPager;
@@ -51,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     private void setUpViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new MascotaFragment(),"Mascotas");
+        adapter.addFragment(new PetFragment(),"Mascotas");
         adapter.addFragment(new EventosFragment(),"Eventos");
         adapter.addFragment(new NoticiasFragment(), "Noticias");
         viewPager.setAdapter(adapter);

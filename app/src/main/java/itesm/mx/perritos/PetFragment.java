@@ -1,7 +1,6 @@
 package itesm.mx.perritos;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
@@ -17,12 +16,12 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link MascotaFragment.OnFragmentInteractionListener} interface
+ * {@link PetFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link MascotaFragment#newInstance} factory method to
+ * Use the {@link PetFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MascotaFragment extends ListFragment {
+public class PetFragment extends ListFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -34,7 +33,7 @@ public class MascotaFragment extends ListFragment {
 
     private OnPetSelectedListener mListener;
 
-    public MascotaFragment() {
+    public PetFragment() {
         // Required empty public constructor
     }
 
@@ -55,12 +54,12 @@ public class MascotaFragment extends ListFragment {
         ArrayList<Pet> pets = new ArrayList<>();
         Pet pet = new Pet("Oliver","M",1,"Bonito",0,R.mipmap.ic_launcher);
         pets.add(pet);
-        MascotaAdapter mascotaAdapter = new MascotaAdapter(getActivity(), pets);
-        setListAdapter(mascotaAdapter);
+        PetAdapter petAdapter = new PetAdapter(getActivity(), pets);
+        setListAdapter(petAdapter);
 
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_mascota, container, false);
+        return inflater.inflate(R.layout.fragment_pet, container, false);
     }
 
 

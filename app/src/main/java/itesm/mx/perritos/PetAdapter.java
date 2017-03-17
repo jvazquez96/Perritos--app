@@ -15,16 +15,16 @@ import java.util.ArrayList;
  * Created by jorgevazquez on 3/17/17.
  */
 
-public class MascotaAdapter extends ArrayAdapter<Pet> {
+public class PetAdapter extends ArrayAdapter<Pet> {
 
     private ArrayList<Pet> pets;
 
     /**
      * Constructor
-     * @param context
-     * @param pets
+     * @param context Application context
+     * @param pets List of pets
      */
-    public MascotaAdapter(Context context, ArrayList<Pet> pets) {
+    public PetAdapter(Context context, ArrayList<Pet> pets) {
         super(context,0, pets);
         this.pets = pets;
     }
@@ -43,7 +43,7 @@ public class MascotaAdapter extends ArrayAdapter<Pet> {
         Pet pet = pets.get(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.mascota_detail,parent,false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.pet_info,parent,false);
         }
 
         ImageView ivCover = (ImageView) convertView.findViewById(R.id.image_cover);
