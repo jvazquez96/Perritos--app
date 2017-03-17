@@ -40,7 +40,7 @@ public class MascotaAdapter extends ArrayAdapter<Pet> {
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Pet pet = new Pet("Oliver","M",1,"Bonito",0,R.mipmap.ic_launcher);
+        Pet pet = pets.get(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.mascota_detail,parent,false);
