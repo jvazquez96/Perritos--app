@@ -1,12 +1,14 @@
 package itesm.mx.perritos;
 
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
 
 
 /**
@@ -17,7 +19,7 @@ import android.view.ViewGroup;
  * Use the {@link MascotaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MascotaFragment extends Fragment {
+public class MascotaFragment extends ListFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -63,6 +65,15 @@ public class MascotaFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
+        ArrayList<Pet> pets = new ArrayList<>();
+        Pet pet = new Pet("Oliver","M",1,"Bonito",0,R.mipmap.ic_launcher);
+        pets.add(pet);
+        MascotaAdapter mascotaAdapter = new MascotaAdapter(getActivity(), pets);
+        setListAdapter(mascotaAdapter);
+
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_mascota, container, false);
     }
@@ -85,11 +96,11 @@ public class MascotaFragment extends Fragment {
 //        }
 //    }
 //
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        //mListener = null;
+    }
 
     /**
      * This interface must be implemented by activities that contain this

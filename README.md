@@ -9,9 +9,9 @@ Aplicacion desarollada para la clase de Proyecto de desarollo para dispositivos 
 - [ ] Visualizar eventos y noticias
 - [ ] Marcar un evento como favorito
 - [ ] Marcar una noticia como favorita
-- [ ] Visualizar las mascotas disponibles para adopción
-- [ ] Marcar mascota como favorita
-- [ ] Solicitar la adopción de una mascota
+- [ ] Visualizar las pets disponibles para adopción
+- [ ] Marcar pet como favorita
+- [ ] Solicitar la adopción de una pet
 - [ ] Ver solicitudes de adopción pendientes.
 - [ ] Dar de alta animales den adopción (administrador)
 - [ ] Editar animales en adopción dados de alta (administrador)

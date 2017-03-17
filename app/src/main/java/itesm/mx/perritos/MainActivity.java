@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     }
 
+
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         vpViewPager.setCurrentItem(tab.getPosition());
@@ -49,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     private void setUpViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new MascotaFragment(),"Mascota");
+        adapter.addFragment(new MascotaFragment(),"Mascotas");
         adapter.addFragment(new EventosFragment(),"Eventos");
         adapter.addFragment(new NoticiasFragment(), "Noticias");
         viewPager.setAdapter(adapter);
