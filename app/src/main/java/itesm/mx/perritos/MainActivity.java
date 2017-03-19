@@ -1,5 +1,6 @@
 package itesm.mx.perritos;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
@@ -59,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     @Override
     public void onPetSelectedListener(Pet pet) {
         Log.d(DEBUG_TAG, "onPetSelectedListener");
+        Intent petDetailIntent = new Intent(this, PetDetailActivity.class);
+        startActivity(petDetailIntent);
     }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
