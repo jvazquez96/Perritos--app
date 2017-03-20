@@ -58,19 +58,25 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         Log.d("DEBUG_TAG","CLICK");
+
+        // Inflate layout for the popup
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View customView = inflater.inflate(R.layout.addpetpopupwindow,null);
         mPopupWindow = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
+        // Get the current layout
         LinearLayout layout = new LinearLayout(getContext());
 
+        //  Reference the button from the pop up layout.
         Button btn = (Button) customView.findViewById(R.id.button_done);
+        // When the button is pressed dismiss the view.
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mPopupWindow.dismiss();
             }
         });
+        // Position where the pop up is going to be displayed
         mPopupWindow.showAtLocation(layout, Gravity.CENTER_HORIZONTAL,10,10);
     }
 
@@ -87,6 +93,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pet, container, false);
+
 
         floatingAddButton = (FloatingActionButton) view.findViewById(R.id.floating_add);
         floatingAddButton.setOnClickListener(this);
