@@ -3,6 +3,7 @@ package itesm.mx.perritos;
 import android.app.ActionBar;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
@@ -35,6 +36,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
 
     private FloatingActionButton floatingAddButton;
     private PopupWindow mPopupWindow;
+    private CoordinatorLayout coordinatorLayout;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -62,7 +64,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         // Inflate layout for the popup
         LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View customView = inflater.inflate(R.layout.addpetpopupwindow,null);
-        mPopupWindow = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        mPopupWindow = new PopupWindow(customView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         // Get the current layout
         LinearLayout layout = new LinearLayout(getContext());
@@ -73,11 +75,15 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Light the background
+                coordinatorLayout.getForeground().setAlpha(0);
                 mPopupWindow.dismiss();
             }
         });
         // Position where the pop up is going to be displayed
         mPopupWindow.showAtLocation(layout, Gravity.CENTER_HORIZONTAL,10,10);
+        // Dim the background
+        coordinatorLayout.getForeground().setAlpha(200);
     }
 
     @Override
@@ -93,6 +99,9 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pet, container, false);
+        coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.coordinator);
+        // Light the background
+        coordinatorLayout.getForeground().setAlpha(0);
 
 
         floatingAddButton = (FloatingActionButton) view.findViewById(R.id.floating_add);
