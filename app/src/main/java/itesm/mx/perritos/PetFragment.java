@@ -1,14 +1,20 @@
 package itesm.mx.perritos;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 
 import java.util.ArrayList;
 
@@ -21,11 +27,14 @@ import java.util.ArrayList;
  * Use the {@link PetFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PetFragment extends ListFragment {
+public class PetFragment extends ListFragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private FloatingActionButton floatingAddButton;
+    private PopupWindow mPopupWindow;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -47,9 +56,27 @@ public class PetFragment extends ListFragment {
     }
 
     @Override
+    public void onClick(View v) {
+        Log.d("DEBUG_TAG","CLICK");
+        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View customView = inflater.inflate(R.layout.addpetpopupwindow,null);
+        mPopupWindow = new PopupWindow(customView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        LinearLayout layout = new LinearLayout(getContext());
+
+        Button btn = (Button) customView.findViewById(R.id.button_done);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPopupWindow.dismiss();
+            }
+        });
+        mPopupWindow.showAtLocation(layout, Gravity.CENTER_HORIZONTAL,10,10);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
 
         ArrayList<Pet> pets = new ArrayList<>();
         Pet pet = new Pet("Oliver","M",1,"Bonito",0,R.mipmap.ic_launcher);
@@ -59,7 +86,11 @@ public class PetFragment extends ListFragment {
 
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_pet, container, false);
+        View view = inflater.inflate(R.layout.fragment_pet, container, false);
+
+        floatingAddButton = (FloatingActionButton) view.findViewById(R.id.floating_add);
+        floatingAddButton.setOnClickListener(this);
+        return view;
     }
 
 
