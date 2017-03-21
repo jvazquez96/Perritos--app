@@ -1,10 +1,12 @@
 package itesm.mx.perritos;
 
+import java.io.Serializable;
+
 /**
  * Created by jorgevazquez on 3/17/17.
  */
 
-public class Pet {
+public class Pet implements Serializable {
 
     private String name;
     private String gender;

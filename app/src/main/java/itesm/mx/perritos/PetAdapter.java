@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -51,13 +52,17 @@ public class PetAdapter extends ArrayAdapter<Pet> {
         TextView tvGender = (TextView) convertView.findViewById(R.id.text_gender);
         TextView tvAge = (TextView) convertView.findViewById(R.id.text_age);
         TextView tvRequests = (TextView) convertView.findViewById(R.id.text_request);
+        TextView tvDescription = (TextView) convertView.findViewById(R.id.text_description);
 
 
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(300,300);
+        ivCover.setLayoutParams(params);
         ivCover.setImageResource(pet.getIdImage());
         tvName.setText(pet.getName());
         tvGender.setText("Genero: " +pet.getGender());
         tvAge.setText("Edad: " + String.valueOf(pet.getAge()) + "anos");
         tvRequests.setText(String.valueOf(pet.getRequest()) + " solicitudes");
+        tvDescription.setText(pet.getDescription());
 
         return convertView;
     }
