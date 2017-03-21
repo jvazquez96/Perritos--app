@@ -1,17 +1,17 @@
 # Perritos-app
 
-Aplicacion desarollada para la clase de Proyecto de desarollo para dispositivos moviles con el objetivo de promover la adopcion de animales en el area metropolitana de Monterrey. Esta aplicacion sera creada para la organizacion Movimiento cultura del altura, cultura perrona A.C.
+Aplicacion desarollada para la clase de Proyecto de desarollo para dispositivos moviles con el objetivo de promover la adopcion de animales en el area metropolitana de Monterrey. Esta aplicacion sera creada para la organizacion Movimiento cultura del altura, cultura perrona A.C. 
 
 
-### Requerimientos funcionales de la aplciacion móvil
+### Requerimientos funcionales de la aplciacion
 
 - [ ] Registrar correo electrónico
 - [ ] Visualizar eventos y noticias
 - [ ] Marcar un evento como favorito
 - [ ] Marcar una noticia como favorita
-- [ ] Visualizar las mascotas disponibles para adopción
-- [ ] Marcar mascota como favorita
-- [ ] Solicitar la adopción de una mascota
+- [ ] Visualizar las pets disponibles para adopción
+- [ ] Marcar pet como favorita
+- [ ] Solicitar la adopción de una pet
 - [ ] Ver solicitudes de adopción pendientes.
 - [ ] Dar de alta animales den adopción (administrador)
 - [ ] Editar animales en adopción dados de alta (administrador)

@@ -1,5 +1,6 @@
 package itesm.mx.perritos;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -68,7 +70,7 @@ public class NoticiasFragment extends ListFragment {
         // Inflate the layout for this fragment
 
         ArrayList<News> news = new ArrayList<>();
-        News news1 = new News("Titulo","Descripcion", R.mipmap.ic_launcher);
+        News news1 = new News("Titulo","Descripcion",R.mipmap.ic_launcher);
         news.add(news1);
         NewsAdapter newsAdapter = new NewsAdapter(getActivity(),news);
         setListAdapter(newsAdapter);

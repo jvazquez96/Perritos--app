@@ -13,14 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link NoticiasFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link NoticiasFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 class EventosFragment extends ListFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -45,11 +37,11 @@ class EventosFragment extends ListFragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment NoticiasFragment.
+     * @return A new instance of fragment EventosFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static NoticiasFragment newInstance(String param1, String param2) {
-        NoticiasFragment fragment = new NoticiasFragment();
+    public static EventosFragment newInstance(String param1, String param2) {
+        EventosFragment fragment = new EventosFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

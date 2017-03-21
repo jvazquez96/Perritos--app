@@ -11,9 +11,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Created by jorgevazquez on 3/20/17.
- */
 
 public class EventoAdapter extends ArrayAdapter<Evento> {
 

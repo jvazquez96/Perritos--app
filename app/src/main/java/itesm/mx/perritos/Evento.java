@@ -1,8 +1,5 @@
 package itesm.mx.perritos;
 
-/**
- * Created by jorgevazquez on 3/20/17.
- */
 
 public class Evento {
 

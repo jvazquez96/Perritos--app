@@ -1,5 +1,6 @@
 package itesm.mx.perritos;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -90,7 +91,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
 
         ArrayList<Pet> pets = new ArrayList<>();
-        Pet pet = new Pet("Oliver","M",1,"Bonito",0, R.mipmap.ic_launcher);
+        Pet pet = new Pet("Oliver","M",1,"Bonito",0,R.mipmap.ic_launcher);
         pets.add(pet);
         PetAdapter petAdapter = new PetAdapter(getActivity(), pets);
         setListAdapter(petAdapter);
@@ -119,7 +120,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         Log.d("POSITION: ", String.valueOf(position));
-        Pet pet = new Pet("Oliver","M",1,"Bonito",0, R.mipmap.ic_launcher);
+        Pet pet = new Pet("Oliver","M",1,"Bonito",0,R.mipmap.ic_launcher);
         mListener.onPetSelectedListener(pet);
     }
 

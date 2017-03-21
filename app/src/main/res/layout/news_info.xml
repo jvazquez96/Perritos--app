@@ -8,11 +8,15 @@
         android:id="@+id/image_news"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:src="@mipmap/ic_launcher"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
         android:orientation="vertical">
 
         <TextView
@@ -21,14 +25,15 @@
             android:layout_height="wrap_content"
             android:text="NOMBRE DE LA NOTICIA"
             android:textStyle="bold"
-            android:gravity="center"/>
+            android:gravity="left"/>
 
         <TextView
             android:id="@+id/text_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="DESCRIPCION DE LA NOTICIA"
-            android:gravity="center"/>
+            android:gravity="left"/>
 
     </LinearLayout>
 
