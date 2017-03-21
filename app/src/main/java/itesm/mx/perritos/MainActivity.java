@@ -22,6 +22,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private ViewPager vpViewPager;
     private Toolbar tbToolbar;
     private ImageButton imgbtnMenu;
+    private final int [] ICON ={
+            R.drawable.ic_pets_black_24dp,
+            R.drawable.ic_event_black_24dp,
+            R.drawable.ic_new_releases_black_24dp};
 
     private static final String DEBUG_TAG = "DEBUG_TAG";
 
@@ -35,6 +39,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         tlTabLayout = (TabLayout) findViewById(R.id.tabs);
         tlTabLayout.setupWithViewPager(vpViewPager);
+        tlTabLayout.getTabAt(0).setIcon(ICON[0]);
+        tlTabLayout.getTabAt(1).setIcon(ICON[1]);
+        tlTabLayout.getTabAt(2).setIcon(ICON[2]);
         tlTabLayout.addOnTabSelectedListener(this);
 
         // Custom toolbar
@@ -76,9 +83,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     private void setUpViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new PetFragment(),"Mascotas");
-        adapter.addFragment(new EventosFragment(),"Eventos");
-        adapter.addFragment(new NoticiasFragment(), "Noticias");
+        adapter.addFragment(new PetFragment());
+        adapter.addFragment(new EventosFragment());
+        adapter.addFragment(new NoticiasFragment());
         viewPager.setAdapter(adapter);
     }
 
@@ -111,14 +118,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             return mFragmentList.size();
         }
 
-        public void addFragment(Fragment fragment, String title) {
+        public void addFragment(Fragment fragment) {
             mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
         }
     }
 }
