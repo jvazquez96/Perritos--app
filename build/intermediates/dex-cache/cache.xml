@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/Users/alextrujillo/Documents/GitHub/Perritos-app/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="c82741bc129dd5f99f11a4ab8666ae24262053b6">
+        <dex dex="/Users/alextrujillo/Documents/GitHub/Perritos-app/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_97d93210ab3fd25ad07fc6f8223caba4682bed9c/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/alextrujillo/Documents/GitHub/Perritos-app/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="0757ef8a556ded7223ddfdc49a86d93437d9eae2">
+        <dex dex="/Users/alextrujillo/Documents/GitHub/Perritos-app/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_1f0429b0aaf533e8b05a2fb61cdf972d7fa07c71/classes.dex" />
+    </item>
+
+</items>
