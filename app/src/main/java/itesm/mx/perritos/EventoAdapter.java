@@ -12,42 +12,40 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /**
- * Created by alextrujillo on 20/03/17.
+ * Created by jorgevazquez on 3/20/17.
  */
 
 public class EventoAdapter extends ArrayAdapter<Evento> {
+
     private ArrayList<Evento> eventos;
 
 
     public EventoAdapter(Context context, ArrayList<Evento> eventos) {
-        super(context,0, eventos);
+        super(context,0,eventos);
         this.eventos = eventos;
     }
 
-    /**
-     * Get the list of eventos
-     * @return eventos
-     */
-    public ArrayList<Evento> getEventos() {
+    public ArrayList<Evento> getEvento() {
         return this.eventos;
     }
 
+
+    @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Evento evento = eventos.get(position);
+        Evento eventos1 = eventos.get(position);
 
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_eventos,parent,false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.evento_info,parent,false);
         }
 
-        ImageView ivCover = (ImageView) convertView.findViewById(R.id.image_cover);
-        TextView tvTitle = (TextView) convertView.findViewById(R.id.text_noticia);
-        TextView tvDescrip = (TextView) convertView.findViewById(R.id.text_description);
+        ImageView ivCover = (ImageView) convertView.findViewById(R.id.image_evento);
+        TextView tvTitle = (TextView) convertView.findViewById(R.id.text_title);
+        TextView tvDescription = (TextView) convertView.findViewById(R.id.text_description);
 
-
-        ivCover.setImageResource(evento.getIdImage());
-        tvTitle.setText(evento.getTitle());
-        tvDescrip.setText(evento.getDescription());
+        ivCover.setImageResource(eventos1.getIdImage());
+        tvTitle.setText(eventos1.getTitle());
+        tvDescription.setText(eventos1.getDescription());
 
         return convertView;
     }

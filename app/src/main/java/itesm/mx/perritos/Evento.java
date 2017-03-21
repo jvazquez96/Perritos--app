@@ -1,49 +1,80 @@
 package itesm.mx.perritos;
 
 /**
- * Created by alextrujillo on 20/03/17.
+ * Created by jorgevazquez on 3/20/17.
  */
 
 public class Evento {
 
     private String title;
-    private  String descrip;
+    private String description;
     private int idImage;
 
+    /**
+     * Default constructor
+     */
+    public Evento() {
+        this.title = "";
+        this.description = "";
+        idImage = 0;
+    }
 
     /**
-     * Constructor.
-     * @param title Title of the news.
-     * @param descrip Description of the news.
+     * Constructor
+     * @param title Title of the news
+     * @param desciption Description of the news
      */
-
-    public Evento(String title, String descrip, int idImage){
+    public Evento(String title, String desciption, int idImage) {
         this.title = title;
-        this.descrip = "Click para leer más información";
+        this.description = desciption;
         this.idImage = idImage;
-
     }
 
-    public void setTitle(String description) {
-        this.title = description;
+    /**
+     * Set the title of the news
+     * @param title News to be set
+     */
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getTitle() {
-        return this.title;
-    }
-
+    /**
+     * Set the description of the news
+     * @param description Description to be set
+     */
     public void setDescription(String description) {
-        this.descrip = description;
+        this.description = description;
     }
 
-    public String getDescription() {
-        return this.descrip;
-    }
-
+    /**
+     * Set the idImage of the news
+     * @param idImage
+     */
     public void setIdImage(int idImage) {
         this.idImage = idImage;
     }
 
+    /**
+     * Return the title of the news
+     * @return title
+     */
+    public String getTitle() {
+        return this.title;
+    }
+
+    /**
+     * Return the description of the news
+     * @return description
+     */
+    public String getDescription() {
+        return this.description;
+    }
+
+
+    /**
+     * Return the id of the image
+     * @return idImage
+     */
     public int getIdImage() {
         return this.idImage;
     }

@@ -1,8 +1,6 @@
 package itesm.mx.perritos;
 
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
@@ -10,16 +8,21 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, EventosFragment.OnEventoSelectedListener {
+public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, PetFragment.OnPetSelectedListener, View.OnClickListener {
 
     private TabLayout tlTabLayout;
     private ViewPager vpViewPager;
+    private Toolbar tbToolbar;
+    private ImageButton imgbtnMenu;
+
     private static final String DEBUG_TAG = "DEBUG_TAG";
 
     @Override
@@ -34,6 +37,24 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         tlTabLayout.setupWithViewPager(vpViewPager);
         tlTabLayout.addOnTabSelectedListener(this);
 
+        // Custom toolbar
+        tbToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(tbToolbar);
+
+        // Buttons from the toolbar
+        imgbtnMenu = (ImageButton) tbToolbar.findViewById(R.id.button_menu);
+        imgbtnMenu.setOnClickListener(this);
+
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()){
+            case R.id.button_menu:
+                Log.d(DEBUG_TAG,"Menu Button");
+                break;
+        }
 
 
     }
@@ -55,26 +76,18 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     private void setUpViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new MascotaFragment(),"Mascota");
+        adapter.addFragment(new PetFragment(),"Mascotas");
         adapter.addFragment(new EventosFragment(),"Eventos");
         adapter.addFragment(new NoticiasFragment(), "Noticias");
         viewPager.setAdapter(adapter);
     }
 
     @Override
-    public void onEventoSelectedListener(Evento evento) {
+    public void onPetSelectedListener(Pet pet) {
         Log.d(DEBUG_TAG, "onPetSelectedListener");
-        Intent eventoDetailIntent = new Intent(this, EventoDetailActivity.class);
-        startActivity(eventoDetailIntent);
-    }
-
-    /*@Override
-    public void onNoticiaSelectedListener(Noticia noticia) {
-        Log.d(DEBUG_TAG, "onPetSelectedListener");
-        Intent petDetailIntent = new Intent(this, NoticiaDetailActivity.class);
+        Intent petDetailIntent = new Intent(this, PetDetailActivity.class);
         startActivity(petDetailIntent);
     }
-*/
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
