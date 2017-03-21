@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         switch (v.getId()){
             case R.id.button_menu:
-                Log.d(DEBUG_TAG,"Menu Button");
+                Log.d(DEBUG_TAG,"MENU Button");
                 break;
         }
 
