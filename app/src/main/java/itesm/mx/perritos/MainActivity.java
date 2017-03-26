@@ -13,15 +13,26 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, PetFragment.OnPetSelectedListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, PetFragment.OnPetSelectedListener, View.OnClickListener, PetFragment.OnPetAddedListener{
 
     private TabLayout tlTabLayout;
-    private ViewPager vpViewPager;
     private Toolbar tbToolbar;
     private ImageButton imgbtnMenu;
+    private ViewPager vpViewPager;
+
+    // Firebase Objects
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mPetsDataBaseReference;
+    private ChildEventListener mChildEventListenerPets;
 
     private static final String DEBUG_TAG = "DEBUG_TAG";
 
@@ -44,6 +55,37 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         // Buttons from the toolbar
         imgbtnMenu = (ImageButton) tbToolbar.findViewById(R.id.button_menu);
         imgbtnMenu.setOnClickListener(this);
+
+        // Initialize Firebase Componentes
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+
+        mPetsDataBaseReference = mFirebaseDatabase.getReference().child("Pets");
+
+        mChildEventListenerPets = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Pet pet = dataSnapshot.getValue(Pet.class);
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        };
+
+        mPetsDataBaseReference.addChildEventListener(mChildEventListenerPets);
 
     }
 
@@ -90,6 +132,12 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         bundle.putSerializable("Pet",pet);
         petDetailIntent.putExtras(bundle);
         startActivity(petDetailIntent);
+    }
+
+    @Override
+    public void onPetAdded(Pet pet) {
+
+        mPetsDataBaseReference.push().setValue(pet);
     }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
