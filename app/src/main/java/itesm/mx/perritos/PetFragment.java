@@ -101,7 +101,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_pet, container, false);
         coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.coordinator);
         // Light the background
-        coordinatorLayout.getForeground().setAlpha(0);
+//ESTO CRASHEA API 23!!!!!        coordinatorLayout.getForeground().setAlpha(0);
 
 
         floatingAddButton = (FloatingActionButton) view.findViewById(R.id.floating_add);
