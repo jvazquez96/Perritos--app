@@ -42,7 +42,8 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
     private String mParam1;
     private String mParam2;
 
-    private OnPetSelectedListener mListener;
+    private OnPetSelectedListener mListenerPetSelected;
+    private OnPetAddedListener mListenerPetAdded;
 
     public PetFragment() {
         // Required empty public constructor
@@ -78,6 +79,9 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
                 // Light the background
                 coordinatorLayout.getForeground().setAlpha(0);
                 mPopupWindow.dismiss();
+                Pet pet = new Pet("Oliver","Male",1,"Guapo",0,0);
+                mListenerPetAdded.onPetAdded(pet);
+
             }
         });
         // Position where the pop up is going to be displayed
@@ -113,7 +117,9 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        mListenerPetSelected = null;
+        mListenerPetAdded = null;
+
     }
 
     @Override
@@ -121,16 +127,18 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         super.onListItemClick(l, v, position, id);
         Log.d("POSITION: ", String.valueOf(position));
         Pet pet = new Pet("Oliver","M",1,"Bonito",0,R.drawable.pug);
-        mListener.onPetSelectedListener(pet);
+        mListenerPetSelected.onPetSelectedListener(pet);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof  OnPetSelectedListener) {
-            mListener = (OnPetSelectedListener) context;
+        if (context instanceof  OnPetSelectedListener && context instanceof OnPetAddedListener) {
+            mListenerPetSelected = (OnPetSelectedListener) context;
+            mListenerPetAdded = (OnPetAddedListener) context;
+
         } else {
-            throw new RuntimeException(context.toString() + " must implement OnPetSelectedListener");
+            throw new RuntimeException(context.toString() + " must implement OnPetSelectedListener && OnPetAddedListener");
         }
     }
 
@@ -140,5 +148,9 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
      */
     public interface OnPetSelectedListener {
         void onPetSelectedListener(Pet pet);
+    }
+
+    public interface OnPetAddedListener {
+        void onPetAdded(Pet pet);
     }
 }

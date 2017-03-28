@@ -50,3 +50,5 @@ Thumbs.db*.iml
 .gradle/3.3/taskArtifacts/fileSnapshots.bin
 .gradle/3.3/taskArtifacts/taskArtifacts.bin
 .gradle/3.3/taskArtifacts/taskArtifacts.lock
+*.ap_
+*.apk

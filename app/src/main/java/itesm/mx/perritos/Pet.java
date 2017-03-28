@@ -17,6 +17,13 @@ public class Pet implements Serializable {
     private int idImage;
 
     /**
+     *  Default constructor.
+     */
+    public Pet() {
+        
+    }
+
+    /**
      * Constructor.
      * @param name Name of the Pet.
      * @param gender Gender of the Pet.
@@ -33,6 +40,7 @@ public class Pet implements Serializable {
         this.requests = requests;
         this.idImage = idImage;
     }
+
 
     /**
      *  Set the name.
