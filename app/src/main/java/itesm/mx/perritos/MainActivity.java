@@ -1,34 +1,40 @@
 package itesm.mx.perritos;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, PetFragment.OnPetSelectedListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, PetFragment.OnPetSelectedListener, View.OnClickListener, NavigationView.OnNavigationItemSelectedListener {
 
     private TabLayout tlTabLayout;
     private ViewPager vpViewPager;
     private Toolbar tbToolbar;
-    private ImageButton imgbtnMenu;
 
     private static final String DEBUG_TAG = "DEBUG_TAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.new_activity_main);
 
         vpViewPager = (ViewPager) findViewById(R.id.viewpager);
         setUpViewPager(vpViewPager);
@@ -40,21 +46,39 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         // Custom toolbar
         tbToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tbToolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
-        // Buttons from the toolbar
-        imgbtnMenu = (ImageButton) tbToolbar.findViewById(R.id.button_menu);
-        imgbtnMenu.setOnClickListener(this);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, tbToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
 
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     @Override
     public void onClick(View v) {
-
-        switch (v.getId()){
-            case R.id.button_menu:
-                Log.d(DEBUG_TAG,"Menu Button");
-                break;
-        }
+//
+//        switch (v.getId()){
+//            case R.id.button_menu:
+//                Log.d(DEBUG_TAG,"Menu Button");
+//                break;
+//        }
 
 
     }
