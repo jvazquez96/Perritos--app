@@ -104,7 +104,7 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
             mListenerEventSelected = (OnEventSelectedListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement onEventSelectedListener");
         }
     }
 

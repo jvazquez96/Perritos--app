@@ -10,6 +10,7 @@ import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public class NoticiasFragment extends ListFragment implements View.OnClickListen
     private String mParam1;
     private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
+    private OnNewsSelectedListener mListenerNewsSelected;
 
     private FloatingActionButton floatingAddButon;
 
@@ -88,12 +89,6 @@ public class NoticiasFragment extends ListFragment implements View.OnClickListen
 
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onClick(View v) {
@@ -101,35 +96,33 @@ public class NoticiasFragment extends ListFragment implements View.OnClickListen
         startActivity(startAddNewsActivity);
     }
 
-    //    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
-//    }
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        News news = new News("Titulo de noticia","Descripcion",R.mipmap.ic_launcher);
+        mListenerNewsSelected.onNewsSelectedListener(news);
+    }
+
+        @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnNewsSelectedListener) {
+            mListenerNewsSelected = (OnNewsSelectedListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement onNewsSelectedListener");
+        }
+    }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        mListenerNewsSelected = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+
+
+    public interface OnNewsSelectedListener {
+        void onNewsSelectedListener(News news);
     }
 }

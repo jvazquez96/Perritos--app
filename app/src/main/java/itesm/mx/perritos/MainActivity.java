@@ -34,7 +34,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                                                 View.OnClickListener,
                                                                 PetFragment.OnPetAddedListener,
                                                                 NavigationView.OnNavigationItemSelectedListener,
-                                                                EventosFragment.OnEventSelectedListener{
+                                                                EventosFragment.OnEventSelectedListener,
+                                                                NoticiasFragment.OnNewsSelectedListener{
 
 
     private TabLayout tlTabLayout;
@@ -177,6 +178,12 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         Bundle bundle = new Bundle();
         Intent eventDetailIntent = new Intent(this,EventDetailActivity.class);
         startActivity(eventDetailIntent);
+    }
+
+    @Override
+    public void onNewsSelectedListener(News news) {
+        Intent newsDetailIntent = new Intent(this,NewsDetailActivity.class);
+        startActivity(newsDetailIntent);
     }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
