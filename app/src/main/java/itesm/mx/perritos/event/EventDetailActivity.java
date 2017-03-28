@@ -1,31 +1,20 @@
-package itesm.mx.perritos;
+package itesm.mx.perritos.event;
 
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.Menu;
-import android.widget.ImageView;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 
+import itesm.mx.perritos.R;
 
-public class PetDetailActivity extends AppCompatActivity {
-
-    private ImageView ivPet;
+public class EventDetailActivity extends AppCompatActivity {
 
     private Toolbar tlToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pet_detail);
-        ivPet = (ImageView) findViewById(R.id.image_pet);
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            Pet pet = (Pet) bundle.getSerializable("Pet");
-            Log.d("DEBUG_TAG","Pet image: " + pet.getIdImage());
-//            ivPet.setImageResource(pet.getIdImage());
-        }
-
+        setContentView(R.layout.activity_event_detail);
         tlToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tlToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

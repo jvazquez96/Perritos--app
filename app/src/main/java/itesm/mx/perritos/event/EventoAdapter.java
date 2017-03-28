@@ -1,4 +1,4 @@
-package itesm.mx.perritos;
+package itesm.mx.perritos.event;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import itesm.mx.perritos.R;
 
 
 public class EventoAdapter extends ArrayAdapter<Evento> {

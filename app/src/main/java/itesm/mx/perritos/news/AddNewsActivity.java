@@ -1,18 +1,21 @@
-package itesm.mx.perritos;
+package itesm.mx.perritos.news;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 
-public class NewsDetailActivity extends AppCompatActivity {
+import itesm.mx.perritos.R;
+
+public class AddNewsActivity extends AppCompatActivity {
 
     private Toolbar tlToolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_news_detail);
+        setContentView(R.layout.activity_add_news);
         tlToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tlToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

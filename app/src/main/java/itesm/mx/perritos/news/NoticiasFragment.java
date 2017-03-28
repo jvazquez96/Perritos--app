@@ -1,8 +1,7 @@
-package itesm.mx.perritos;
+package itesm.mx.perritos.news;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -13,10 +12,19 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import itesm.mx.perritos.R;
 
 
-public class EventosFragment extends ListFragment implements View.OnClickListener{
+/**
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link NoticiasFragment.OnFragmentInteractionListener} interface
+ * to handle interaction events.
+ * Use the {@link NoticiasFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class NoticiasFragment extends ListFragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -26,27 +34,25 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
     private String mParam1;
     private String mParam2;
 
-    private OnEventSelectedListener mListenerEventSelected;
+    private OnNewsSelectedListener mListenerNewsSelected;
 
-    private FloatingActionButton floatingAddButton;
+    private FloatingActionButton floatingAddButon;
 
-    public EventosFragment() {
+    public NoticiasFragment() {
         // Required empty public constructor
     }
 
     /**
-     *
-     *
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment EventosFragment.
+     * @return A new instance of fragment NoticiasFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static EventosFragment newInstance(String param1, String param2) {
-        EventosFragment fragment = new EventosFragment();
+    public static NoticiasFragment newInstance(String param1, String param2) {
+        NoticiasFragment fragment = new NoticiasFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -68,55 +74,55 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        ArrayList<Evento> eventos = new ArrayList<>();
-        Evento eventos1 = new Evento("Titulo","Descripcion",R.mipmap.ic_launcher);
-        eventos.add(eventos1);
-        EventoAdapter eventosAdapter = new EventoAdapter(getActivity(),eventos);
-        setListAdapter(eventosAdapter);
+        ArrayList<News> news = new ArrayList<>();
+        News news1 = new News("Titulo","Descripcion", R.mipmap.ic_launcher);
+        news.add(news1);
+        NewsAdapter newsAdapter = new NewsAdapter(getActivity(),news);
+        setListAdapter(newsAdapter);
 
-        View view  = inflater.inflate(R.layout.fragment_eventos, container, false);
+        View view = inflater.inflate(R.layout.fragment_noticias, container, false);
 
-        floatingAddButton = (FloatingActionButton) view.findViewById(R.id.floating_add);
-        floatingAddButton.setOnClickListener(this);
+        floatingAddButon = (FloatingActionButton) view.findViewById(R.id.floating_add);
+        floatingAddButon.setOnClickListener(this);
 
         return view;
+
     }
 
+
+    @Override
+    public void onClick(View v) {
+        Intent startAddNewsActivity = new Intent(getActivity(),AddNewsActivity.class);
+        startActivity(startAddNewsActivity);
+    }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        Evento event = new Evento("Titulo","Descripcion",R.mipmap.ic_launcher);
-        mListenerEventSelected.onEventSelectedListener(event);
+        News news = new News("Titulo de noticia","Descripcion",R.mipmap.ic_launcher);
+        mListenerNewsSelected.onNewsSelectedListener(news);
     }
-
-    @Override
-    public void onClick(View v) {
-        Intent startAddEventActivity = new Intent(getActivity(),AddEventActivity.class);
-        startActivity(startAddEventActivity);
-    }
-
 
         @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnEventSelectedListener) {
-            mListenerEventSelected = (OnEventSelectedListener) context;
+        if (context instanceof OnNewsSelectedListener) {
+            mListenerNewsSelected = (OnNewsSelectedListener) context;
         } else {
             throw new RuntimeException(context.toString()
-                    + " must implement onEventSelectedListener");
+                    + " must implement onNewsSelectedListener");
         }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListenerEventSelected = null;
+        mListenerNewsSelected = null;
     }
 
 
 
-    public interface OnEventSelectedListener {
-        void onEventSelectedListener(Evento event);
+    public interface OnNewsSelectedListener {
+        void onNewsSelectedListener(News news);
     }
 }

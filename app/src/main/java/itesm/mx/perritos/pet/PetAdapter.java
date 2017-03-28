@@ -1,4 +1,4 @@
-package itesm.mx.perritos;
+package itesm.mx.perritos.pet;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import itesm.mx.perritos.R;
 
 /**
  * Created by jorgevazquez on 3/17/17.

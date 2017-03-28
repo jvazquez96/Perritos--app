@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_weight="8"
-    tools:context="itesm.mx.perritos.NewsDetailActivity">
+    tools:context="itesm.mx.perritos.news.NewsDetailActivity">
 
 
     <android.support.v7.widget.Toolbar

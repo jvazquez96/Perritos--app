@@ -29,6 +29,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import itesm.mx.perritos.event.EventDetailActivity;
+import itesm.mx.perritos.event.Evento;
+import itesm.mx.perritos.event.EventosFragment;
+import itesm.mx.perritos.news.News;
+import itesm.mx.perritos.news.NewsDetailActivity;
+import itesm.mx.perritos.news.NoticiasFragment;
+import itesm.mx.perritos.pet.Pet;
+import itesm.mx.perritos.pet.PetDetailActivity;
+import itesm.mx.perritos.pet.PetFragment;
+
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener,
                                                                 PetFragment.OnPetSelectedListener,
                                                                 View.OnClickListener,

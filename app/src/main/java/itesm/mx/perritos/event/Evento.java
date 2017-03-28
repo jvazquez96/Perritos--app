@@ -1,10 +1,7 @@
-package itesm.mx.perritos;
+package itesm.mx.perritos.event;
 
-/**
- * Created by jorgevazquez on 3/20/17.
- */
 
-public class News {
+public class Evento {
 
     private String title;
     private String description;
@@ -13,7 +10,7 @@ public class News {
     /**
      * Default constructor
      */
-    public News() {
+    public Evento() {
         this.title = "";
         this.description = "";
         idImage = 0;
@@ -24,7 +21,7 @@ public class News {
      * @param title Title of the news
      * @param desciption Description of the news
      */
-    public News(String title, String desciption, int idImage) {
+    public Evento(String title, String desciption, int idImage) {
         this.title = title;
         this.description = desciption;
         this.idImage = idImage;

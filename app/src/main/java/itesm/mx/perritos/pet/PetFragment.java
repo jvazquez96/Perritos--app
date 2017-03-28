@@ -1,6 +1,5 @@
-package itesm.mx.perritos;
+package itesm.mx.perritos.pet;
 
-import android.app.ActionBar;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -18,6 +17,8 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 
 import java.util.ArrayList;
+
+import itesm.mx.perritos.R;
 
 
 /**

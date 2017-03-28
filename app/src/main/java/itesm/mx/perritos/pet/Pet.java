@@ -1,4 +1,4 @@
-package itesm.mx.perritos;
+package itesm.mx.perritos.pet;
 
 import java.io.Serializable;
 

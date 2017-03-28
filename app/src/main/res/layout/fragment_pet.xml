@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:id="@+id/coordinator"
     android:foreground="@drawable/shape_window_dim"
-    tools:context="itesm.mx.perritos.PetFragment">
+    tools:context="itesm.mx.perritos.pet.PetFragment">
 
     <ListView
         android:id="@android:id/list"
