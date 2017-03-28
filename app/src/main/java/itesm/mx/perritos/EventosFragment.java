@@ -1,8 +1,10 @@
 package itesm.mx.perritos;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -13,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class EventosFragment extends ListFragment {
+public class EventosFragment extends ListFragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -24,6 +26,8 @@ public class EventosFragment extends ListFragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private FloatingActionButton floatingAddButton;
 
     public EventosFragment() {
         // Required empty public constructor
@@ -69,7 +73,12 @@ public class EventosFragment extends ListFragment {
         EventoAdapter eventosAdapter = new EventoAdapter(getActivity(),eventos);
         setListAdapter(eventosAdapter);
 
-        return inflater.inflate(R.layout.fragment_eventos, container, false);
+        View view  = inflater.inflate(R.layout.fragment_eventos, container, false);
+
+        floatingAddButton = (FloatingActionButton) view.findViewById(R.id.floating_add);
+        floatingAddButton.setOnClickListener(this);
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -79,7 +88,14 @@ public class EventosFragment extends ListFragment {
         }
     }
 
-//    @Override
+    @Override
+    public void onClick(View v) {
+        Intent startAddEventActivity = new Intent(getActivity(),AddEventActivity.class);
+        startActivity(startAddEventActivity);
+    }
+
+
+    //    @Override
 //    public void onAttach(Context context) {
 //        super.onAttach(context);
 //        if (context instanceof OnFragmentInteractionListener) {
