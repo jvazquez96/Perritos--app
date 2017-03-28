@@ -29,8 +29,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, PetFragment.OnPetSelectedListener, View.OnClickListener, PetFragment.OnPetAddedListener,
-                                                        NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener,
+                                                                PetFragment.OnPetSelectedListener,
+                                                                View.OnClickListener,
+                                                                PetFragment.OnPetAddedListener,
+                                                                NavigationView.OnNavigationItemSelectedListener,
+                                                                EventosFragment.OnEventSelectedListener{
 
 
     private TabLayout tlTabLayout;
@@ -165,8 +169,14 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     @Override
     public void onPetAdded(Pet pet) {
-
         mPetsDataBaseReference.push().setValue(pet);
+    }
+
+    @Override
+    public void onEventSelectedListener(Evento event) {
+        Bundle bundle = new Bundle();
+        Intent eventDetailIntent = new Intent(this,EventDetailActivity.class);
+        startActivity(eventDetailIntent);
     }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {

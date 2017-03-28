@@ -17,7 +17,8 @@
         </activity>
         <activity android:name=".PetDetailActivity" />
         <activity android:name=".AddEventActivity" />
-        <activity android:name=".AddNewsActivity"></activity>
+        <activity android:name=".AddNewsActivity" />
+        <activity android:name=".EventDetailActivity"></activity>
     </application>
 
 </manifest>

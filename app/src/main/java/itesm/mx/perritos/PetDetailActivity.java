@@ -19,7 +19,7 @@ public class PetDetailActivity extends AppCompatActivity {
         if (bundle != null) {
             Pet pet = (Pet) bundle.getSerializable("Pet");
             Log.d("DEBUG_TAG","Pet image: " + pet.getIdImage());
-            ivPet.setImageResource(pet.getIdImage());
+//            ivPet.setImageResource(pet.getIdImage());
 
         }
     }
