@@ -1,8 +1,10 @@
 package itesm.mx.perritos;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -21,7 +23,7 @@ import java.util.List;
  * Use the {@link NoticiasFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NoticiasFragment extends ListFragment {
+public class NoticiasFragment extends ListFragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -32,6 +34,8 @@ public class NoticiasFragment extends ListFragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private FloatingActionButton floatingAddButon;
 
     public NoticiasFragment() {
         // Required empty public constructor
@@ -75,7 +79,13 @@ public class NoticiasFragment extends ListFragment {
         NewsAdapter newsAdapter = new NewsAdapter(getActivity(),news);
         setListAdapter(newsAdapter);
 
-        return inflater.inflate(R.layout.fragment_noticias, container, false);
+        View view = inflater.inflate(R.layout.fragment_noticias, container, false);
+
+        floatingAddButon = (FloatingActionButton) view.findViewById(R.id.floating_add);
+        floatingAddButon.setOnClickListener(this);
+
+        return view;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -85,7 +95,13 @@ public class NoticiasFragment extends ListFragment {
         }
     }
 
-//    @Override
+    @Override
+    public void onClick(View v) {
+        Intent startAddNewsActivity = new Intent(getActivity(),AddEventActivity.class);
+        startActivity(startAddNewsActivity);
+    }
+
+    //    @Override
 //    public void onAttach(Context context) {
 //        super.onAttach(context);
 //        if (context instanceof OnFragmentInteractionListener) {
