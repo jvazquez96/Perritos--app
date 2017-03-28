@@ -18,7 +18,7 @@
         android:id="@+id/edit_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Titulo de la noticia"
+        android:hint="Titulo del evento"
         android:textSize="40sp"
         android:layout_marginTop="15dp"/>
 
@@ -104,6 +104,14 @@
             android:text="Agregar Lugar"/>
 
     </LinearLayout>
+
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/image_placeholder"/>
+
 
 
 

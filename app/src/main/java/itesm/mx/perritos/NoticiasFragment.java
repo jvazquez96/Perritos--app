@@ -92,7 +92,7 @@ public class NoticiasFragment extends ListFragment implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        Intent startAddNewsActivity = new Intent(getActivity(),AddEventActivity.class);
+        Intent startAddNewsActivity = new Intent(getActivity(),AddNewsActivity.class);
         startActivity(startAddNewsActivity);
     }
 
