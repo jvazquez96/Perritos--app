@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -122,7 +123,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         LinearLayout layout = new LinearLayout(getContext());
 
         //  Reference the button from the pop up layout.
-        Button btn = (Button) customView.findViewById(R.id.button_done);
+        ImageButton btn = (ImageButton) customView.findViewById(R.id.button_done);
         // When the button is pressed dismiss the view.
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,7 +133,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
                 Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.pug);
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
-                bitmap.recycle();
+                   bitmap.recycle();
                 byte[] bytes = byteArrayOutputStream.toByteArray();
                 String encodedImage = Base64.encodeToString(bytes,Base64.DEFAULT);
                 pet.setEncodedImage(encodedImage);
