@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nav_start"
+            android:title="Inicio"
+            android:icon="@drawable/ic_home_grey600_24dp"/>
+
+        <item
+            android:id="@+id/nav_requests"
+            android:title="Solicitudes"
+            android:icon="@drawable/ic_library_books_black_24dp"/>
+
+        <item
+            android:id="@+id/nav_favorites"
+            android:title="Favoritos"
+            android:icon="@drawable/ic_heart_grey600_24dp"/>
+
+        <item
+            android:id="@+id/nav_sign_out"
+            android:title="Log out"
+            android:icon="@drawable/ic_logout_grey600_24dp"/>
+
+    </group>
+
+</menu>
