@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -27,7 +28,8 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
 
     private OnEventSelectedListener mListenerEventSelected;
 
-    private FloatingActionButton floatingAddButton;
+
+    private FloatingActionButton floatingActionButton;
 
     public EventosFragment() {
         // Required empty public constructor
@@ -75,8 +77,8 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
 
         View view  = inflater.inflate(R.layout.fragment_eventos, container, false);
 
-        floatingAddButton = (FloatingActionButton) view.findViewById(R.id.floating_add);
-        floatingAddButton.setOnClickListener(this);
+        floatingActionButton = (FloatingActionButton) view.findViewById(R.id.floating_add);
+        floatingActionButton.setOnClickListener(this);
 
         return view;
     }

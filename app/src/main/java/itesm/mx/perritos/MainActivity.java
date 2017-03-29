@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -38,17 +39,28 @@ import itesm.mx.perritos.news.NoticiasFragment;
 import itesm.mx.perritos.pet.Pet;
 import itesm.mx.perritos.pet.PetDetailActivity;
 import itesm.mx.perritos.pet.PetFragment;
+import itesm.mx.perritos.store.Product;
+import itesm.mx.perritos.store.ProductDetailActivity;
+import itesm.mx.perritos.store.StoreFragment;
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener,
                                                                 PetFragment.OnPetSelectedListener,
                                                                 View.OnClickListener,
                                                                 NavigationView.OnNavigationItemSelectedListener,
                                                                 EventosFragment.OnEventSelectedListener,
-                                                                NoticiasFragment.OnNewsSelectedListener {
+                                                                StoreFragment.OnProductSelectedListener,
+                                                                NoticiasFragment.OnNewsSelectedListener{
+
 
     private TabLayout tlTabLayout;
     private Toolbar tbToolbar;
     private ImageButton imgbtnMenu;
+
+    private final int [] ICON ={ R.drawable.ic_pets_black_24dp,
+            R.drawable.ic_event_black_24dp,
+            R.drawable.ic_new_releases_black_24dp,
+            R.drawable.ic_store_black_24dp};
+
     private ViewPager vpViewPager;
 
     // Firebase Objects
@@ -68,6 +80,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         tlTabLayout = (TabLayout) findViewById(R.id.tabs);
         tlTabLayout.setupWithViewPager(vpViewPager);
+        tlTabLayout.getTabAt(0).setIcon(ICON[0]);
+        tlTabLayout.getTabAt(1).setIcon(ICON[1]);
+        tlTabLayout.getTabAt(2).setIcon(ICON[2]);
+        tlTabLayout.getTabAt(3).setIcon(ICON[3]);
         tlTabLayout.addOnTabSelectedListener(this);
 
         // Custom toolbar
@@ -161,9 +177,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     private void setUpViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new PetFragment(),"Mascotas");
-        adapter.addFragment(new EventosFragment(),"Eventos");
-        adapter.addFragment(new NoticiasFragment(), "Noticias");
+        adapter.addFragment(new PetFragment());
+        adapter.addFragment(new EventosFragment());
+        adapter.addFragment(new NoticiasFragment());
+        adapter.addFragment(new StoreFragment());
         viewPager.setAdapter(adapter);
     }
 
@@ -182,6 +199,13 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         Bundle bundle = new Bundle();
         Intent eventDetailIntent = new Intent(this,EventDetailActivity.class);
         startActivity(eventDetailIntent);
+    }
+
+    @Override
+    public void onProductSelectedListener(Product product) {
+        Bundle bundle = new Bundle();
+        Intent intent = new Intent(this, ProductDetailActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -209,14 +233,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             return mFragmentList.size();
         }
 
-        public void addFragment(Fragment fragment, String title) {
+        public void addFragment(Fragment fragment) {
             mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
         }
     }
 }

@@ -24,3 +24,5 @@ Aplicacion desarollada para la clase de Proyecto de desarollo para dispositivos 
 ### Requerimientos del dispositivo
 1. Minimum Android SDK 19 (Kitkat/4.4)
 2. Solamente telefonos
+
+Branch: Santiago

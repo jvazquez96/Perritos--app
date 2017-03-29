@@ -19,7 +19,9 @@
         <activity android:name=".event.AddEventActivity" />
         <activity android:name=".news.AddNewsActivity" />
         <activity android:name=".event.EventDetailActivity" />
-        <activity android:name=".news.NewsDetailActivity"></activity>
+        <activity android:name=".news.NewsDetailActivity" />
+        <activity android:name=".store.AddProductActivity" />
+        <activity android:name=".store.ProductDetailActivity"></activity>
     </application>
 
 </manifest>
