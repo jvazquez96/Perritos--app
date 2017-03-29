@@ -1,21 +1,32 @@
 package itesm.mx.perritos.pet;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import itesm.mx.perritos.R;
@@ -44,7 +55,14 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
     private String mParam2;
 
     private OnPetSelectedListener mListenerPetSelected;
-    private OnPetAddedListener mListenerPetAdded;
+
+    private ArrayList<Pet> pets;
+    private ArrayAdapter<Pet> petAdapter;
+
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mPetsDataBaseReference;
+    private ChildEventListener mChildEventListenerPets;
+
 
     public PetFragment() {
         // Required empty public constructor
@@ -57,6 +75,38 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mPetsDataBaseReference = mFirebaseDatabase.getReference().child("Pets");
+        mChildEventListenerPets = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Pet pet = dataSnapshot.getValue(Pet.class);
+                pets.add(pet);
+                Log.d("DEBUG_TAG","NEW PET ADDED!!!!!");
+                petAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        mPetsDataBaseReference.addChildEventListener(mChildEventListenerPets);
     }
 
     @Override
@@ -78,10 +128,17 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 // Light the background
+                Pet pet = new Pet("Oliver","M",1,"Bonito",0,0);
+                Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.pug);
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
+                bitmap.recycle();
+                byte[] bytes = byteArrayOutputStream.toByteArray();
+                String encodedImage = Base64.encodeToString(bytes,Base64.DEFAULT);
+                pet.setEncodedImage(encodedImage);
+                mPetsDataBaseReference.push().setValue(pet);
                 coordinatorLayout.getForeground().setAlpha(0);
                 mPopupWindow.dismiss();
-                Pet pet = new Pet("Oliver","Male",1,"Guapo",0,0);
-                mListenerPetAdded.onPetAdded(pet);
 
             }
         });
@@ -94,11 +151,8 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        ArrayList<Pet> pets = new ArrayList<>();
-        Pet pet = new Pet("Oliver","M",1,"Bonito",0,R.drawable.pug);
-        pets.add(pet);
-        PetAdapter petAdapter = new PetAdapter(getActivity(), pets);
+        pets = new ArrayList<>();
+        petAdapter = new PetAdapter(getActivity(), pets);
         setListAdapter(petAdapter);
 
 
@@ -119,7 +173,6 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
     public void onDetach() {
         super.onDetach();
         mListenerPetSelected = null;
-        mListenerPetAdded = null;
 
     }
 
@@ -127,16 +180,15 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         Log.d("POSITION: ", String.valueOf(position));
-        Pet pet = new Pet("Oliver","M",1,"Bonito",0,R.drawable.pug);
+        Pet pet = pets.get(position);
         mListenerPetSelected.onPetSelectedListener(pet);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof  OnPetSelectedListener && context instanceof OnPetAddedListener) {
+        if (context instanceof  OnPetSelectedListener) {
             mListenerPetSelected = (OnPetSelectedListener) context;
-            mListenerPetAdded = (OnPetAddedListener) context;
 
         } else {
             throw new RuntimeException(context.toString() + " must implement OnPetSelectedListener && OnPetAddedListener");
@@ -149,9 +201,5 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
      */
     public interface OnPetSelectedListener {
         void onPetSelectedListener(Pet pet);
-    }
-
-    public interface OnPetAddedListener {
-        void onPetAdded(Pet pet);
     }
 }

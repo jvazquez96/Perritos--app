@@ -15,6 +15,7 @@ public class Pet implements Serializable {
     private String description;
     private int requests;
     private int idImage;
+    private String encodedImage;
 
     /**
      *  Default constructor.
@@ -137,5 +138,13 @@ public class Pet implements Serializable {
      */
     public int getIdImage() {
         return this.idImage;
+    }
+
+    public void setEncodedImage(String encodedImage) {
+        this.encodedImage = encodedImage;
+    }
+
+    public String getEncodedImage() {
+        return this.encodedImage;
     }
 }

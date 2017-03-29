@@ -42,11 +42,9 @@ import itesm.mx.perritos.pet.PetFragment;
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener,
                                                                 PetFragment.OnPetSelectedListener,
                                                                 View.OnClickListener,
-                                                                PetFragment.OnPetAddedListener,
                                                                 NavigationView.OnNavigationItemSelectedListener,
                                                                 EventosFragment.OnEventSelectedListener,
-                                                                NoticiasFragment.OnNewsSelectedListener{
-
+                                                                NoticiasFragment.OnNewsSelectedListener {
 
     private TabLayout tlTabLayout;
     private Toolbar tbToolbar;
@@ -96,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Pet pet = dataSnapshot.getValue(Pet.class);
-
+                Log.d(DEBUG_TAG," onChildAdded called");
             }
 
             @Override
@@ -132,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     @Override
     public void onClick(View v) {
@@ -176,11 +175,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         bundle.putSerializable("Pet",pet);
         petDetailIntent.putExtras(bundle);
         startActivity(petDetailIntent);
-    }
-
-    @Override
-    public void onPetAdded(Pet pet) {
-        mPetsDataBaseReference.push().setValue(pet);
     }
 
     @Override

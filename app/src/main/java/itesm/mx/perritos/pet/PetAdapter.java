@@ -1,7 +1,10 @@
 package itesm.mx.perritos.pet;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,8 +61,11 @@ public class PetAdapter extends ArrayAdapter<Pet> {
 
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(300,300);
-        ivCover.setLayoutParams(params);
-        ivCover.setImageResource(pet.getIdImage());
+        byte[] decodedString = Base64.decode(pet.getEncodedImage(),Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString,0,decodedString.length);
+        ivCover.setImageBitmap(decodedByte);
+        //ivCover.setLayoutParams(params);
+        //ivCover.setImageResource(pet.getIdImage());
         tvName.setText(pet.getName());
         tvGender.setText("Genero: " +pet.getGender());
         tvAge.setText("Edad: " + String.valueOf(pet.getAge()) + "anos");
