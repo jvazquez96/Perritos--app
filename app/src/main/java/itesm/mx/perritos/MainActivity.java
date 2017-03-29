@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     private final int [] ICON ={ R.drawable.ic_pets_black_24dp,
             R.drawable.ic_event_black_24dp,
-            R.drawable.ic_new_releases_black_24dp,
+            R.drawable.ic_newspaper_black_24dp,
             R.drawable.ic_store_black_24dp};
 
     private ViewPager vpViewPager;
@@ -90,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         tbToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tbToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle("Cultura perrona");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -189,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         Log.d(DEBUG_TAG, "onPetSelectedListener");
         Bundle bundle = new Bundle();
         Intent petDetailIntent = new Intent(this, PetDetailActivity.class);
-        bundle.putSerializable("Pet",pet);
+//        bundle.putSerializable("Pet",pet);
         petDetailIntent.putExtras(bundle);
         startActivity(petDetailIntent);
     }

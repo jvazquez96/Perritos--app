@@ -19,11 +19,12 @@ public class AddNewsActivity extends AppCompatActivity {
         tlToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tlToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Nueva noticia");
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.detail,menu);
+        getMenuInflater().inflate(R.menu.confirm,menu);
         return true;
     }
 }

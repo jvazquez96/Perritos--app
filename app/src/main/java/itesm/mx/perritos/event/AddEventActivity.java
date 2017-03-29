@@ -37,6 +37,7 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         textStartDate.setOnClickListener(this);
         textEndDate.setOnClickListener(this);
+        getSupportActionBar().setTitle("Nuevo Evento");
     }
 
     @Override

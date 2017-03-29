@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="@color/colorPrimary"
-        style="@style/ActionBarTheme" />
+        app:theme="@style/ActionBarTheme"/>
 
     <ImageView
         android:id="@+id/image_cover"

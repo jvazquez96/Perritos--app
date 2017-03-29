@@ -24,13 +24,14 @@ public class PetDetailActivity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             Pet pet = (Pet) bundle.getSerializable("Pet");
-            Log.d("DEBUG_TAG","Pet image: " + pet.getIdImage());
+//            Log.d("DEBUG_TAG","Pet image: " + pet.getIdImage());
 //            ivPet.setImageResource(pet.getIdImage());
         }
 
         tlToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tlToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Mascota");
     }
 
     @Override
