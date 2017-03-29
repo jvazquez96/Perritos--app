@@ -25,7 +25,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private final int [] ICON ={
             R.drawable.ic_pets_black_24dp,
             R.drawable.ic_event_black_24dp,
-            R.drawable.ic_new_releases_black_24dp};
+            R.drawable.ic_new_releases_black_24dp,
+            R.drawable.ic_store_black_24dp};
 
     private static final String DEBUG_TAG = "DEBUG_TAG";
 
