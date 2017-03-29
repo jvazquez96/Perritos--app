@@ -92,8 +92,8 @@ public class StoreFragment extends ListFragment implements View.OnClickListener 
    @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        /*Product product = new Product("Nombre del producto", 74, R.mipmap.ic_launcher);
-        onProductSelectedListener.onProductSelectedListener(product);*/
+        Product product = new Product("Nombre del producto", 74, R.mipmap.ic_launcher);
+        onProductSelectedListener.onProductSelectedListener(product);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class StoreFragment extends ListFragment implements View.OnClickListener 
         startActivity(intent);
     }
 
-    /*@Override
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if(context instanceof OnProductSelectedListener){
@@ -117,7 +117,7 @@ public class StoreFragment extends ListFragment implements View.OnClickListener 
     public void onDetach() {
         super.onDetach();
         onProductSelectedListener = null;
-    }*/
+    }
 
     public interface OnProductSelectedListener{
         void onProductSelectedListener(Product product);

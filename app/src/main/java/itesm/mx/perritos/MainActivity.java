@@ -39,6 +39,8 @@ import itesm.mx.perritos.news.NoticiasFragment;
 import itesm.mx.perritos.pet.Pet;
 import itesm.mx.perritos.pet.PetDetailActivity;
 import itesm.mx.perritos.pet.PetFragment;
+import itesm.mx.perritos.store.Product;
+import itesm.mx.perritos.store.ProductDetailActivity;
 import itesm.mx.perritos.store.StoreFragment;
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener,
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                                                 PetFragment.OnPetAddedListener,
                                                                 NavigationView.OnNavigationItemSelectedListener,
                                                                 EventosFragment.OnEventSelectedListener,
+                                                                StoreFragment.OnProductSelectedListener,
                                                                 NoticiasFragment.OnNewsSelectedListener{
 
 
@@ -201,6 +204,13 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         Bundle bundle = new Bundle();
         Intent eventDetailIntent = new Intent(this,EventDetailActivity.class);
         startActivity(eventDetailIntent);
+    }
+
+    @Override
+    public void onProductSelectedListener(Product product) {
+        Bundle bundle = new Bundle();
+        Intent intent = new Intent(this, ProductDetailActivity.class);
+        startActivity(intent);
     }
 
     @Override
