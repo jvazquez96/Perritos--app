@@ -21,6 +21,10 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.auth.api.Auth;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,6 +32,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import itesm.mx.perritos.event.EventDetailActivity;
@@ -68,7 +73,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private DatabaseReference mPetsDataBaseReference;
     private ChildEventListener mChildEventListenerPets;
 
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+
     private static final String DEBUG_TAG = "DEBUG_TAG";
+    private static final int RC_SIGN_IN = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,8 +113,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         // Initialize Firebase Componentes
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-
         mPetsDataBaseReference = mFirebaseDatabase.getReference().child("Pets");
+        mFirebaseAuth = FirebaseAuth.getInstance();
 
         mChildEventListenerPets = new ChildEventListener() {
             @Override
@@ -132,6 +141,23 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         };
 
         mPetsDataBaseReference.addChildEventListener(mChildEventListenerPets);
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // user signed in
+                } else {
+                    startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder()
+                            .setIsSmartLockEnabled(false)
+                            .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                    new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
+                                    new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
+                            .setTheme(R.style.LoginTheme)
+                            .build(),RC_SIGN_IN);
+                }
+            }
+        };
 
     }
 
@@ -162,6 +188,18 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
     public void onTabSelected(TabLayout.Tab tab) {
         vpViewPager.setCurrentItem(tab.getPosition());
     }
@@ -184,6 +222,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         adapter.addFragment(new StoreFragment());
         viewPager.setAdapter(adapter);
     }
+
 
     @Override
     public void onPetSelectedListener(Pet pet) {
