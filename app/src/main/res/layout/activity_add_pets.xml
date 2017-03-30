@@ -27,18 +27,12 @@
         android:hint="Descripcion de la mascota"
         android:layout_marginTop="10dp"/>
 
-    <EditText
-        android:id="@+id/edit_gender"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Genero de la mascota"
-        android:layout_marginTop="10dp"/>
-
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
 
         <ImageView
             android:id="@+id/image_pet"
