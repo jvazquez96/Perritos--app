@@ -12,36 +12,13 @@
         android:background="@color/colorPrimary"
         app:theme="@style/ActionBarTheme"/>
 
-    <LinearLayout
+
+    <EditText
+        android:id="@+id/edit_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:hint="Nombre de la mascota"/>
 
-        <ImageView
-            android:id="@+id/image_pet"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:maxWidth="100dp"
-            android:maxHeight="100dp"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:src="@drawable/image_placeholder"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-
-            <EditText
-                android:id="@+id/edit_name"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="Nombre de la mascota"/>
-
-        </LinearLayout>
-
-
-    </LinearLayout>
 
     <EditText
         android:id="@+id/edit_description"
@@ -57,12 +34,44 @@
         android:hint="Genero de la mascota"
         android:layout_marginTop="10dp"/>
 
-    <EditText
-        android:id="@+id/edit_age"
+
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Edad de la mascota"
-        android:layout_marginTop="10dp"/>
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image_pet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="100dp"
+            android:maxHeight="100dp"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/image_placeholder"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <EditText
+                android:id="@+id/edit_age"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Edad de la mascota"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 
     <CheckBox
         android:layout_marginTop="10dp"

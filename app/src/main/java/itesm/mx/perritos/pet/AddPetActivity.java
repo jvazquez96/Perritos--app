@@ -8,9 +8,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,6 +40,7 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
     private EditText editGender;
     private EditText editAge;
 
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,13 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
         mFirebaseStorage = FirebaseStorage.getInstance();
         mPetPhotosStorageReference = mFirebaseStorage.getReference().child("pets_photos");
         pet = new Pet();
+
+
+        spinner = (Spinner) findViewById(R.id.spinner);
+        String[] genderArray = {"Hembra","Macho"};
+        ArrayAdapter<String> genderAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,genderArray);
+        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(genderAdapter);
     }
 
 

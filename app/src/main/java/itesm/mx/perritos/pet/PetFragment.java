@@ -22,6 +22,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.Spinner;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -53,6 +54,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
 
     private FloatingActionButton floatingAddButton;
     private CoordinatorLayout coordinatorLayout;
+    private Spinner spinner;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -148,8 +150,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.coordinator);
         // Light the background
 //        coordinatorLayout.getForeground().setAlpha(0);
-
-
+        
         floatingAddButton = (FloatingActionButton) view.findViewById(R.id.floating_add);
         floatingAddButton.setOnClickListener(this);
         return view;
