@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -32,6 +33,8 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import itesm.mx.perritos.R;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -63,6 +66,9 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mPetsDataBaseReference;
     private ChildEventListener mChildEventListenerPets;
+
+
+    private static final int REQUEST_CODE_ADD_PET = 1;
 
 
     public PetFragment() {
@@ -114,7 +120,19 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
     public void onClick(View v) {
         Log.d("DEBUG_TAG","CLICK");
         Intent startAddPetActivity = new Intent(getActivity(),AddPetActivity.class);
-        startActivity(startAddPetActivity);
+        startActivityForResult(startAddPetActivity,REQUEST_CODE_ADD_PET);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CODE_ADD_PET) {
+                Bundle extras = data.getExtras();
+                Pet pet = (Pet) extras.get("Pet");
+                mPetsDataBaseReference.push().setValue(pet);
+            }
+        }
     }
 
     @Override

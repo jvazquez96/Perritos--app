@@ -14,14 +14,12 @@ public class Pet implements Serializable {
     private int age;
     private String description;
     private int requests;
-    private int idImage;
-    private String encodedImage;
+    private String photoUrl;
 
     /**
      *  Default constructor.
      */
     public Pet() {
-        
     }
 
     /**
@@ -31,15 +29,15 @@ public class Pet implements Serializable {
      * @param age Age of the Pet.
      * @param description Description of the Pet.
      * @param requests Amout of the request this Pet hast.
-     * @param idImage id of the Image of the Pet.
+     * @param photoUrl id of the Image of the Pet.
      */
-    public Pet(String name, String gender, int age, String description, int requests, int idImage) {
+    public Pet(String name, String gender, int age, String description, int requests, String photoUrl) {
         this.name = name;
         this.gender = gender;
         this.age = age;
         this.description = description;
         this.requests = requests;
-        this.idImage = idImage;
+        this.photoUrl = photoUrl;
     }
 
 
@@ -124,27 +122,21 @@ public class Pet implements Serializable {
     }
 
     /**
-     * Set the idImage of this Pet.
-     * @param idImage
+     * Set the photoUrl of this Pet.
+     * @param photoUrl
      */
-    public void setIdImage(int idImage) {
-        this.idImage = idImage;
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
 
     /**
-     * Get the id of the image of this Pet.
+     * Get the photuURL of the image of this Pet.
      * @return
      */
-    public int getIdImage() {
-        return this.idImage;
+    public String getPhotoUrl() {
+        return this.photoUrl;
     }
 
-    public void setEncodedImage(String encodedImage) {
-        this.encodedImage = encodedImage;
-    }
 
-    public String getEncodedImage() {
-        return this.encodedImage;
-    }
 }
