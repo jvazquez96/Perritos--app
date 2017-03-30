@@ -18,7 +18,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right|end"
         android:layout_margin="16dp"
-        android:backgroundTint="@color/colorPrimary"
         android:src="@drawable/ic_plus_white_48dp"
         app:backgroundTint="@color/colorPrimary" />
 
