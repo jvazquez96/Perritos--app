@@ -139,14 +139,14 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
                 String encodedImage = Base64.encodeToString(bytes,Base64.DEFAULT);
                 pet.setEncodedImage(encodedImage);
                 mPetsDataBaseReference.push().setValue(pet);
-                coordinatorLayout.getForeground().setAlpha(0);
+//                coordinatorLayout.getForeground().setAlpha(0);
 
             }
         });
         // Position where the pop up is going to be displayed
         mPopupWindow.showAtLocation(layout, Gravity.CENTER_HORIZONTAL,10,10);
         // Dim the background
-        coordinatorLayout.getForeground().setAlpha(200);
+//        coordinatorLayout.getForeground().setAlpha(200);
     }
 
     @Override
@@ -161,7 +161,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_pet, container, false);
         coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.coordinator);
         // Light the background
-        coordinatorLayout.getForeground().setAlpha(0);
+//        coordinatorLayout.getForeground().setAlpha(0);
 
 
         floatingAddButton = (FloatingActionButton) view.findViewById(R.id.floating_add);

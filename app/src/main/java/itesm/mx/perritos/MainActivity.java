@@ -183,8 +183,16 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 //                Log.d(DEBUG_TAG,"Menu Button");
 //                break;
 //        }
+    }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                AuthUI.getInstance().signOut(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
