@@ -11,7 +11,7 @@ public class Pet implements Serializable {
 
     private String name;
     private String gender;
-    private int age;
+    private String age;
     private String description;
     private int requests;
     private String photoUrl;
@@ -31,7 +31,7 @@ public class Pet implements Serializable {
      * @param requests Amout of the request this Pet hast.
      * @param photoUrl id of the Image of the Pet.
      */
-    public Pet(String name, String gender, int age, String description, int requests, String photoUrl) {
+    public Pet(String name, String gender, String age, String description, int requests, String photoUrl) {
         this.name = name;
         this.gender = gender;
         this.age = age;
@@ -77,7 +77,7 @@ public class Pet implements Serializable {
      * Set the age of the Pet.
      * @param age Age of the pet
      */
-    public void setAge(int age) {
+    public void setAge(String age) {
         this.age = age;
     }
 
@@ -85,7 +85,7 @@ public class Pet implements Serializable {
      * Return the age of the pet.
      * @return age
      */
-    public int getAge() {
+    public String getAge() {
         return this.age;
     }
 

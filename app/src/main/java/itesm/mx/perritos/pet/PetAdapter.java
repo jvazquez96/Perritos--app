@@ -71,7 +71,7 @@ public class PetAdapter extends ArrayAdapter<Pet> {
         //ivCover.setImageResource(pet.getIdImage());
         tvName.setText(pet.getName());
         tvGender.setText("Genero: " +pet.getGender());
-        tvAge.setText("Edad: " + String.valueOf(pet.getAge()) + "anos");
+        tvAge.setText("Edad: " + String.valueOf(pet.getAge()));
         tvRequests.setText(String.valueOf(pet.getRequest()) + " solicitudes");
 
 

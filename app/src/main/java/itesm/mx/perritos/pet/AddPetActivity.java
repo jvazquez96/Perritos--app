@@ -37,7 +37,6 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
 
     private EditText editName;
     private EditText editDescription;
-    private EditText editGender;
     private EditText editAge;
 
     private Spinner spinner;
@@ -56,7 +55,6 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
 
         editName = (EditText) findViewById(R.id.edit_name);
         editDescription = (EditText) findViewById(R.id.edit_description);
-        editGender = (EditText) findViewById(R.id.edit_gender);
         editAge = (EditText) findViewById(R.id.edit_age);
 
 
@@ -86,9 +84,8 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
         switch (item.getItemId()) {
             case R.id.action_confirm:
                 pet.setName(editName.getText().toString());
-                pet.setAge(Integer.valueOf(editAge.getText().toString()));
                 pet.setDescription(editDescription.getText().toString());
-                pet.setGender(editGender.getText().toString());
+                pet.setAge(editAge.getText().toString());
                 Intent intent = new Intent();
                 intent.putExtra("Pet",pet);
                 setResult(RESULT_OK,intent);
