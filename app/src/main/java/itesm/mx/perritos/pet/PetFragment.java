@@ -1,6 +1,7 @@
 package itesm.mx.perritos.pet;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -48,7 +49,6 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
     private static final String ARG_PARAM2 = "param2";
 
     private FloatingActionButton floatingAddButton;
-    private PopupWindow mPopupWindow;
     private CoordinatorLayout coordinatorLayout;
 
     // TODO: Rename and change types of parameters
@@ -113,40 +113,8 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         Log.d("DEBUG_TAG","CLICK");
-
-        // Inflate layout for the popup
-        LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View customView = inflater.inflate(R.layout.addpetpopupwindow,null);
-        mPopupWindow = new PopupWindow(customView, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        // Get the current layout
-        LinearLayout layout = new LinearLayout(getContext());
-
-        //  Reference the button from the pop up layout.
-        ImageButton btn = (ImageButton) customView.findViewById(R.id.button_done);
-        // When the button is pressed dismiss the view.
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPopupWindow.dismiss();
-                // Light the background
-                Pet pet = new Pet("Oliver","M",1,"Bonito",0,0);
-                Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.pug);
-                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
-                   bitmap.recycle();
-                byte[] bytes = byteArrayOutputStream.toByteArray();
-                String encodedImage = Base64.encodeToString(bytes,Base64.DEFAULT);
-                pet.setEncodedImage(encodedImage);
-                mPetsDataBaseReference.push().setValue(pet);
-//                coordinatorLayout.getForeground().setAlpha(0);
-
-            }
-        });
-        // Position where the pop up is going to be displayed
-        mPopupWindow.showAtLocation(layout, Gravity.CENTER_HORIZONTAL,10,10);
-        // Dim the background
-//        coordinatorLayout.getForeground().setAlpha(200);
+        Intent startAddPetActivity = new Intent(getActivity(),AddPetActivity.class);
+        startActivity(startAddPetActivity);
     }
 
     @Override
