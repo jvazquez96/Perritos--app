@@ -128,6 +128,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mPopupWindow.dismiss();
                 // Light the background
                 Pet pet = new Pet("Oliver","M",1,"Bonito",0,0);
                 Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.pug);
@@ -139,7 +140,6 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
                 pet.setEncodedImage(encodedImage);
                 mPetsDataBaseReference.push().setValue(pet);
                 coordinatorLayout.getForeground().setAlpha(0);
-                mPopupWindow.dismiss();
 
             }
         });
