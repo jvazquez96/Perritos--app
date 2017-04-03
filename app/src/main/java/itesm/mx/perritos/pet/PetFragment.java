@@ -86,36 +86,63 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         }
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mPetsDataBaseReference = mFirebaseDatabase.getReference().child("Pets");
-        mChildEventListenerPets = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Pet pet = dataSnapshot.getValue(Pet.class);
-                pets.add(pet);
-                Log.d("DEBUG_TAG","NEW PET ADDED!!!!!");
-                petAdapter.notifyDataSetChanged();
-            }
+        attachDatabaseReadListener();
+    }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+    @Override
+    public void onResume() {
+        super.onResume();
+        attachDatabaseReadListener();
+        Log.d("DEBUG_TAG","onResume()");
+    }
 
-            }
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("Debug_tag","onPause");
+        deattachDatabaseReadListener();
+        petAdapter.clear();
+    }
 
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
+    private void attachDatabaseReadListener() {
+        if (mChildEventListenerPets == null) {
+            mChildEventListenerPets = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Pet pet = dataSnapshot.getValue(Pet.class);
+                    pets.add(pet);
+                    Log.d("DEBUG_TAG","NEW PET ADDED!!!!!");
+                    petAdapter.notifyDataSetChanged();
+                }
 
-            }
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                }
 
-            }
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                }
 
-            }
-        };
-        mPetsDataBaseReference.addChildEventListener(mChildEventListenerPets);
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            };
+            mPetsDataBaseReference.addChildEventListener(mChildEventListenerPets);
+        }
+    }
+
+    private void deattachDatabaseReadListener() {
+        if (mChildEventListenerPets != null) {
+            mPetsDataBaseReference.removeEventListener(mChildEventListenerPets);
+        }
     }
 
     @Override

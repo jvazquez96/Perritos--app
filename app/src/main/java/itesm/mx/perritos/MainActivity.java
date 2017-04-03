@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         setContentView(R.layout.new_activity_main);
 
         vpViewPager = (ViewPager) findViewById(R.id.viewpager);
+        vpViewPager.setOffscreenPageLimit(4);
         setUpViewPager(vpViewPager);
 
         tlTabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -115,32 +117,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mPetsDataBaseReference = mFirebaseDatabase.getReference().child("Pets");
         mFirebaseAuth = FirebaseAuth.getInstance();
-
-        mChildEventListenerPets = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Pet pet = dataSnapshot.getValue(Pet.class);
-                Log.d(DEBUG_TAG," onChildAdded called");
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        };
-
-        mPetsDataBaseReference.addChildEventListener(mChildEventListenerPets);
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -210,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         vpViewPager.setCurrentItem(tab.getPosition());
+        Log.d("HERE","HERE");
     }
 
     @Override
@@ -262,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         startActivity(newsDetailIntent);
     }
 
-    private class ViewPagerAdapter extends FragmentPagerAdapter {
+    private class ViewPagerAdapter extends FragmentStatePagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 
