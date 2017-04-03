@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -48,6 +49,8 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
 
     private Uri selectedImage;
 
+    private CheckBox checkVisibility;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +66,7 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
         editName = (EditText) findViewById(R.id.edit_name);
         editDescription = (EditText) findViewById(R.id.edit_description);
         editAge = (EditText) findViewById(R.id.edit_age);
+        checkVisibility = (CheckBox) findViewById(R.id.check_visible);
 
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -113,6 +117,7 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
                 pet.setDescription(editDescription.getText().toString());
                 pet.setAge(editAge.getText().toString());
                 pet.setGender(this.gender);
+                pet.setVisible(checkVisibility.isChecked());
                 Log.d("DEBUG_TAG","Gender of the dog: " + this.gender);
                 pet.setRequests(0);
                 if (isAllDataCorrect()) {

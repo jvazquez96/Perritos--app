@@ -15,6 +15,7 @@ public class Pet implements Serializable {
     private String description;
     private int requests;
     private String photoUrl;
+    private boolean isVisible;
 
     /**
      *  Default constructor.
@@ -30,14 +31,16 @@ public class Pet implements Serializable {
      * @param description Description of the Pet.
      * @param requests Amout of the request this Pet hast.
      * @param photoUrl id of the Image of the Pet.
+     * @param isVisible Visibility of the app
      */
-    public Pet(String name, String gender, String age, String description, int requests, String photoUrl) {
+    public Pet(String name, String gender, String age, String description, int requests, String photoUrl, boolean isVisible) {
         this.name = name;
         this.gender = gender;
         this.age = age;
         this.description = description;
         this.requests = requests;
         this.photoUrl = photoUrl;
+        this.isVisible = isVisible;
     }
 
 
@@ -138,5 +141,21 @@ public class Pet implements Serializable {
         return this.photoUrl;
     }
 
+
+    /**
+     * Set the visibility of the pet.
+     * @param isVisible
+     */
+    public void setVisible(boolean isVisible) {
+        this.isVisible = isVisible;
+    }
+
+    /**
+     * Get the visibility status of the pet
+     * @return
+     */
+    public boolean getIsVisible() {
+        return this.isVisible;
+    }
 
 }
