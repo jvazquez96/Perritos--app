@@ -56,7 +56,6 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
 
     private FloatingActionButton floatingAddButton;
     private CoordinatorLayout coordinatorLayout;
-    private Spinner spinner;
 
     // TODO: Rename and change types of parameters
     private String mParam1;

@@ -9,6 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 import itesm.mx.perritos.R;
@@ -45,7 +47,7 @@ public class NewsAdapter extends ArrayAdapter<News> {
         TextView tvTitle = (TextView) convertView.findViewById(R.id.text_title);
         TextView tvDescription = (TextView) convertView.findViewById(R.id.text_description);
 
-        ivCover.setImageResource(news1.getIdImage());
+        Glide.with(ivCover.getContext()).load(news1.getPhotoUrl()).into(ivCover);
         tvTitle.setText(news1.getTitle());
         tvDescription.setText(news1.getDescription());
 
