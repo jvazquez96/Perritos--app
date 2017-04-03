@@ -240,6 +240,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     @Override
     public void onNewsSelectedListener(News news) {
         Intent newsDetailIntent = new Intent(this,NewsDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("News",news);
+        newsDetailIntent.putExtras(bundle);
         startActivity(newsDetailIntent);
     }
 
