@@ -66,6 +66,7 @@ public class PetAdapter extends ArrayAdapter<Pet> {
         tvGender.setText("Genero: " +pet.getGender());
         tvAge.setText("Edad: " + String.valueOf(pet.getAge()));
         tvRequests.setText(String.valueOf(pet.getRequest()) + " solicitudes");
+        tvDescription.setText("Descripcion: " + pet.getDescription());
 
 
         return convertView;

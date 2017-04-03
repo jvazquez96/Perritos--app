@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -75,9 +76,10 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
 
         spinner = (Spinner) findViewById(R.id.spinner);
         String[] genderArray = {"Hembra","Macho"};
-        ArrayAdapter<String> genderAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,genderArray);
+        ArrayAdapter<String> genderAdapter = new ArrayAdapter <String>(this,android.R.layout.simple_list_item_1,genderArray);
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(genderAdapter);
+        spinner.setOnItemSelectedListener(this);
     }
 
     private boolean isAllDataCorrect() {
@@ -89,6 +91,7 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.d("DEBUG_TAG","GENDER SET: " + parent.getSelectedItem().toString());
         this.gender = parent.getSelectedItem().toString();
     }
 
@@ -110,6 +113,7 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
                 pet.setDescription(editDescription.getText().toString());
                 pet.setAge(editAge.getText().toString());
                 pet.setGender(this.gender);
+                Log.d("DEBUG_TAG","Gender of the dog: " + this.gender);
                 pet.setRequests(0);
                 if (isAllDataCorrect()) {
                     Intent intent = new Intent();
@@ -119,6 +123,9 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
                 } else {
                     Toast.makeText(getApplicationContext(),"Por favor introduce todos los campos",Toast.LENGTH_SHORT).show();
                 }
+                break;
+            case android.R.id.home:
+                finish();
                 break;
         }
         return true;
