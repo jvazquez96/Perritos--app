@@ -1,6 +1,8 @@
 package itesm.mx.perritos;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -49,6 +51,8 @@ import itesm.mx.perritos.store.Product;
 import itesm.mx.perritos.store.ProductDetailActivity;
 import itesm.mx.perritos.store.StoreFragment;
 
+import static java.lang.Boolean.TRUE;
+
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener,
                                                                 PetFragment.OnPetSelectedListener,
                                                                 View.OnClickListener,
@@ -71,8 +75,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     // Firebase Objects
     private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mPetsDataBaseReference;
-    private ChildEventListener mChildEventListenerPets;
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -115,7 +117,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         // Initialize Firebase Componentes
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mPetsDataBaseReference = mFirebaseDatabase.getReference().child("Pets");
         mFirebaseAuth = FirebaseAuth.getInstance();
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -124,13 +125,16 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 if (user != null) {
                     // user signed in
                 } else {
-                    startActivityForResult(AuthUI.getInstance().createSignInIntentBuilder()
+                    startActivityForResult(
+                            AuthUI.getInstance()
+                                    .createSignInIntentBuilder()
                             .setIsSmartLockEnabled(false)
                             .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
                                     new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
                                     new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
                             .setTheme(R.style.LoginTheme)
-                            .build(),RC_SIGN_IN);
+                            .build(),
+                            RC_SIGN_IN);
                 }
             }
         };
@@ -180,13 +184,13 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     @Override
     protected void onPause() {
         super.onPause();
-        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+        mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
     }
+
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         vpViewPager.setCurrentItem(tab.getPosition());
-        Log.d("HERE","HERE");
     }
 
     @Override

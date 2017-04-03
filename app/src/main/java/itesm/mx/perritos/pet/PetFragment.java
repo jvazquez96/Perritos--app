@@ -2,6 +2,7 @@ package itesm.mx.perritos.pet;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -51,6 +52,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String DEBUG_TAG = "DEBUG_TAG";
 
     private FloatingActionButton floatingAddButton;
     private CoordinatorLayout coordinatorLayout;
@@ -86,7 +88,6 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         }
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mPetsDataBaseReference = mFirebaseDatabase.getReference().child("Pets");
-        attachDatabaseReadListener();
     }
 
     @Override
@@ -106,6 +107,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
 
     private void attachDatabaseReadListener() {
         if (mChildEventListenerPets == null) {
+            Log.d(DEBUG_TAG,"Listener is null");
             mChildEventListenerPets = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -135,8 +137,8 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
 
                 }
             };
-            mPetsDataBaseReference.addChildEventListener(mChildEventListenerPets);
         }
+        mPetsDataBaseReference.addChildEventListener(mChildEventListenerPets);
     }
 
     private void deattachDatabaseReadListener() {
@@ -157,6 +159,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_ADD_PET) {
+                Log.d("DEBUG_TAG","Pet added");
                 Bundle extras = data.getExtras();
                 Pet pet = (Pet) extras.get("Pet");
                 mPetsDataBaseReference.push().setValue(pet);
@@ -175,11 +178,16 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pet, container, false);
         coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.coordinator);
-        // Light the background
-//        coordinatorLayout.getForeground().setAlpha(0);
         
         floatingAddButton = (FloatingActionButton) view.findViewById(R.id.floating_add);
         floatingAddButton.setOnClickListener(this);
+
+        Log.d("DEBUG_TAG","onCreateView");
+
+        if (mPetsDataBaseReference  ==  null) {
+            Log.d("DEBUG_TAG","THIS THING IS NULL");
+        }
+
         return view;
     }
 
