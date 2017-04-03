@@ -8,11 +8,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,7 +25,7 @@ import com.google.firebase.storage.UploadTask;
 
 import itesm.mx.perritos.R;
 
-public class AddPetActivity extends AppCompatActivity implements View.OnClickListener {
+public class AddPetActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private Toolbar tlToolbar;
     private Button btnPicture;
@@ -40,6 +42,10 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
     private EditText editAge;
 
     private Spinner spinner;
+
+    private String gender;
+
+    private Uri selectedImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +69,9 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
         mPetPhotosStorageReference = mFirebaseStorage.getReference().child("pets_photos");
         pet = new Pet();
 
+        gender = null;
+
+        selectedImage = null;
 
         spinner = (Spinner) findViewById(R.id.spinner);
         String[] genderArray = {"Hembra","Macho"};
@@ -71,7 +80,21 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
         spinner.setAdapter(genderAdapter);
     }
 
+    private boolean isAllDataCorrect() {
+        if (editAge.getText().toString().trim().length() == 0 || editDescription.getText().toString().trim().length() == 0 || editAge.getText().toString().trim().length() == 0 || selectedImage == null) {
+            return false;
+        }
+        return true;
+    }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        this.gender = parent.getSelectedItem().toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -86,10 +109,16 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
                 pet.setName(editName.getText().toString());
                 pet.setDescription(editDescription.getText().toString());
                 pet.setAge(editAge.getText().toString());
-                Intent intent = new Intent();
-                intent.putExtra("Pet",pet);
-                setResult(RESULT_OK,intent);
-                finish();
+                pet.setGender(this.gender);
+                pet.setRequests(0);
+                if (isAllDataCorrect()) {
+                    Intent intent = new Intent();
+                    intent.putExtra("Pet", pet);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(),"Por favor introduce todos los campos",Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
         return true;
@@ -108,7 +137,7 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == RC_PHOTO_PICKER) {
-                Uri selectedImage = data.getData();
+                selectedImage = data.getData();
                 StorageReference photoRef = mPetPhotosStorageReference.child(selectedImage.getLastPathSegment());
 
                 photoRef.putFile(selectedImage).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {

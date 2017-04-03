@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         Log.d(DEBUG_TAG, "onPetSelectedListener");
         Bundle bundle = new Bundle();
         Intent petDetailIntent = new Intent(this, PetDetailActivity.class);
-//        bundle.putSerializable("Pet",pet);
+        bundle.putSerializable("Pet",pet);
         petDetailIntent.putExtras(bundle);
         startActivity(petDetailIntent);
     }

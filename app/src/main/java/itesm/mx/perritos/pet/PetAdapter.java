@@ -61,14 +61,7 @@ public class PetAdapter extends ArrayAdapter<Pet> {
         TextView tvRequests = (TextView) convertView.findViewById(R.id.text_request);
         TextView tvDescription = (TextView) convertView.findViewById(R.id.text_description);
 
-
-//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(300,300);
-//        byte[] decodedString = Base64.decode(pet.getEncodedImage(),Base64.DEFAULT);
-//        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString,0,decodedString.length);
-//        ivCover.setImageBitmap(decodedByte);
-        //ivCover.setLayoutParams(params);
         Glide.with(ivCover.getContext()).load(pet.getPhotoUrl()).into(ivCover);
-        //ivCover.setImageResource(pet.getIdImage());
         tvName.setText(pet.getName());
         tvGender.setText("Genero: " +pet.getGender());
         tvAge.setText("Edad: " + String.valueOf(pet.getAge()));

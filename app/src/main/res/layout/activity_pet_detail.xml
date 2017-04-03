@@ -18,7 +18,7 @@
 
     <ImageView
         android:id="@+id/image_pet"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_launcher"
         android:layout_weight="8"/>
@@ -49,10 +49,17 @@
                 android:text="User"/>
 
             <TextView
-                android:id="@+id/text_fecha"
+                android:id="@+id/text_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="NAME"/>
+
+            <TextView
+                android:id="@+id/text_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="DATE"/>
+
 
             <TextView
                 android:id="@+id/text_description"
