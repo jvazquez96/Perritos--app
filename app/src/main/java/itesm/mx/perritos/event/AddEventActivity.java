@@ -1,5 +1,6 @@
 package itesm.mx.perritos.event;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -89,6 +90,7 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
 
         }
 
+        @SuppressLint("ValidFragment")
         public DatePickerFragment(DatePickerDialog.OnDateSetListener callback) {
             mDateSetListener = (DatePickerDialog.OnDateSetListener) callback;
         }
@@ -114,6 +116,7 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
 
         }
 
+        @SuppressLint("ValidFragment")
         public TimePickerFragment(TimePickerDialog.OnTimeSetListener callback) {
             mTimeSetListener = (TimePickerDialog.OnTimeSetListener) callback;
         }
