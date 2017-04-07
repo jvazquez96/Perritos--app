@@ -21,7 +21,8 @@
         <activity android:name=".event.EventDetailActivity" />
         <activity android:name=".news.NewsDetailActivity" />
         <activity android:name=".store.AddProductActivity" />
-        <activity android:name=".store.ProductDetailActivity"></activity>
+        <activity android:name=".store.ProductDetailActivity" />
+        <activity android:name=".pet.AddPetActivity"></activity>
     </application>
 
 </manifest>

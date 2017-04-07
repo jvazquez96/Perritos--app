@@ -1,12 +1,15 @@
 package itesm.mx.perritos;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -21,6 +24,10 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.auth.api.Auth;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,6 +35,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import itesm.mx.perritos.event.EventDetailActivity;
@@ -43,10 +51,11 @@ import itesm.mx.perritos.store.Product;
 import itesm.mx.perritos.store.ProductDetailActivity;
 import itesm.mx.perritos.store.StoreFragment;
 
+import static java.lang.Boolean.TRUE;
+
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener,
                                                                 PetFragment.OnPetSelectedListener,
                                                                 View.OnClickListener,
-                                                                PetFragment.OnPetAddedListener,
                                                                 NavigationView.OnNavigationItemSelectedListener,
                                                                 EventosFragment.OnEventSelectedListener,
                                                                 StoreFragment.OnProductSelectedListener,
@@ -59,17 +68,19 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     private final int [] ICON ={ R.drawable.ic_pets_black_24dp,
             R.drawable.ic_event_black_24dp,
-            R.drawable.ic_new_releases_black_24dp,
+            R.drawable.ic_newspaper_black_24dp,
             R.drawable.ic_store_black_24dp};
 
     private ViewPager vpViewPager;
 
     // Firebase Objects
     private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mPetsDataBaseReference;
-    private ChildEventListener mChildEventListenerPets;
+
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     private static final String DEBUG_TAG = "DEBUG_TAG";
+    private static final int RC_SIGN_IN = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         setContentView(R.layout.new_activity_main);
 
         vpViewPager = (ViewPager) findViewById(R.id.viewpager);
+        vpViewPager.setOffscreenPageLimit(4);
         setUpViewPager(vpViewPager);
 
         tlTabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -91,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         tbToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tbToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setTitle("Cultura perrona");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -104,34 +117,27 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         // Initialize Firebase Componentes
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-
-        mPetsDataBaseReference = mFirebaseDatabase.getReference().child("Pets");
-
-        mChildEventListenerPets = new ChildEventListener() {
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Pet pet = dataSnapshot.getValue(Pet.class);
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    // user signed in
+                } else {
+                    startActivityForResult(
+                            AuthUI.getInstance()
+                                    .createSignInIntentBuilder()
+                            .setIsSmartLockEnabled(false)
+                            .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                    new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
+                                    new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
+                            .setTheme(R.style.LoginTheme)
+                            .build(),
+                            RC_SIGN_IN);
+                }
             }
         };
-
-        mPetsDataBaseReference.addChildEventListener(mChildEventListenerPets);
 
     }
 
@@ -148,6 +154,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         return true;
     }
 
+
     @Override
     public void onClick(View v) {
 //
@@ -156,9 +163,30 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 //                Log.d(DEBUG_TAG,"Menu Button");
 //                break;
 //        }
-
-
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                AuthUI.getInstance().signOut(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+    }
+
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
@@ -184,6 +212,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         viewPager.setAdapter(adapter);
     }
 
+
     @Override
     public void onPetSelectedListener(Pet pet) {
         Log.d(DEBUG_TAG, "onPetSelectedListener");
@@ -192,11 +221,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         bundle.putSerializable("Pet",pet);
         petDetailIntent.putExtras(bundle);
         startActivity(petDetailIntent);
-    }
-
-    @Override
-    public void onPetAdded(Pet pet) {
-        mPetsDataBaseReference.push().setValue(pet);
     }
 
     @Override
@@ -216,10 +240,13 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     @Override
     public void onNewsSelectedListener(News news) {
         Intent newsDetailIntent = new Intent(this,NewsDetailActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("News",news);
+        newsDetailIntent.putExtras(bundle);
         startActivity(newsDetailIntent);
     }
 
-    private class ViewPagerAdapter extends FragmentPagerAdapter {
+    private class ViewPagerAdapter extends FragmentStatePagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 

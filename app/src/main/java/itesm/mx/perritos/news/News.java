@@ -1,14 +1,16 @@
 package itesm.mx.perritos.news;
 
+import java.io.Serializable;
+
 /**
  * Created by jorgevazquez on 3/20/17.
  */
 
-public class News {
+public class News implements Serializable {
 
     private String title;
     private String description;
-    private int idImage;
+    private String photoUrl;
 
     /**
      * Default constructor
@@ -16,7 +18,7 @@ public class News {
     public News() {
         this.title = "";
         this.description = "";
-        idImage = 0;
+        photoUrl = null;
     }
 
     /**
@@ -24,10 +26,10 @@ public class News {
      * @param title Title of the news
      * @param desciption Description of the news
      */
-    public News(String title, String desciption, int idImage) {
+    public News(String title, String desciption, String photoUrl) {
         this.title = title;
         this.description = desciption;
-        this.idImage = idImage;
+        this.photoUrl = photoUrl;
     }
 
     /**
@@ -45,15 +47,6 @@ public class News {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    /**
-     * Set the idImage of the news
-     * @param idImage
-     */
-    public void setIdImage(int idImage) {
-        this.idImage = idImage;
-    }
-
     /**
      * Return the title of the news
      * @return title
@@ -71,11 +64,17 @@ public class News {
     }
 
 
+
     /**
-     * Return the id of the image
-     * @return idImage
+     * Set the idImage of the news
+     * @param photoUrl
      */
-    public int getIdImage() {
-        return this.idImage;
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
+
+
+   public String getPhotoUrl() {
+       return this.photoUrl;
+   }
 }

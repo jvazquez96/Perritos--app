@@ -1,7 +1,10 @@
 package itesm.mx.perritos.pet;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -56,14 +61,12 @@ public class PetAdapter extends ArrayAdapter<Pet> {
         TextView tvRequests = (TextView) convertView.findViewById(R.id.text_request);
         TextView tvDescription = (TextView) convertView.findViewById(R.id.text_description);
 
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(300,300);
-        ivCover.setLayoutParams(params);
-        ivCover.setImageResource(pet.getIdImage());
+        Glide.with(ivCover.getContext()).load(pet.getPhotoUrl()).into(ivCover);
         tvName.setText(pet.getName());
         tvGender.setText("Genero: " +pet.getGender());
-        tvAge.setText("Edad: " + String.valueOf(pet.getAge()) + "anos");
+        tvAge.setText("Edad: " + String.valueOf(pet.getAge()));
         tvRequests.setText(String.valueOf(pet.getRequest()) + " solicitudes");
+        tvDescription.setText("Descripcion: " + pet.getDescription());
 
 
         return convertView;

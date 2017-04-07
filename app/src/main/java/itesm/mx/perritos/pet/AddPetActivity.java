@@ -1,18 +1,21 @@
-package itesm.mx.perritos.news;
+package itesm.mx.perritos.pet;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -24,54 +27,80 @@ import com.google.firebase.storage.UploadTask;
 
 import itesm.mx.perritos.R;
 
-public class AddNewsActivity extends AppCompatActivity implements View.OnClickListener {
+public class AddPetActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private Toolbar tlToolbar;
-
-    private EditText editTitle;
-    private EditText editDescription;
-    private ImageButton imageCover;
-    private CheckBox checkBox;
-
+    private Button btnPicture;
+    private ImageView imgCover;
+    private static final int RC_PHOTO_PICKER = 2;
+    private Pet pet;
 
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseStorage mFirebaseStorage;
-    private StorageReference mNewsPhotosStorageReference;
+    private StorageReference mPetPhotosStorageReference;
 
+    private EditText editName;
+    private EditText editDescription;
+    private EditText editAge;
 
-    private News news;
+    private Spinner spinner;
+
+    private String gender;
 
     private Uri selectedImage;
 
-    private static final int RC_PHOTO_PICKER = 1;
+    private CheckBox checkVisibility;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_news);
+        setContentView(R.layout.activity_add_pets);
         tlToolbar = (Toolbar) findViewById(R.id.toolbar);
-        editTitle = (EditText) findViewById(R.id.edit_title);
-        editDescription = (EditText) findViewById(R.id.edit_description);
-        imageCover = (ImageButton) findViewById(R.id.image_cover);
-        checkBox = (CheckBox) findViewById(R.id.check_visible);
         setSupportActionBar(tlToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Nueva noticia");
+        getSupportActionBar().setTitle("Nueva mascota");
+        btnPicture = (Button) findViewById(R.id.button_picture);
+        btnPicture.setOnClickListener(this);
+        imgCover = (ImageView) findViewById(R.id.image_pet);
+
+        editName = (EditText) findViewById(R.id.edit_name);
+        editDescription = (EditText) findViewById(R.id.edit_description);
+        editAge = (EditText) findViewById(R.id.edit_age);
+        checkVisibility = (CheckBox) findViewById(R.id.check_visible);
+
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseStorage = FirebaseStorage.getInstance();
-        mNewsPhotosStorageReference = mFirebaseStorage.getReference().child("news_photo");
-        imageCover.setOnClickListener(this);
-        selectedImage = null;
-        news = new News();
+        mPetPhotosStorageReference = mFirebaseStorage.getReference().child("pets_photos");
+        pet = new Pet();
 
+        gender = null;
+
+        selectedImage = null;
+
+        spinner = (Spinner) findViewById(R.id.spinner);
+        String[] genderArray = {"Hembra","Macho"};
+        ArrayAdapter<String> genderAdapter = new ArrayAdapter <String>(this,android.R.layout.simple_list_item_1,genderArray);
+        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(genderAdapter);
+        spinner.setOnItemSelectedListener(this);
     }
 
     private boolean isAllDataCorrect() {
-        if (editTitle.getText().toString().length() == 0 || editDescription.getText().toString().trim().length() == 0 ||selectedImage == null) {
+        if (editAge.getText().toString().trim().length() == 0 || editDescription.getText().toString().trim().length() == 0 || editAge.getText().toString().trim().length() == 0 || selectedImage == null) {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Log.d("DEBUG_TAG","GENDER SET: " + parent.getSelectedItem().toString());
+        this.gender = parent.getSelectedItem().toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
     }
 
     @Override
@@ -84,12 +113,17 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_confirm:
-                news.setTitle(editTitle.getText().toString());
-                news.setDescription((editDescription.getText().toString()));
+                pet.setName(editName.getText().toString());
+                pet.setDescription(editDescription.getText().toString());
+                pet.setAge(editAge.getText().toString());
+                pet.setGender(this.gender);
+                pet.setVisible(checkVisibility.isChecked());
+                Log.d("DEBUG_TAG","Gender of the dog: " + this.gender);
+                pet.setRequests(0);
                 if (isAllDataCorrect()) {
                     Intent intent = new Intent();
-                    intent.putExtra("News",news);
-                    setResult(RESULT_OK,intent);
+                    intent.putExtra("Pet", pet);
+                    setResult(RESULT_OK, intent);
                     finish();
                 } else {
                     Toast.makeText(getApplicationContext(),"Por favor introduce todos los campos",Toast.LENGTH_SHORT).show();
@@ -116,15 +150,16 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
         if (resultCode == RESULT_OK) {
             if (requestCode == RC_PHOTO_PICKER) {
                 selectedImage = data.getData();
-                StorageReference photoRef = mNewsPhotosStorageReference.child(selectedImage.getLastPathSegment());
+                StorageReference photoRef = mPetPhotosStorageReference.child(selectedImage.getLastPathSegment());
+
                 photoRef.putFile(selectedImage).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Uri downloadUri = taskSnapshot.getDownloadUrl();
-                        Glide.with(imageCover.getContext())
+                        Glide.with(imgCover.getContext())
                                 .load(downloadUri.toString())
-                                .into(imageCover);
-                        news.setPhotoUrl(downloadUri.toString());
+                                .into(imgCover);
+                        pet.setPhotoUrl(downloadUri.toString());
                     }
                 });
             }

@@ -11,16 +11,16 @@ public class Pet implements Serializable {
 
     private String name;
     private String gender;
-    private int age;
+    private String age;
     private String description;
     private int requests;
-    private int idImage;
+    private String photoUrl;
+    private boolean isVisible;
 
     /**
      *  Default constructor.
      */
     public Pet() {
-        
     }
 
     /**
@@ -30,15 +30,17 @@ public class Pet implements Serializable {
      * @param age Age of the Pet.
      * @param description Description of the Pet.
      * @param requests Amout of the request this Pet hast.
-     * @param idImage id of the Image of the Pet.
+     * @param photoUrl id of the Image of the Pet.
+     * @param isVisible Visibility of the app
      */
-    public Pet(String name, String gender, int age, String description, int requests, int idImage) {
+    public Pet(String name, String gender, String age, String description, int requests, String photoUrl, boolean isVisible) {
         this.name = name;
         this.gender = gender;
         this.age = age;
         this.description = description;
         this.requests = requests;
-        this.idImage = idImage;
+        this.photoUrl = photoUrl;
+        this.isVisible = isVisible;
     }
 
 
@@ -78,7 +80,7 @@ public class Pet implements Serializable {
      * Set the age of the Pet.
      * @param age Age of the pet
      */
-    public void setAge(int age) {
+    public void setAge(String age) {
         this.age = age;
     }
 
@@ -86,7 +88,7 @@ public class Pet implements Serializable {
      * Return the age of the pet.
      * @return age
      */
-    public int getAge() {
+    public String getAge() {
         return this.age;
     }
 
@@ -123,19 +125,37 @@ public class Pet implements Serializable {
     }
 
     /**
-     * Set the idImage of this Pet.
-     * @param idImage
+     * Set the photoUrl of this Pet.
+     * @param photoUrl
      */
-    public void setIdImage(int idImage) {
-        this.idImage = idImage;
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
     }
 
 
     /**
-     * Get the id of the image of this Pet.
+     * Get the photuURL of the image of this Pet.
      * @return
      */
-    public int getIdImage() {
-        return this.idImage;
+    public String getPhotoUrl() {
+        return this.photoUrl;
     }
+
+
+    /**
+     * Set the visibility of the pet.
+     * @param isVisible
+     */
+    public void setVisible(boolean isVisible) {
+        this.isVisible = isVisible;
+    }
+
+    /**
+     * Get the visibility status of the pet
+     * @return
+     */
+    public boolean getIsVisible() {
+        return this.isVisible;
+    }
+
 }
