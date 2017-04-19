@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Descripcion"
-        android:paddingTop="16dp"
+        android:paddingTop="8dp"
         android:paddingBottom="8dp"
         android:textSize="16dp"
         android:fontFamily="sans-serif"/>
@@ -44,6 +44,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
             android:paddingTop="16dp"
             android:text="Desde:"/>
     <LinearLayout
@@ -74,6 +75,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
             android:paddingTop="16dp"
             android:text="Hasta:"/>
 
