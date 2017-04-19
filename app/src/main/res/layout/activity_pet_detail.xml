@@ -73,6 +73,7 @@
 
     </LinearLayout>
 
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -80,7 +81,7 @@
         android:layout_weight="0.4"
         android:background="@color/adopt"
         android:textColor="@color/colorWhite"
-        android:id="@+id/button2" />
+        android:id="@+id/enviar_email_btn"/>
 
 
 </LinearLayout>

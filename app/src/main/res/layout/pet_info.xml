@@ -105,6 +105,7 @@
         android:layout_gravity="right"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:paddingBottom="8dp"
         android:text="3 Solicitudes"
         android:textColor="@color/adopt"/>
 
