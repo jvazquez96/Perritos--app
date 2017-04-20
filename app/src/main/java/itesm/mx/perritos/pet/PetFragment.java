@@ -36,19 +36,10 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import itesm.mx.perritos.R;
-import itesm.mx.perritos.utils.MyGestureListener;
 
 import static android.app.Activity.RESULT_OK;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link PetFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link PetFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class PetFragment extends ListFragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
