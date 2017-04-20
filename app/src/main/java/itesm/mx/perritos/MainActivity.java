@@ -44,6 +44,7 @@ import itesm.mx.perritos.event.EventosFragment;
 import itesm.mx.perritos.news.News;
 import itesm.mx.perritos.news.NewsDetailActivity;
 import itesm.mx.perritos.news.NoticiasFragment;
+import itesm.mx.perritos.pet.AddPetActivity;
 import itesm.mx.perritos.pet.Pet;
 import itesm.mx.perritos.pet.PetDetailActivity;
 import itesm.mx.perritos.pet.PetFragment;
@@ -81,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     private static final String DEBUG_TAG = "DEBUG_TAG";
     private static final int RC_SIGN_IN = 1;
+    private static final int RC_EDIT_PET =2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,13 +216,20 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
 
     @Override
-    public void onPetSelectedListener(Pet pet) {
-        Log.d(DEBUG_TAG, "onPetSelectedListener");
+    public void onPetSelectedListener(Pet pet, boolean isEditing) {
         Bundle bundle = new Bundle();
-        Intent petDetailIntent = new Intent(this, PetDetailActivity.class);
-        bundle.putSerializable("Pet",pet);
-        petDetailIntent.putExtras(bundle);
-        startActivity(petDetailIntent);
+        if (isEditing) {
+            Intent petEditIntent= new Intent(this, AddPetActivity.class);
+            bundle.putSerializable("Pet",pet);
+            bundle.putBoolean("isEditing",true);
+            petEditIntent.putExtras(bundle);
+            startActivityForResult(petEditIntent,RC_EDIT_PET);
+        } else {
+            Intent petDetailIntent = new Intent(this, PetDetailActivity.class);
+            bundle.putSerializable("Pet",pet);
+            petDetailIntent.putExtras(bundle);
+            startActivity(petDetailIntent);
+        }
     }
 
     @Override

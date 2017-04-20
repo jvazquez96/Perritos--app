@@ -56,7 +56,6 @@ public class PetDetailActivity extends AppCompatActivity {
         tlToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tlToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Mascota");
     }
 
     @Override

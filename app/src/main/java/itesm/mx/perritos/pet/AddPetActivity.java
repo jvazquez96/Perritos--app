@@ -87,8 +87,11 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private boolean isAllDataCorrect() {
-        if (editAge.getText().toString().trim().length() == 0 || editDescription.getText().toString().trim().length() == 0 || editAge.getText().toString().trim().length() == 0 || selectedImage == null) {
-            return false;
+        if (editAge.getText().toString().trim().length() == 0 ||
+                editDescription.getText().toString().trim().length() == 0 ||
+                editAge.getText().toString().trim().length() == 0 ||
+                selectedImage == null) {
+            return false;   
         }
         return true;
     }

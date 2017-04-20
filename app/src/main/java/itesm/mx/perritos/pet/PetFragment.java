@@ -188,7 +188,8 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d(DEBUG_TAG,"Long press");
+                Pet pet= pets.get(position);
+                mListenerPetSelected.onPetSelectedListener(pet,true);
                 return true;
             }
         });
@@ -206,7 +207,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         super.onListItemClick(l, v, position, id);
         Log.d("POSITION: ", String.valueOf(position));
         Pet pet = pets.get(position);
-        mListenerPetSelected.onPetSelectedListener(pet);
+        mListenerPetSelected.onPetSelectedListener(pet,false);
     }
 
     @Override
@@ -225,6 +226,6 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
      * interaction in this fragment to be communicated to the activity
      */
     public interface OnPetSelectedListener {
-        void onPetSelectedListener(Pet pet);
+        void onPetSelectedListener(Pet pet, boolean isEditing);
     }
 }
