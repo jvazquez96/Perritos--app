@@ -17,6 +17,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -35,6 +36,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import itesm.mx.perritos.R;
+import itesm.mx.perritos.utils.MyGestureListener;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -186,10 +188,20 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         if (mPetsDataBaseReference  ==  null) {
             Log.d("DEBUG_TAG","THIS THING IS NULL");
         }
-
         return view;
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(DEBUG_TAG,"Long press");
+                return true;
+            }
+        });
+    }
 
     @Override
     public void onDetach() {
