@@ -1,14 +1,11 @@
 package itesm.mx.perritos;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -22,16 +19,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.auth.api.Auth;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
@@ -43,7 +34,7 @@ import itesm.mx.perritos.event.Evento;
 import itesm.mx.perritos.event.EventosFragment;
 import itesm.mx.perritos.news.News;
 import itesm.mx.perritos.news.NewsDetailActivity;
-import itesm.mx.perritos.news.NoticiasFragment;
+import itesm.mx.perritos.news.NewsFragment;
 import itesm.mx.perritos.pet.AddPetActivity;
 import itesm.mx.perritos.pet.Pet;
 import itesm.mx.perritos.pet.PetDetailActivity;
@@ -52,15 +43,13 @@ import itesm.mx.perritos.store.Product;
 import itesm.mx.perritos.store.ProductDetailActivity;
 import itesm.mx.perritos.store.StoreFragment;
 
-import static java.lang.Boolean.TRUE;
-
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener,
                                                                 PetFragment.OnPetSelectedListener,
                                                                 View.OnClickListener,
                                                                 NavigationView.OnNavigationItemSelectedListener,
                                                                 EventosFragment.OnEventSelectedListener,
                                                                 StoreFragment.OnProductSelectedListener,
-                                                                NoticiasFragment.OnNewsSelectedListener{
+                                                                NewsFragment.OnNewsSelectedListener{
 
 
     private TabLayout tlTabLayout;
@@ -86,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     private PetFragment petFragment;
     private EventosFragment eventosFragment;
-    private NoticiasFragment noticiasFragment;
+    private NewsFragment noticiasFragment;
     private StoreFragment storeFragment;
 
     private Pet editablePet;
@@ -218,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         petFragment = new PetFragment();
         eventosFragment = new EventosFragment();
-        noticiasFragment = new NoticiasFragment();
+        noticiasFragment = new NewsFragment();
         storeFragment = new StoreFragment();
         adapter.addFragment(petFragment);
         adapter.addFragment(eventosFragment);
