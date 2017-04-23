@@ -30,7 +30,10 @@ import itesm.mx.perritos.R;
 public class AddPetActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
     private Toolbar tlToolbar;
+
     private Button btnPicture;
+    private Button btnDelete;
+
     private ImageView imgCover;
     private static final int RC_PHOTO_PICKER = 2;
     private Pet pet;
@@ -47,7 +50,7 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
 
     private String gender;
 
-    private Uri selectedImage;
+    private String selectedImage;
 
     private CheckBox checkVisibility;
 
@@ -61,7 +64,9 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
         setSupportActionBar(tlToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         btnPicture = (Button) findViewById(R.id.button_picture);
+        btnDelete = (Button) findViewById(R.id.button_delete);
         btnPicture.setOnClickListener(this);
+        btnDelete.setOnClickListener(this);
         imgCover = (ImageView) findViewById(R.id.image_pet);
 
         editName = (EditText) findViewById(R.id.edit_name);
@@ -85,6 +90,7 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(genderAdapter);
         spinner.setOnItemSelectedListener(this);
+        isEditing = false;
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             // Editing pet
@@ -95,9 +101,10 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
             editDescription.setText(pet.getDescription());
             editAge.setText(pet.getAge());
             Glide.with(imgCover.getContext()).load(pet.getPhotoUrl()).into(imgCover);
-            selectedImage = Uri.parse(pet.getPhotoUrl());
+            selectedImage = pet.getPhotoUrl();
         } else {
             getSupportActionBar().setTitle("Nueva mascota");
+            btnDelete.setVisibility(View.INVISIBLE);
         }
 
     }
@@ -141,7 +148,6 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
                 pet.setAge(editAge.getText().toString());
                 pet.setGender(this.gender);
                 pet.setVisible(checkVisibility.isChecked());
-                Log.d("DEBUG_TAG","Gender of the dog: " + this.gender);
                 pet.setRequests(0);
                 pet.setPhotoUrl(selectedImage.toString());
                 if (isAllDataCorrect()) {
@@ -155,7 +161,7 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
                     }
                     finish();
                 } else {
-                    Toast.makeText(getApplicationContext(),"Por favor introduce todos los campos",Toast.LENGTH_SHORT).show();
+                    setToastMessage("Por favor introduce todos los campos");
                 }
                 break;
             case android.R.id.home:
@@ -167,10 +173,27 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/jpeg");
-        intent.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
-        startActivityForResult(Intent.createChooser(intent,"Complete action using"),RC_PHOTO_PICKER);
+        int id = v.getId();
+        if (id == R.id.button_picture) {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/jpeg");
+            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+            startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
+        } else if (id == R.id.button_delete ){
+            Intent intent = new Intent();
+            intent.putExtra("Delete",true);
+            pet.setName(editName.getText().toString());
+            pet.setDescription(editDescription.getText().toString());
+            pet.setAge(editAge.getText().toString());
+            pet.setGender(this.gender);
+            pet.setVisible(checkVisibility.isChecked());
+            pet.setRequests(0);
+            pet.setPhotoUrl(selectedImage.toString());
+            intent.putExtra("Pet",pet);
+            setResult(RESULT_OK,intent);
+            setToastMessage("Mascota eliminada");
+            finish();
+        }
     }
 
     @Override
@@ -178,16 +201,17 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == RC_PHOTO_PICKER) {
-                selectedImage = data.getData();
-                StorageReference photoRef = mPetPhotosStorageReference.child(selectedImage.getLastPathSegment());
+                Uri imageLink = data.getData();
+                StorageReference photoRef = mPetPhotosStorageReference.child(imageLink.getLastPathSegment());
 
-                photoRef.putFile(selectedImage).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                photoRef.putFile(imageLink).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Uri downloadUri = taskSnapshot.getDownloadUrl();
                         Glide.with(imgCover.getContext())
                                 .load(downloadUri.toString())
                                 .into(imgCover);
+                        selectedImage = downloadUri.toString();
                         pet.setPhotoUrl(downloadUri.toString());
                     }
                 });

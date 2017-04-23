@@ -232,12 +232,13 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == RC_EDIT_PET) {
-                Log.d("DEBUG_TAG","Returning from edit pet");
                 Bundle bundle = data.getExtras();
+                Boolean isDeleted = false;
                 if (bundle != null) {
                     editablePet = (Pet) bundle.getSerializable("Pet");
+                    isDeleted = bundle.getBoolean("Delete");
                 }
-                petFragment.updatePet(editablePet);
+                petFragment.updatePet(editablePet,isDeleted);
             }
         }
     }

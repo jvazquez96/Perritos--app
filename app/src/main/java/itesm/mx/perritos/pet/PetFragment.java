@@ -73,11 +73,12 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         // Required empty public constructor
     }
 
-    public void updatePet(Pet pet) {
-        Log.d("DEBUG_TAG", "Pet edit name: " + pet.getName());
-//        mPetsDataBaseReference.child(pet);
-        Log.d(DEBUG_TAG,"Keys: " + editKey);
-        mPetsDataBaseReference.child(editKey).setValue(pet);
+    public void updatePet(Pet pet, Boolean isDeleted) {
+        if (isDeleted) {
+            mPetsDataBaseReference.child(editKey).removeValue();
+        } else {
+            mPetsDataBaseReference.child(editKey).setValue(pet);
+        }
     }
 
     @Override
@@ -95,13 +96,11 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         attachDatabaseReadListener();
-        Log.d("DEBUG_TAG","onResume()");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.d("Debug_tag","onPause");
         deattachDatabaseReadListener();
         petAdapter.clear();
     }
@@ -115,13 +114,11 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
                     Pet pet = dataSnapshot.getValue(Pet.class);
                     pet.setKey(dataSnapshot.getKey());
                     pets.add(pet);
-                    Log.d("DEBUG_TAG","Pet key: " + pet.getKey());
                     petAdapter.notifyDataSetChanged();
                 }
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                    Log.d(DEBUG_TAG,"Child Changed");
                     Pet editPet = dataSnapshot.getValue(Pet.class);
                     for (int i = 0; i < pets.size(); ++i) {
                         if (pets.get(i).getDescription().equals(editPet.getDescription())) {
@@ -133,7 +130,9 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
 
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                    Pet removedPet = dataSnapshot.getValue(Pet.class);
+                    pets.remove(removedPet);
+                    petAdapter.notifyDataSetChanged();
                 }
 
                 @Override
@@ -168,7 +167,6 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_ADD_PET) {
-                Log.d("DEBUG_TAG","Pet added");
                 Bundle extras = data.getExtras();
                 Pet pet = (Pet) extras.get("Pet");
                 mPetsDataBaseReference.push().setValue(pet);
@@ -190,8 +188,6 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         
         floatingAddButton = (FloatingActionButton) view.findViewById(R.id.floating_add);
         floatingAddButton.setOnClickListener(this);
-
-        Log.d("DEBUG_TAG","onCreateView");
 
         if (mPetsDataBaseReference  ==  null) {
             Log.d("DEBUG_TAG","THIS THING IS NULL");
