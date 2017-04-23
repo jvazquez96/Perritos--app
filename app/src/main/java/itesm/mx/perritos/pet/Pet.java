@@ -170,12 +170,10 @@ public class Pet implements Serializable {
     @Override
     public boolean equals(Object obj) {
         Pet editedPet = (Pet) obj;
-        this.name = editedPet.getName();
-        this.gender = editedPet.getGender();
-        this.age = editedPet.getAge();
-        this.description = editedPet.getDescription();
-        this.photoUrl = editedPet.getPhotoUrl();
-        this.isVisible = getIsVisible();
-        return true;
+        return this.name.equals(editedPet.getName()) && this.gender.equals(editedPet.getGender()) &&
+                this.age.equals(editedPet.getAge()) &&
+                this.description.equals(editedPet.getDescription()) &&
+                this.photoUrl.equals(editedPet.getPhotoUrl()) &&
+                this.isVisible == editedPet.getIsVisible();
     }
 }

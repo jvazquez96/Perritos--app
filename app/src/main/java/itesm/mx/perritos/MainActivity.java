@@ -236,6 +236,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 boolean isDeleted = false;
                 if (bundle != null) {
                     editableNews = (News) bundle.getSerializable("News");
+                    isDeleted = bundle.getBoolean("Delete");
                 }
                 newsFragment.updateNews(editableNews,isDeleted);
             }

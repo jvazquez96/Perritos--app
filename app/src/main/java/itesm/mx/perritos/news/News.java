@@ -85,4 +85,12 @@ public class News implements Serializable {
     public String getKey() {
         return this.key;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        News edit = (News) obj;
+        return this.title.equals(edit.getTitle()) &&
+                this.description.equals(edit.getDescription()) &&
+                this.photoUrl.equals(edit.getPhotoUrl());
+    }
 }

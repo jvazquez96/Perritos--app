@@ -157,7 +157,9 @@ public class NewsFragment extends ListFragment implements View.OnClickListener {
 
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                    News removedNews = dataSnapshot.getValue(News.class);
+                    news.remove(removedNews);
+                    newsAdapter.notifyDataSetChanged();
                 }
 
                 @Override

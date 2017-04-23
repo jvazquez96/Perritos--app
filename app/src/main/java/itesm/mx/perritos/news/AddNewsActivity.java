@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -33,6 +34,7 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
     private ImageButton imageCover;
     private CheckBox checkBox;
 
+    private Button btnDelete;
 
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseStorage mFirebaseStorage;
@@ -55,6 +57,8 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
         editDescription = (EditText) findViewById(R.id.edit_description);
         imageCover = (ImageButton) findViewById(R.id.image_cover);
         checkBox = (CheckBox) findViewById(R.id.check_visible);
+        btnDelete = (Button) findViewById(R.id.button_delete);
+        btnDelete.setOnClickListener(this);
         setSupportActionBar(tlToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -76,7 +80,7 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
             selectedImage = news1.getPhotoUrl();
         } else {
             getSupportActionBar().setTitle("Nueva noticia");
-            // btnDelete.setVisibility(View.INVISIBLE);
+            btnDelete.setVisibility(View.INVISIBLE);
         }
 
     }
@@ -119,10 +123,22 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/jpeg");
-        intent.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
-        startActivityForResult(Intent.createChooser(intent,"Complete action using"),RC_PHOTO_PICKER);
+        int id = v.getId();
+        if (id == R.id.button_picture) {
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/jpeg");
+            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+            startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
+        } else if (id == R.id.button_delete) {
+            Intent intent = new Intent();
+            intent.putExtra("Delete",true);
+            news.setTitle(editTitle.getText().toString());
+            news.setDescription((editDescription.getText().toString()));
+            news.setPhotoUrl(selectedImage);
+            intent.putExtra("News",news);
+            setResult(RESULT_OK,intent);
+            finish();
+        }
     }
 
     @Override
