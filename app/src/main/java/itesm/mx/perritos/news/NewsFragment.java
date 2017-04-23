@@ -9,6 +9,7 @@ import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -89,6 +90,19 @@ public class NewsFragment extends ListFragment implements View.OnClickListener {
         }
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mNewsDatabaseReference = mFirebaseDatabase.getReference().child("News");
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                News news1 = news.get(position);
+                mListenerNewsSelected.onNewsSelectedListener(news1,true);
+                return true;
+            }
+        });
     }
 
     @Override
@@ -188,7 +202,7 @@ public class NewsFragment extends ListFragment implements View.OnClickListener {
         super.onListItemClick(l, v, position, id);
 //        News news = new News("Titulo de noticia","Descripcion",R.mipmap.ic_launcher);
         News news1 = news.get(position);
-        mListenerNewsSelected.onNewsSelectedListener(news1);
+        mListenerNewsSelected.onNewsSelectedListener(news1,false);
     }
 
         @Override
@@ -211,6 +225,6 @@ public class NewsFragment extends ListFragment implements View.OnClickListener {
 
 
     public interface OnNewsSelectedListener {
-        void onNewsSelectedListener(News news);
+        void onNewsSelectedListener(News news, boolean isEditing);
     }
 }
