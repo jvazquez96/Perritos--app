@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +59,8 @@ public class NewsFragment extends ListFragment implements View.OnClickListener {
     private ArrayList<News> news;
     private ArrayAdapter<News> newsAdapter;
 
+    private String editKey;
+
 
     public NewsFragment() {
         // Required empty public constructor
@@ -81,6 +84,14 @@ public class NewsFragment extends ListFragment implements View.OnClickListener {
         return fragment;
     }
 
+    public void updateNews(News news1, boolean isDeleted) {
+        if (isDeleted) {
+            mNewsDatabaseReference.child(editKey).removeValue();
+        } else {
+            mNewsDatabaseReference.child(editKey).setValue(news1);
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +111,7 @@ public class NewsFragment extends ListFragment implements View.OnClickListener {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 News news1 = news.get(position);
                 mListenerNewsSelected.onNewsSelectedListener(news1,true);
+                editKey = news1.getKey();
                 return true;
             }
         });
@@ -125,6 +137,7 @@ public class NewsFragment extends ListFragment implements View.OnClickListener {
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     News news1 = dataSnapshot.getValue(News.class);
                     if (news1 != null) {
+                        news1.setKey(dataSnapshot.getKey());
                         news.add(news1);
                     }
                     newsAdapter.notifyDataSetChanged();
@@ -132,7 +145,14 @@ public class NewsFragment extends ListFragment implements View.OnClickListener {
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                    Log.d("DEBUG_TAG","Child Changed");
+                    News editNews = dataSnapshot.getValue(News.class);
+                    for (int i = 0; i < news.size(); ++i) {
+                        if (news.get(i).getKey().equals(editNews.getKey())) {
+                            news.set(i,editNews);
+                        }
+                    }
+                    newsAdapter.notifyDataSetChanged();
                 }
 
                 @Override

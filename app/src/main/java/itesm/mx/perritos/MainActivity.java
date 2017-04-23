@@ -32,6 +32,7 @@ import java.util.List;
 import itesm.mx.perritos.event.EventDetailActivity;
 import itesm.mx.perritos.event.Evento;
 import itesm.mx.perritos.event.EventosFragment;
+import itesm.mx.perritos.news.AddNewsActivity;
 import itesm.mx.perritos.news.News;
 import itesm.mx.perritos.news.NewsDetailActivity;
 import itesm.mx.perritos.news.NewsFragment;
@@ -72,13 +73,15 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private static final String DEBUG_TAG = "DEBUG_TAG";
     private static final int RC_SIGN_IN = 1;
     private static final int RC_EDIT_PET =2;
+    private static final int RC_EDIT_NEWS = 3;
 
     private PetFragment petFragment;
     private EventosFragment eventosFragment;
-    private NewsFragment noticiasFragment;
+    private NewsFragment newsFragment;
     private StoreFragment storeFragment;
 
     private Pet editablePet;
+    private News editableNews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,11 +210,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         petFragment = new PetFragment();
         eventosFragment = new EventosFragment();
-        noticiasFragment = new NewsFragment();
+        newsFragment = new NewsFragment();
         storeFragment = new StoreFragment();
         adapter.addFragment(petFragment);
         adapter.addFragment(eventosFragment);
-        adapter.addFragment(noticiasFragment);
+        adapter.addFragment(newsFragment);
         adapter.addFragment(storeFragment);
         viewPager.setAdapter(adapter);
     }
@@ -228,6 +231,13 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     isDeleted = bundle.getBoolean("Delete");
                 }
                 petFragment.updatePet(editablePet,isDeleted);
+            } else if (requestCode == RC_EDIT_NEWS) {
+                Bundle bundle = data.getExtras();
+                boolean isDeleted = false;
+                if (bundle != null) {
+                    editableNews = (News) bundle.getSerializable("News");
+                }
+                newsFragment.updateNews(editableNews,isDeleted);
             }
         }
     }
@@ -265,12 +275,21 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     }
 
     @Override
-    public void onNewsSelectedListener(News news) {
-        Intent newsDetailIntent = new Intent(this,NewsDetailActivity.class);
+    public void onNewsSelectedListener(News news,boolean isEditing) {
+
         Bundle bundle = new Bundle();
         bundle.putSerializable("News",news);
-        newsDetailIntent.putExtras(bundle);
-        startActivity(newsDetailIntent);
+        if (isEditing) {
+            Intent newsEditIntent = new Intent(this, AddNewsActivity.class);
+            bundle.putBoolean("isEditing",true);
+            newsEditIntent.putExtras(bundle);
+            editableNews = news;
+            startActivityForResult(newsEditIntent,RC_EDIT_NEWS);
+        } else {
+            Intent newsDetailIntent = new Intent(this,NewsDetailActivity.class);
+            newsDetailIntent.putExtras(bundle);
+            startActivity(newsDetailIntent);
+        }
     }
 
     private class ViewPagerAdapter extends FragmentStatePagerAdapter {

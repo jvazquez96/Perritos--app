@@ -11,6 +11,7 @@ public class News implements Serializable {
     private String title;
     private String description;
     private String photoUrl;
+    private String key;
 
     /**
      * Default constructor
@@ -73,8 +74,15 @@ public class News implements Serializable {
         this.photoUrl = photoUrl;
     }
 
-
-   public String getPhotoUrl() {
+    public String getPhotoUrl() {
        return this.photoUrl;
-   }
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getKey() {
+        return this.key;
+    }
 }

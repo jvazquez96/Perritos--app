@@ -54,7 +54,7 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
 
     private CheckBox checkVisibility;
 
-    private Boolean isEditing;
+    private boolean isEditing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,7 +149,7 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
                 pet.setGender(this.gender);
                 pet.setVisible(checkVisibility.isChecked());
                 pet.setRequests(0);
-                pet.setPhotoUrl(selectedImage.toString());
+                pet.setPhotoUrl(selectedImage);
                 if (isAllDataCorrect()) {
                     Intent intent = new Intent();
                     intent.putExtra("Pet", pet);

@@ -38,10 +38,11 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
     private FirebaseStorage mFirebaseStorage;
     private StorageReference mNewsPhotosStorageReference;
 
-
     private News news;
 
-    private Uri selectedImage;
+    private String selectedImage;
+
+    private boolean isEditing;
 
     private static final int RC_PHOTO_PICKER = 1;
 
@@ -56,7 +57,7 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
         checkBox = (CheckBox) findViewById(R.id.check_visible);
         setSupportActionBar(tlToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Nueva noticia");
+
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseStorage = FirebaseStorage.getInstance();
@@ -64,6 +65,19 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
         imageCover.setOnClickListener(this);
         selectedImage = null;
         news = new News();
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            isEditing = bundle.getBoolean("isEditing");
+            getSupportActionBar().setTitle("Editar noticia");
+            News news1 = (News) bundle.getSerializable("News");
+            editTitle.setText(news1.getTitle());
+            editDescription.setText(news1.getDescription());
+            Glide.with(imageCover.getContext()).load(news1.getPhotoUrl()).into(imageCover);
+            selectedImage = news1.getPhotoUrl();
+        } else {
+            getSupportActionBar().setTitle("Nueva noticia");
+            // btnDelete.setVisibility(View.INVISIBLE);
+        }
 
     }
 
@@ -86,6 +100,7 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.action_confirm:
                 news.setTitle(editTitle.getText().toString());
                 news.setDescription((editDescription.getText().toString()));
+                news.setPhotoUrl(selectedImage);
                 if (isAllDataCorrect()) {
                     Intent intent = new Intent();
                     intent.putExtra("News",news);
@@ -115,15 +130,16 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == RC_PHOTO_PICKER) {
-                selectedImage = data.getData();
-                StorageReference photoRef = mNewsPhotosStorageReference.child(selectedImage.getLastPathSegment());
-                photoRef.putFile(selectedImage).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                Uri imageLink = data.getData();
+                StorageReference photoRef = mNewsPhotosStorageReference.child(imageLink.getLastPathSegment());
+                photoRef.putFile(imageLink).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Uri downloadUri = taskSnapshot.getDownloadUrl();
                         Glide.with(imageCover.getContext())
                                 .load(downloadUri.toString())
                                 .into(imageCover);
+                        selectedImage = downloadUri.toString();
                         news.setPhotoUrl(downloadUri.toString());
                     }
                 });

@@ -73,7 +73,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         // Required empty public constructor
     }
 
-    public void updatePet(Pet pet, Boolean isDeleted) {
+    public void updatePet(Pet pet, boolean isDeleted) {
         if (isDeleted) {
             mPetsDataBaseReference.child(editKey).removeValue();
         } else {
@@ -121,7 +121,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                     Pet editPet = dataSnapshot.getValue(Pet.class);
                     for (int i = 0; i < pets.size(); ++i) {
-                        if (pets.get(i).getDescription().equals(editPet.getDescription())) {
+                        if (pets.get(i).getKey().equals(editPet.getKey())) {
                             pets.set(i,editPet);
                         }
                     }
