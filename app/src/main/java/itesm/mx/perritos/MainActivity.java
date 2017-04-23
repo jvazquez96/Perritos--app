@@ -84,6 +84,13 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private static final int RC_SIGN_IN = 1;
     private static final int RC_EDIT_PET =2;
 
+    private PetFragment petFragment;
+    private EventosFragment eventosFragment;
+    private NoticiasFragment noticiasFragment;
+    private StoreFragment storeFragment;
+
+    private Pet editablePet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,6 +123,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        editablePet = null;
 
         // Initialize Firebase Componentes
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -207,26 +216,45 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     private void setUpViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new PetFragment());
-        adapter.addFragment(new EventosFragment());
-        adapter.addFragment(new NoticiasFragment());
-        adapter.addFragment(new StoreFragment());
+        petFragment = new PetFragment();
+        eventosFragment = new EventosFragment();
+        noticiasFragment = new NoticiasFragment();
+        storeFragment = new StoreFragment();
+        adapter.addFragment(petFragment);
+        adapter.addFragment(eventosFragment);
+        adapter.addFragment(noticiasFragment);
+        adapter.addFragment(storeFragment);
         viewPager.setAdapter(adapter);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == RC_EDIT_PET) {
+                Log.d("DEBUG_TAG","Returning from edit pet");
+                Bundle bundle = data.getExtras();
+                if (bundle != null) {
+                    editablePet = (Pet) bundle.getSerializable("Pet");
+                }
+                petFragment.updatePet(editablePet);
+            }
+        }
+    }
 
     @Override
     public void onPetSelectedListener(Pet pet, boolean isEditing) {
         Bundle bundle = new Bundle();
+        bundle.putSerializable("Pet",pet);
         if (isEditing) {
+            // Editing pet
             Intent petEditIntent= new Intent(this, AddPetActivity.class);
-            bundle.putSerializable("Pet",pet);
             bundle.putBoolean("isEditing",true);
             petEditIntent.putExtras(bundle);
+            editablePet = pet;
             startActivityForResult(petEditIntent,RC_EDIT_PET);
         } else {
             Intent petDetailIntent = new Intent(this, PetDetailActivity.class);
-            bundle.putSerializable("Pet",pet);
             petDetailIntent.putExtras(bundle);
             startActivity(petDetailIntent);
         }

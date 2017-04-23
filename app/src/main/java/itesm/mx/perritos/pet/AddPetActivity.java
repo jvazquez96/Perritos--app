@@ -51,6 +51,8 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
 
     private CheckBox checkVisibility;
 
+    private Boolean isEditing;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +60,6 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
         tlToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tlToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Nueva mascota");
         btnPicture = (Button) findViewById(R.id.button_picture);
         btnPicture.setOnClickListener(this);
         imgCover = (ImageView) findViewById(R.id.image_pet);
@@ -84,6 +85,21 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(genderAdapter);
         spinner.setOnItemSelectedListener(this);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            // Editing pet
+            isEditing = bundle.getBoolean("isEditing");
+            getSupportActionBar().setTitle("Editar mascota");
+            Pet pet = (Pet) bundle.getSerializable("Pet");
+            editName.setText(pet.getName());
+            editDescription.setText(pet.getDescription());
+            editAge.setText(pet.getAge());
+            Glide.with(imgCover.getContext()).load(pet.getPhotoUrl()).into(imgCover);
+            selectedImage = Uri.parse(pet.getPhotoUrl());
+        } else {
+            getSupportActionBar().setTitle("Nueva mascota");
+        }
+
     }
 
     private boolean isAllDataCorrect() {
@@ -91,7 +107,7 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
                 editDescription.getText().toString().trim().length() == 0 ||
                 editAge.getText().toString().trim().length() == 0 ||
                 selectedImage == null) {
-            return false;   
+            return false;
         }
         return true;
     }
@@ -123,6 +139,7 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
                 pet.setVisible(checkVisibility.isChecked());
                 Log.d("DEBUG_TAG","Gender of the dog: " + this.gender);
                 pet.setRequests(0);
+                pet.setPhotoUrl(selectedImage.toString());
                 if (isAllDataCorrect()) {
                     Intent intent = new Intent();
                     intent.putExtra("Pet", pet);

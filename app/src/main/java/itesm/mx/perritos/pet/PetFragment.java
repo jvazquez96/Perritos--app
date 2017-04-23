@@ -66,9 +66,18 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
 
     private static final int REQUEST_CODE_ADD_PET = 1;
 
+    private String editKey;
+
 
     public PetFragment() {
         // Required empty public constructor
+    }
+
+    public void updatePet(Pet pet) {
+        Log.d("DEBUG_TAG", "Pet edit name: " + pet.getName());
+//        mPetsDataBaseReference.child(pet);
+        Log.d(DEBUG_TAG,"Keys: " + editKey);
+        mPetsDataBaseReference.child(editKey).setValue(pet);
     }
 
     @Override
@@ -104,14 +113,22 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     Pet pet = dataSnapshot.getValue(Pet.class);
+                    pet.setKey(dataSnapshot.getKey());
                     pets.add(pet);
-                    Log.d("DEBUG_TAG","NEW PET ADDED!!!!!");
+                    Log.d("DEBUG_TAG","Pet key: " + pet.getKey());
                     petAdapter.notifyDataSetChanged();
                 }
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                    Log.d(DEBUG_TAG,"Child Changed");
+                    Pet editPet = dataSnapshot.getValue(Pet.class);
+                    for (int i = 0; i < pets.size(); ++i) {
+                        if (pets.get(i).getDescription().equals(editPet.getDescription())) {
+                            pets.set(i,editPet);
+                        }
+                    }
+                    petAdapter.notifyDataSetChanged();
                 }
 
                 @Override
@@ -190,6 +207,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Pet pet= pets.get(position);
                 mListenerPetSelected.onPetSelectedListener(pet,true);
+                editKey = pet.getKey();
                 return true;
             }
         });

@@ -13,6 +13,7 @@ public class Pet implements Serializable {
     private String gender;
     private String age;
     private String description;
+    private String key;
     private int requests;
     private String photoUrl;
     private boolean isVisible;
@@ -158,4 +159,23 @@ public class Pet implements Serializable {
         return this.isVisible;
     }
 
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getKey() {
+        return this.key;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Pet editedPet = (Pet) obj;
+        this.name = editedPet.getName();
+        this.gender = editedPet.getGender();
+        this.age = editedPet.getAge();
+        this.description = editedPet.getDescription();
+        this.photoUrl = editedPet.getPhotoUrl();
+        this.isVisible = getIsVisible();
+        return true;
+    }
 }
