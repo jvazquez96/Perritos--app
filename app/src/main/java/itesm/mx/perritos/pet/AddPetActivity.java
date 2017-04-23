@@ -112,6 +112,10 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
         return true;
     }
 
+    private void setToastMessage(String message) {
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Log.d("DEBUG_TAG","GENDER SET: " + parent.getSelectedItem().toString());
@@ -144,6 +148,11 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
                     Intent intent = new Intent();
                     intent.putExtra("Pet", pet);
                     setResult(RESULT_OK, intent);
+                    if (isEditing) {
+                        setToastMessage("Mascota editada");
+                    } else {
+                        setToastMessage("Mascota agregada");
+                    }
                     finish();
                 } else {
                     Toast.makeText(getApplicationContext(),"Por favor introduce todos los campos",Toast.LENGTH_SHORT).show();
