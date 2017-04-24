@@ -7,7 +7,7 @@ package itesm.mx.perritos.product;
 public class Product {
     private String sName;
     private double dPrice;
-    private int iPicture;
+    private String photoUrl;
     private String key;
 
 
@@ -17,7 +17,7 @@ public class Product {
     public Product(){
         sName = "";
         dPrice = 5;
-        iPicture = 0;
+        photoUrl = null;
     }
 
     /**
@@ -26,10 +26,10 @@ public class Product {
      * @param dPrice Price of the product
      * @param iPicture Picture of the product
      */
-    public Product(String sName, double dPrice, int iPicture){
+    public Product(String sName, double dPrice, String photoUrl){
         this.sName = sName;
         this.dPrice = dPrice;
-        this.iPicture = iPicture;
+        this.photoUrl = photoUrl;
     }
 
     /**
@@ -49,14 +49,6 @@ public class Product {
     }
 
     /**
-     * Set the photo of the product
-     * @param iPicture Photo to be set
-     */
-    public void setiPicture(int iPicture){
-        this.iPicture = iPicture;
-    }
-
-    /**
      * Return the name of the product
      * @return sName
      */
@@ -73,12 +65,17 @@ public class Product {
     }
 
     /**
-     * Return the photo of the product
-     * @return iPicture
+     *
+     * @return photoURL
      */
-    public int getiPicture() {
-        return iPicture;
+    public String getPhotoUrl() {
+        return photoUrl;
     }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl = photoUrl;
+    }
+
 
     public void setKey(String key) {
         this.key = key;

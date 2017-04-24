@@ -42,7 +42,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         ImageView ivFoto = (ImageView) convertView.findViewById(R.id.image_product);
         TextView tvNombre = (TextView) convertView.findViewById(R.id.text_productName);
 
-        ivFoto.setImageResource(product.getiPicture());
+//        ivFoto.setImageResource(product.getiPicture());
         tvNombre.setText(product.getsName());
 
         return convertView;

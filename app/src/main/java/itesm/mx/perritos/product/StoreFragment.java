@@ -169,8 +169,7 @@ public class StoreFragment extends ListFragment implements View.OnClickListener 
    @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        Product product = new Product("Nombre del producto", 74, R.mipmap.ic_launcher);
-        onProductSelectedListener.onProductSelectedListener(product);
+//        onProductSelectedListener.onProductSelectedListener(product);
     }
 
     @Override
