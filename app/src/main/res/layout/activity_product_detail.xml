@@ -25,11 +25,21 @@
 
 
     <TextView
+        android:id="@+id/text_name"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:text="NOMBRE DEL PRODUCTO"
         android:layout_weight="1"
-        android:textSize="20dp"
+        android:textSize="20sp"
+        android:gravity="center"/>
+
+    <TextView
+        android:id="@+id/text_price"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:text="COSTO"
+        android:layout_weight="1"
+        android:textSize="20sp"
         android:gravity="center"/>
 
 

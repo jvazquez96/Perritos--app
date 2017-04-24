@@ -40,7 +40,8 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
     private String mParam1;
     private String mParam2;
 
-    public OnProductSelectedListener onProductSelectedListener;
+    public OnProductSelectedListener mListenerProductSelected;
+
     private FloatingActionButton floatingActionButton;
 
     private static final int RC_ADD_PRODUCT = 1;
@@ -168,8 +169,9 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
 
    @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-//        onProductSelectedListener.onProductSelectedListener(product);
+       super.onListItemClick(l, v, position, id);
+       Product product1 = products.get(position);
+       mListenerProductSelected.onProductSelectedListener(product1,false);
     }
 
     @Override
@@ -194,7 +196,7 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
     public void onAttach(Context context) {
         super.onAttach(context);
         if(context instanceof OnProductSelectedListener){
-            onProductSelectedListener = (OnProductSelectedListener) context;
+            mListenerProductSelected = (OnProductSelectedListener) context;
         }else{
             throw new RuntimeException(context.toString()
             + " must implement onProductSelectedListener");
@@ -204,10 +206,10 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
     @Override
     public void onDetach() {
         super.onDetach();
-        onProductSelectedListener = null;
+        mListenerProductSelected = null;
     }
 
     public interface OnProductSelectedListener{
-        void onProductSelectedListener(Product product);
+        void onProductSelectedListener(Product product, boolean isEditing);
     }
 }

@@ -269,10 +269,12 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     }
 
     @Override
-    public void onProductSelectedListener(Product product) {
+    public void onProductSelectedListener(Product product, boolean isEditing) {
         Bundle bundle = new Bundle();
-        Intent intent = new Intent(this, ProductDetailActivity.class);
-        startActivity(intent);
+        bundle.putSerializable("Product",product);
+        Intent productDetailIntent = new Intent(this, ProductDetailActivity.class);
+        productDetailIntent.putExtras(bundle);
+        startActivity(productDetailIntent);
     }
 
     @Override
