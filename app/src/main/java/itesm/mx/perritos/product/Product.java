@@ -1,4 +1,4 @@
-package itesm.mx.perritos.store;
+package itesm.mx.perritos.product;
 
 /**
  * Created by DELL1 on 28/03/2017.
@@ -8,6 +8,8 @@ public class Product {
     private String sName;
     private double dPrice;
     private int iPicture;
+    private String key;
+
 
     /**
      * Default Constructor
@@ -76,5 +78,13 @@ public class Product {
      */
     public int getiPicture() {
         return iPicture;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getKey() {
+        return key;
     }
 }

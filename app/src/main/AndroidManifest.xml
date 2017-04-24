@@ -20,8 +20,8 @@
         <activity android:name=".news.AddNewsActivity" />
         <activity android:name=".event.EventDetailActivity" />
         <activity android:name=".news.NewsDetailActivity" />
-        <activity android:name=".store.AddProductActivity" />
-        <activity android:name=".store.ProductDetailActivity" />
+        <activity android:name=".product.AddProductActivity" />
+        <activity android:name=".product.ProductDetailActivity" />
         <activity android:name=".pet.AddPetActivity"></activity>
     </application>
 

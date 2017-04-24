@@ -1,4 +1,4 @@
-package itesm.mx.perritos.store;
+package itesm.mx.perritos.product;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

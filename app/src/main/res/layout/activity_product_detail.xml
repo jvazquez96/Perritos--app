@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="itesm.mx.perritos.store.ProductDetailActivity"
+    tools:context="itesm.mx.perritos.product.ProductDetailActivity"
     android:layout_weight="6">
 
 

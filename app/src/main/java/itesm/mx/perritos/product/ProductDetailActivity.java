@@ -1,4 +1,4 @@
-package itesm.mx.perritos.store;
+package itesm.mx.perritos.product;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -7,25 +7,23 @@ import android.view.Menu;
 
 import itesm.mx.perritos.R;
 
-public class AddProductActivity extends AppCompatActivity {
-
+public class ProductDetailActivity extends AppCompatActivity {
     private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_product);
+        setContentView(R.layout.activity_product_detail);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Nuevo producto");
-
+        getSupportActionBar().setTitle("Producto");
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.confirm, menu);
+        getMenuInflater().inflate(R.menu.detail, menu);
         return true;
     }
 }

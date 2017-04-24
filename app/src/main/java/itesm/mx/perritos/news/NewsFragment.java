@@ -222,7 +222,6 @@ public class NewsFragment extends ListFragment implements View.OnClickListener {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-//        News news = new News("Titulo de noticia","Descripcion",R.mipmap.ic_launcher);
         News news1 = news.get(position);
         mListenerNewsSelected.onNewsSelectedListener(news1,false);
     }

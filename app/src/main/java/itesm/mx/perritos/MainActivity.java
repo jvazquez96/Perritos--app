@@ -40,9 +40,9 @@ import itesm.mx.perritos.pet.AddPetActivity;
 import itesm.mx.perritos.pet.Pet;
 import itesm.mx.perritos.pet.PetDetailActivity;
 import itesm.mx.perritos.pet.PetFragment;
-import itesm.mx.perritos.store.Product;
-import itesm.mx.perritos.store.ProductDetailActivity;
-import itesm.mx.perritos.store.StoreFragment;
+import itesm.mx.perritos.product.Product;
+import itesm.mx.perritos.product.ProductDetailActivity;
+import itesm.mx.perritos.product.StoreFragment;
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener,
                                                                 PetFragment.OnPetSelectedListener,
