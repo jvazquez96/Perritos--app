@@ -66,6 +66,7 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
         product = new Product();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        selectedImage = null;
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -81,10 +82,6 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
             btnDeleted.setVisibility(View.INVISIBLE);
         }
 
-
-
-        selectedImage = null;
-
     }
 
     @Override
@@ -95,6 +92,15 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
             intent.setType("image/jpeg");
             intent.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
             startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
+        } else if (id == R.id.button_delete) {
+            Intent intent = new Intent();
+            intent.putExtra("Delete",true);
+            product.setsName(editNombre.getText().toString());
+            product.setdPrice(Double.valueOf(editPrecio.getText().toString()));
+            product.setPhotoUrl(selectedImage);
+            intent.putExtra("Product",product);
+            setResult(RESULT_OK,intent);
+            finish();
         }
     }
 
