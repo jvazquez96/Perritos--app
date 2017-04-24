@@ -10,6 +10,7 @@ import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -53,9 +54,19 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
     private ArrayList<Product> products;
     private ArrayAdapter<Product> productAdapter;
 
+    private String editKey;
+
 
     public ProductFragment() {
         // Required empty public constructor
+    }
+
+    public void updateProduct(Product product, boolean isDeleted) {
+        if (isDeleted) {
+
+        } else {
+            mProductsDatabaseReference.child(editKey).setValue(product);
+        }
     }
 
 
@@ -116,6 +127,20 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
         floatingActionButton.setOnClickListener(this);
 
         return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Product product = products.get(position);
+                mListenerProductSelected.onProductSelectedListener(product,true);
+                editKey = product.getKey();
+                return true;
+            }
+        });
     }
 
     private void attachDatabaseReadListener() {

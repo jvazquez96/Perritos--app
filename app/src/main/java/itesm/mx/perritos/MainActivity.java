@@ -40,6 +40,7 @@ import itesm.mx.perritos.pet.AddPetActivity;
 import itesm.mx.perritos.pet.Pet;
 import itesm.mx.perritos.pet.PetDetailActivity;
 import itesm.mx.perritos.pet.PetFragment;
+import itesm.mx.perritos.product.AddProductActivity;
 import itesm.mx.perritos.product.Product;
 import itesm.mx.perritos.product.ProductDetailActivity;
 import itesm.mx.perritos.product.ProductFragment;
@@ -74,14 +75,16 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private static final int RC_SIGN_IN = 1;
     private static final int RC_EDIT_PET =2;
     private static final int RC_EDIT_NEWS = 3;
+    private static final int RC_EDIT_PRODUCT = 4;
 
     private PetFragment petFragment;
     private EventosFragment eventosFragment;
     private NewsFragment newsFragment;
-    private ProductFragment storeFragment;
+    private ProductFragment productFragment;
 
     private Pet editablePet;
     private News editableNews;
+    private Product editableProduct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,11 +214,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         petFragment = new PetFragment();
         eventosFragment = new EventosFragment();
         newsFragment = new NewsFragment();
-        storeFragment = new ProductFragment();
+        productFragment = new ProductFragment();
         adapter.addFragment(petFragment);
         adapter.addFragment(eventosFragment);
         adapter.addFragment(newsFragment);
-        adapter.addFragment(storeFragment);
+        adapter.addFragment(productFragment);
         viewPager.setAdapter(adapter);
     }
 
@@ -239,6 +242,14 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     isDeleted = bundle.getBoolean("Delete");
                 }
                 newsFragment.updateNews(editableNews,isDeleted);
+            } else if (requestCode == RC_EDIT_PRODUCT) {
+                Bundle bundle = data.getExtras();
+                boolean isDeleted = false;
+                if (bundle != null) {
+                    editableProduct = (Product) bundle.getSerializable("Product");
+                    isDeleted = bundle.getBoolean("Delete");
+                }
+                productFragment.updateProduct(editableProduct,isDeleted);
             }
         }
     }
@@ -272,9 +283,17 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     public void onProductSelectedListener(Product product, boolean isEditing) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("Product",product);
-        Intent productDetailIntent = new Intent(this, ProductDetailActivity.class);
-        productDetailIntent.putExtras(bundle);
-        startActivity(productDetailIntent);
+        if (isEditing) {
+            Intent productEditIntent = new Intent(this, AddProductActivity.class);
+            bundle.putBoolean("isEditing",true);
+            productEditIntent.putExtras(bundle);
+            editableProduct = product;
+            startActivityForResult(productEditIntent,RC_EDIT_PRODUCT);
+        } else {
+            Intent productDetailIntent = new Intent(this, ProductDetailActivity.class);
+            productDetailIntent.putExtras(bundle);
+            startActivity(productDetailIntent);
+        }
     }
 
     @Override

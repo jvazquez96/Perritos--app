@@ -43,6 +43,8 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
     private Button btnPicture;
     private Button btnDeleted;
 
+    private boolean isEditing;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,14 +59,29 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
         btnDeleted = (Button) findViewById(R.id.button_delete);
         btnPicture.setOnClickListener(this);
         btnDeleted.setOnClickListener(this);
-        btnDeleted.setVisibility(View.INVISIBLE);
+
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseStorage = FirebaseStorage.getInstance();
         mProductsPhotosStorageReference = mFirebaseStorage.getReference().child("products_photo");
         product = new Product();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Nuevo producto");
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            isEditing = bundle.getBoolean("isEditing");
+            getSupportActionBar().setTitle("Editar product");
+            Product product1 = (Product) bundle.getSerializable("Product");
+            editNombre.setText(product1.getsName());
+            editPrecio.setText(String.valueOf(product1.getdPrice()));
+            Glide.with(imgPicture.getContext()).load(product1.getPhotoUrl()).into(imgPicture);
+            selectedImage = product1.getPhotoUrl();
+        } else {
+            getSupportActionBar().setTitle("Nuevo producto");
+            btnDeleted.setVisibility(View.INVISIBLE);
+        }
+
+
 
         selectedImage = null;
 
