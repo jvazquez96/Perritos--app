@@ -27,10 +27,10 @@ import static android.app.Activity.RESULT_OK;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link StoreFragment#newInstance} factory method to
+ * Use the {@link ProductFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StoreFragment extends ListFragment implements View.OnClickListener {
+public class ProductFragment extends ListFragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -53,7 +53,7 @@ public class StoreFragment extends ListFragment implements View.OnClickListener 
     private ArrayAdapter<Product> productAdapter;
 
 
-    public StoreFragment() {
+    public ProductFragment() {
         // Required empty public constructor
     }
 
@@ -64,11 +64,11 @@ public class StoreFragment extends ListFragment implements View.OnClickListener 
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment StoreFragment.
+     * @return A new instance of fragment ProductFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static StoreFragment newInstance(String param1, String param2) {
-        StoreFragment fragment = new StoreFragment();
+    public static ProductFragment newInstance(String param1, String param2) {
+        ProductFragment fragment = new ProductFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

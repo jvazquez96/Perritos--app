@@ -42,14 +42,14 @@ import itesm.mx.perritos.pet.PetDetailActivity;
 import itesm.mx.perritos.pet.PetFragment;
 import itesm.mx.perritos.product.Product;
 import itesm.mx.perritos.product.ProductDetailActivity;
-import itesm.mx.perritos.product.StoreFragment;
+import itesm.mx.perritos.product.ProductFragment;
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener,
                                                                 PetFragment.OnPetSelectedListener,
                                                                 View.OnClickListener,
                                                                 NavigationView.OnNavigationItemSelectedListener,
                                                                 EventosFragment.OnEventSelectedListener,
-                                                                StoreFragment.OnProductSelectedListener,
+                                                                ProductFragment.OnProductSelectedListener,
                                                                 NewsFragment.OnNewsSelectedListener{
 
 
@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private PetFragment petFragment;
     private EventosFragment eventosFragment;
     private NewsFragment newsFragment;
-    private StoreFragment storeFragment;
+    private ProductFragment storeFragment;
 
     private Pet editablePet;
     private News editableNews;
@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         petFragment = new PetFragment();
         eventosFragment = new EventosFragment();
         newsFragment = new NewsFragment();
-        storeFragment = new StoreFragment();
+        storeFragment = new ProductFragment();
         adapter.addFragment(petFragment);
         adapter.addFragment(eventosFragment);
         adapter.addFragment(newsFragment);
