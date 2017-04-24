@@ -1,10 +1,12 @@
 package itesm.mx.perritos.product;
 
+import java.io.Serializable;
+
 /**
  * Created by DELL1 on 28/03/2017.
  */
 
-public class Product {
+public class Product implements Serializable {
     private String sName;
     private double dPrice;
     private String photoUrl;

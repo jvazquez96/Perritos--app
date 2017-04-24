@@ -49,7 +49,7 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_add_product);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-        editNombre = (EditText) findViewById(R.id.edit_name);
+        editNombre = (EditText) findViewById(R.id.edit_nombre);
         editPrecio = (EditText) findViewById(R.id.edit_precio);
         checkVisible = (CheckBox) findViewById(R.id.check_visible);
         imgPicture = (ImageView) findViewById(R.id.image_cover);
@@ -58,6 +58,10 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
         btnPicture.setOnClickListener(this);
         btnDeleted.setOnClickListener(this);
         btnDeleted.setVisibility(View.INVISIBLE);
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mFirebaseStorage = FirebaseStorage.getInstance();
+        mProductsPhotosStorageReference = mFirebaseStorage.getReference().child("products_photo");
+        product = new Product();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Nuevo producto");
@@ -118,9 +122,18 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_confirm:
-                product.setsName(editNombre.getText().toString());
-                product.setdPrice(Double.valueOf(editPrecio.getText().toString()));
-                product.setPhotoUrl(selectedImage);
+                if (isAllDataCorrect()) {
+                    product.setsName(editNombre.getText().toString());
+                    product.setdPrice(Double.valueOf(editPrecio.getText().toString()));
+                    product.setPhotoUrl(selectedImage);
+                    Intent intent = new Intent();
+                    intent.putExtra("Product", product);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                }
+                break;
+            case android.R.id.home:
+                finish();
                 break;
         }
 

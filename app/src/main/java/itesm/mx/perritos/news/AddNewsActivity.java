@@ -124,7 +124,7 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.button_picture) {
+        if (id == R.id.image_cover) {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/jpeg");
             intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);

@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 import itesm.mx.perritos.R;
@@ -42,7 +44,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         ImageView ivFoto = (ImageView) convertView.findViewById(R.id.image_product);
         TextView tvNombre = (TextView) convertView.findViewById(R.id.text_productName);
 
-//        ivFoto.setImageResource(product.getiPicture());
+        Glide.with(ivFoto.getContext()).load(product.getPhotoUrl()).into(ivFoto);
         tvNombre.setText(product.getsName());
 
         return convertView;
