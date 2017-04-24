@@ -63,7 +63,7 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
 
     public void updateProduct(Product product, boolean isDeleted) {
         if (isDeleted) {
-
+            mProductsDatabaseReference.child(editKey).removeValue();
         } else {
             mProductsDatabaseReference.child(editKey).setValue(product);
         }
