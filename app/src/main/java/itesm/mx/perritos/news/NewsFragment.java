@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -28,12 +30,12 @@ import static android.app.Activity.RESULT_OK;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link NoticiasFragment.OnFragmentInteractionListener} interface
+ * {@link NewsFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link NoticiasFragment#newInstance} factory method to
+ * Use the {@link NewsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NoticiasFragment extends ListFragment implements View.OnClickListener {
+public class NewsFragment extends ListFragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -57,8 +59,10 @@ public class NoticiasFragment extends ListFragment implements View.OnClickListen
     private ArrayList<News> news;
     private ArrayAdapter<News> newsAdapter;
 
+    private String editKey;
 
-    public NoticiasFragment() {
+
+    public NewsFragment() {
         // Required empty public constructor
     }
 
@@ -68,16 +72,24 @@ public class NoticiasFragment extends ListFragment implements View.OnClickListen
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment NoticiasFragment.
+     * @return A new instance of fragment NewsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static NoticiasFragment newInstance(String param1, String param2) {
-        NoticiasFragment fragment = new NoticiasFragment();
+    public static NewsFragment newInstance(String param1, String param2) {
+        NewsFragment fragment = new NewsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public void updateNews(News news1, boolean isDeleted) {
+        if (isDeleted) {
+            mNewsDatabaseReference.child(editKey).removeValue();
+        } else {
+            mNewsDatabaseReference.child(editKey).setValue(news1);
+        }
     }
 
     @Override
@@ -89,6 +101,20 @@ public class NoticiasFragment extends ListFragment implements View.OnClickListen
         }
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mNewsDatabaseReference = mFirebaseDatabase.getReference().child("News");
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                News news1 = news.get(position);
+                mListenerNewsSelected.onNewsSelectedListener(news1,true);
+                editKey = news1.getKey();
+                return true;
+            }
+        });
     }
 
     @Override
@@ -111,6 +137,7 @@ public class NoticiasFragment extends ListFragment implements View.OnClickListen
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     News news1 = dataSnapshot.getValue(News.class);
                     if (news1 != null) {
+                        news1.setKey(dataSnapshot.getKey());
                         news.add(news1);
                     }
                     newsAdapter.notifyDataSetChanged();
@@ -118,12 +145,21 @@ public class NoticiasFragment extends ListFragment implements View.OnClickListen
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                    Log.d("DEBUG_TAG","Child Changed");
+                    News editNews = dataSnapshot.getValue(News.class);
+                    for (int i = 0; i < news.size(); ++i) {
+                        if (news.get(i).getKey().equals(editNews.getKey())) {
+                            news.set(i,editNews);
+                        }
+                    }
+                    newsAdapter.notifyDataSetChanged();
                 }
 
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                    News removedNews = dataSnapshot.getValue(News.class);
+                    news.remove(removedNews);
+                    newsAdapter.notifyDataSetChanged();
                 }
 
                 @Override
@@ -186,9 +222,8 @@ public class NoticiasFragment extends ListFragment implements View.OnClickListen
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-//        News news = new News("Titulo de noticia","Descripcion",R.mipmap.ic_launcher);
         News news1 = news.get(position);
-        mListenerNewsSelected.onNewsSelectedListener(news1);
+        mListenerNewsSelected.onNewsSelectedListener(news1,false);
     }
 
         @Override
@@ -211,6 +246,6 @@ public class NoticiasFragment extends ListFragment implements View.OnClickListen
 
 
     public interface OnNewsSelectedListener {
-        void onNewsSelectedListener(News news);
+        void onNewsSelectedListener(News news, boolean isEditing);
     }
 }

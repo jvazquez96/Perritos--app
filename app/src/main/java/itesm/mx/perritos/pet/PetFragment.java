@@ -17,6 +17,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -39,14 +40,6 @@ import itesm.mx.perritos.R;
 import static android.app.Activity.RESULT_OK;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link PetFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link PetFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class PetFragment extends ListFragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -73,9 +66,19 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
 
     private static final int REQUEST_CODE_ADD_PET = 1;
 
+    private String editKey;
+
 
     public PetFragment() {
         // Required empty public constructor
+    }
+
+    public void updatePet(Pet pet, boolean isDeleted) {
+        if (isDeleted) {
+            mPetsDataBaseReference.child(editKey).removeValue();
+        } else {
+            mPetsDataBaseReference.child(editKey).setValue(pet);
+        }
     }
 
     @Override
@@ -93,13 +96,11 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         attachDatabaseReadListener();
-        Log.d("DEBUG_TAG","onResume()");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.d("Debug_tag","onPause");
         deattachDatabaseReadListener();
         petAdapter.clear();
     }
@@ -111,19 +112,27 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     Pet pet = dataSnapshot.getValue(Pet.class);
+                    pet.setKey(dataSnapshot.getKey());
                     pets.add(pet);
-                    Log.d("DEBUG_TAG","NEW PET ADDED!!!!!");
                     petAdapter.notifyDataSetChanged();
                 }
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                    Pet editPet = dataSnapshot.getValue(Pet.class);
+                    for (int i = 0; i < pets.size(); ++i) {
+                        if (pets.get(i).getKey().equals(editPet.getKey())) {
+                            pets.set(i,editPet);
+                        }
+                    }
+                    petAdapter.notifyDataSetChanged();
                 }
 
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                    Pet removedPet = dataSnapshot.getValue(Pet.class);
+                    pets.remove(removedPet);
+                    petAdapter.notifyDataSetChanged();
                 }
 
                 @Override
@@ -158,7 +167,6 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CODE_ADD_PET) {
-                Log.d("DEBUG_TAG","Pet added");
                 Bundle extras = data.getExtras();
                 Pet pet = (Pet) extras.get("Pet");
                 mPetsDataBaseReference.push().setValue(pet);
@@ -181,15 +189,25 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         floatingAddButton = (FloatingActionButton) view.findViewById(R.id.floating_add);
         floatingAddButton.setOnClickListener(this);
 
-        Log.d("DEBUG_TAG","onCreateView");
-
         if (mPetsDataBaseReference  ==  null) {
             Log.d("DEBUG_TAG","THIS THING IS NULL");
         }
-
         return view;
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Pet pet= pets.get(position);
+                mListenerPetSelected.onPetSelectedListener(pet,true);
+                editKey = pet.getKey();
+                return true;
+            }
+        });
+    }
 
     @Override
     public void onDetach() {
@@ -203,7 +221,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         super.onListItemClick(l, v, position, id);
         Log.d("POSITION: ", String.valueOf(position));
         Pet pet = pets.get(position);
-        mListenerPetSelected.onPetSelectedListener(pet);
+        mListenerPetSelected.onPetSelectedListener(pet,false);
     }
 
     @Override
@@ -222,6 +240,6 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
      * interaction in this fragment to be communicated to the activity
      */
     public interface OnPetSelectedListener {
-        void onPetSelectedListener(Pet pet);
+        void onPetSelectedListener(Pet pet, boolean isEditing);
     }
 }
