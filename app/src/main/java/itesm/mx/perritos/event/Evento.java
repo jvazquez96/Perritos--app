@@ -4,7 +4,6 @@ package itesm.mx.perritos.event;
 import java.io.Serializable;
 
 public class Evento  implements Serializable{
-
     private String title;
     private String description;
     private int idImage;
@@ -14,7 +13,6 @@ public class Evento  implements Serializable{
     private String HoraFinal;
     private boolean LugarVisible;
     private String Lugar;
-
 
     /**
      * Default constructor
@@ -84,7 +82,6 @@ public class Evento  implements Serializable{
     public int getIdImage() {
         return this.idImage;
     }
-
     public String getStartDate() {
         return this.StartDate;
     }

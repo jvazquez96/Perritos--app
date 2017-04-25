@@ -24,6 +24,12 @@ import itesm.mx.perritos.R;
 import itesm.mx.perritos.news.News;
 
 import static android.app.Activity.RESULT_OK;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+
+import itesm.mx.perritos.R;
 
 
 public class EventosFragment extends ListFragment implements View.OnClickListener{
@@ -92,8 +98,9 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
         Evento eventos1 = new Evento("Titulo","Descripcion", R.mipmap.ic_launcher);
         EventoList.add(eventos1);
         eventsAdapter = new EventoAdapter(getActivity(),EventoList);
-        EventoAdapter eventosAdapter = new EventoAdapter(getActivity(),EventoList);
-        setListAdapter(eventosAdapter);
+        Evento evento = new Evento("Titulo","Descripcion", R.mipmap.ic_launcher);
+        EventoList.add(evento);
+        setListAdapter(eventsAdapter);
 
         View view  = inflater.inflate(R.layout.fragment_eventos, container, false);
 
@@ -117,8 +124,9 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
         startActivity(startAddEventActivity);
     }
 
-    @Override
-    public void onAttach(Context context) {
+
+        @Override
+        public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnEventSelectedListener) {
             mListenerEventSelected = (OnEventSelectedListener) context;

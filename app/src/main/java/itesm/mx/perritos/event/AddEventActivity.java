@@ -5,17 +5,14 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.media.Image;
-import android.os.Parcelable;
-import android.support.v4.app.FragmentTransaction;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -28,6 +25,7 @@ import android.widget.Toast;
 import java.util.Calendar;
 
 import itesm.mx.perritos.R;
+
 
 public class AddEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, View.OnClickListener, TimePickerDialog.OnTimeSetListener  {
 
@@ -44,11 +42,12 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
     private ImageView ImagenEvento;
     private Evento MyEvent;
 
+    private Toolbar tlToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
-
         textStartDate = (TextView) findViewById(R.id.text_startTime);
         textEndDate = (TextView) findViewById(R.id.text_endTime);
         tlToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -64,6 +63,13 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
         textStartDate.setOnClickListener(this);
         textEndDate.setOnClickListener(this);
         ButonAgregar.setOnClickListener(this);
+        textStartDate = (TextView) findViewById(R.id.text_startTime);
+        textEndDate = (TextView) findViewById(R.id.text_endTime);
+        tlToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(tlToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        textStartDate.setOnClickListener(this);
+        textEndDate.setOnClickListener(this);
         getSupportActionBar().setTitle("Nuevo Evento");
     }
 
@@ -110,6 +116,7 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
             case R.id.text_endTime:
                 showTimePickerDialog();
                 break;
+
             case R.id.ButtonAgregarEvento:
                 MyEvent = new Evento();
                 MyEvent.setStartDate(textStartDate.getText().toString());
