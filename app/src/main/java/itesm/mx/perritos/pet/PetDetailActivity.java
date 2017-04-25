@@ -64,7 +64,6 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
         tlToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tlToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Mascota");
     }
 
     @Override
