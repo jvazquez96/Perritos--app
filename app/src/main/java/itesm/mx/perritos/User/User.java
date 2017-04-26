@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import itesm.mx.perritos.news.News;
 import itesm.mx.perritos.pet.Pet;
-import itesm.mx.perritos.store.Product;
+import itesm.mx.perritos.product.Product;
 
 /**
  * Created by alextrujillo on 21/04/17.

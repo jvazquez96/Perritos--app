@@ -58,15 +58,13 @@ public class PetAdapter extends ArrayAdapter<Pet> {
         TextView tvName = (TextView) convertView.findViewById(R.id.text_name);
         TextView tvGender = (TextView) convertView.findViewById(R.id.text_gender);
         TextView tvAge = (TextView) convertView.findViewById(R.id.text_age);
-        TextView tvRequests = (TextView) convertView.findViewById(R.id.text_request);
         TextView tvDescription = (TextView) convertView.findViewById(R.id.text_description);
 
         Glide.with(ivCover.getContext()).load(pet.getPhotoUrl()).into(ivCover);
         tvName.setText(pet.getName());
-        tvGender.setText("Genero: " +pet.getGender());
-        tvAge.setText("Edad: " + String.valueOf(pet.getAge()));
-        tvRequests.setText(String.valueOf(pet.getRequest()) + " solicitudes");
-        tvDescription.setText("Descripcion: " + pet.getDescription());
+        tvGender.setText(pet.getGender());
+        tvAge.setText(String.valueOf(pet.getAge()));
+        tvDescription.setText(pet.getDescription());
 
 
         return convertView;
