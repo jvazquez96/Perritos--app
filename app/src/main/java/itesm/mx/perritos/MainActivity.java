@@ -134,13 +134,14 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     startActivityForResult(
                             AuthUI.getInstance()
                                     .createSignInIntentBuilder()
-                            .setIsSmartLockEnabled(false)
-                            .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                                    new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
-                                    new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
-                            .setTheme(R.style.LoginTheme)
-                            .build(),
-                            RC_SIGN_IN);
+                                    .setIsSmartLockEnabled(false)
+                                    .setProviders(Arrays.asList(
+                                            new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                            new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
+                                            new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
+                                    .setTheme(R.style.LoginTheme)
+                                    .build(),
+                                    RC_SIGN_IN);
                 }
             }
         };
@@ -250,6 +251,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     isDeleted = bundle.getBoolean("Delete");
                 }
                 productFragment.updateProduct(editableProduct,isDeleted);
+            } else if (requestCode == RC_SIGN_IN) {
+                if (resultCode == RESULT_CANCELED) {
+                    finish();
+                }
             }
         }
     }
