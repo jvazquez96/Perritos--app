@@ -101,7 +101,7 @@
         android:textColor="#ffffff"
         android:layout_alignParentEnd="true"
         android:background="@color/adopt"
-        android:text="Tomar foto"/>
+        android:text="TOMAR FOTO"/>
 
 
     <Button
@@ -111,7 +111,7 @@
         android:layout_alignParentBottom="true"
         android:textColor="#ffffff"
         android:background="@color/colorPrimary"
-        android:text="Eliminar mascota"/>
+        android:text="ELIMINAR MASCOTA"/>
 
 
 

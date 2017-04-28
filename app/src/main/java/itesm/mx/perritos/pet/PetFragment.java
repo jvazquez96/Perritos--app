@@ -169,6 +169,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
             if (requestCode == REQUEST_CODE_ADD_PET) {
                 Bundle extras = data.getExtras();
                 Pet pet = (Pet) extras.get("Pet");
+                Log.d(DEBUG_TAG,"Pet fav status: " + pet.getFav());
                 mPetsDataBaseReference.push().setValue(pet);
             }
         }
@@ -221,6 +222,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         super.onListItemClick(l, v, position, id);
         Log.d("POSITION: ", String.valueOf(position));
         Pet pet = pets.get(position);
+        editKey = pet.getKey();
         mListenerPetSelected.onPetSelectedListener(pet,false);
     }
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,8 +15,11 @@
         app:theme="@style/ActionBarTheme"/>
 
     <LinearLayout
+        android:layout_below="@+id/toolbar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_margin="16dp">
 
@@ -105,7 +108,7 @@
     </LinearLayout>
 
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -139,7 +142,7 @@
             android:layout_height="wrap_content"
             android:text="Agregar Lugar"/>
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <ImageButton
         android:layout_gravity="center_horizontal"
@@ -150,7 +153,24 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/image_placeholder"/>
 
-
     </LinearLayout>
+    <Button
+        android:id="@+id/button_picture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#ffffff"
+        android:layout_alignParentEnd="true"
+        android:background="@color/adopt"
+        android:text="TOMAR FOTO"/>
 
-</LinearLayout>
+
+    <Button
+        android:id="@+id/button_delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:textColor="#ffffff"
+        android:background="@color/colorPrimary"
+        android:text="ELIMINAR EVETO"/>
+
+</RelativeLayout>

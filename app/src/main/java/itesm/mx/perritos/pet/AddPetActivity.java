@@ -150,6 +150,7 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
                 pet.setVisible(checkVisibility.isChecked());
                 pet.setRequests(0);
                 pet.setPhotoUrl(selectedImage);
+                pet.setFav(false);
                 if (isAllDataCorrect()) {
                     Intent intent = new Intent();
                     intent.putExtra("Pet", pet);

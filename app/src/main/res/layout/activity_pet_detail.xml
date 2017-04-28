@@ -75,13 +75,13 @@
 
 
     <Button
+        android:id="@+id/enviar_email_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="SOLICITUD DE ADOPCION"
         android:layout_weight="0.4"
         android:background="@color/adopt"
         android:textColor="@color/colorWhite"
-        android:id="@+id/enviar_email_btn"/>
+        android:text="SOLICITUD DE ADOPCION" />
 
 
 </LinearLayout>

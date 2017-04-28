@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.os.Bundle;
@@ -21,8 +22,14 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import itesm.mx.perritos.MainActivity;
@@ -41,7 +48,18 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
     private ImageView favImage;
     Bundle bundle;
     Boolean favButton;
+    Pet pet;
 
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mPetsDataBaseReference;
+    private ChildEventListener mChildEventListenerPets;
+    private static final int REQUEST_CODE_ADD_PET = 1;
+    private String editKey;
+
+    private ArrayList<Pet> pets;
+    private ArrayAdapter<Pet> petAdapter;
+
+    private static final String DEBUG_TAG = "DEBUG_TAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +78,7 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
         favImage = (ImageView) findViewById(R.id.petLikeBtn);
 
         if (bundle != null) {
-            Pet pet = (Pet) bundle.getSerializable("Pet");
-//            Log.d("DEBUG_TAG","Pet image: " + pet.getIdImage());
-//            ivPet.setImageResource(pet.getIdImage());
+            pet = (Pet) bundle.getSerializable("Pet");
             Log.d("DEBUG_TAG", "Receiving pet");
             Glide.with(ivPet.getContext()).load(pet.getPhotoUrl()).into(ivPet);
 
@@ -70,11 +86,8 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
             tvName.setText(pet.getName());
             tvDescription.setText(pet.getDescription());
             tvDate.setText(simpleDateFormat.format(calendar.getTime()));
-            /*if(pet.petFavoriteButtonState() == true) {
-                favButton = true;
-            }else if (pet.petFavoriteButtonState() == false){
-                favButton = false;
-            }*/
+            mFirebaseDatabase = FirebaseDatabase.getInstance();
+            mPetsDataBaseReference = mFirebaseDatabase.getReference().child("Pets");
         }
 
 
@@ -93,16 +106,22 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
                 )) {
                     item.setIcon(R.drawable.ic_favorite_black_24dp);
                     favButton = true;
+                    //pet.stateFav();
+                    pet.setFav(true);
                         Toast.makeText(getApplicationContext(),"Agregado a Favoritos", Toast.LENGTH_SHORT).show();
 
                 } else {
                     item.setIcon(R.drawable.ic_favorite_border_black_24dp);
+                    //pet.notStateFav();
+                    pet.setFav(false);
                     favButton = false;
                 }
                 return true;
-
             case android.R.id.home:
-                
+                Intent intent = new Intent();
+                intent.putExtra("Pet",pet);
+                intent.putExtra("Delete", false);
+                setResult(RESULT_OK, intent);
                 finish();
                 return true;
             default:
@@ -115,10 +134,15 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
 
 
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.detail,menu);
+        if (pet.getFav()) {
+            menu.findItem(R.id.action_favorite_border).setIcon(R.drawable.ic_favorite_black_24dp);
+        } else {
+            menu.findItem(R.id.action_favorite_border).setIcon(R.drawable.ic_favorite_border_black_24dp);
+        }
+
         return true;
     }
 
@@ -165,6 +189,8 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
 
 
     }
+
+
 
 
 }

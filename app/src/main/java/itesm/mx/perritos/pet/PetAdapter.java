@@ -68,9 +68,9 @@ public class PetAdapter extends ArrayAdapter<Pet> {
         tvAge.setText(String.valueOf(pet.getAge()));
         tvDescription.setText(pet.getDescription());
 
-        if(pet.petFavoriteButtonState() == true) {
+        if(pet.getFav()) {
             ivPetFav.setVisibility(View.VISIBLE);
-        }else if (pet.petFavoriteButtonState() == false){
+        }else {
             ivPetFav.setVisibility(View.INVISIBLE);
         }
 
