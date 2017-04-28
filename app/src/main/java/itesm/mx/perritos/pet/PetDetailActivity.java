@@ -2,12 +2,17 @@ package itesm.mx.perritos.pet;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.os.Bundle;
@@ -15,10 +20,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.firebase.ui.auth.AuthUI;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import itesm.mx.perritos.MainActivity;
 import itesm.mx.perritos.R;
 
 
@@ -31,6 +38,10 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
     private Button btnSolicitudAdopcion;
     private Toolbar tlToolbar;
     private Calendar calendar;
+    private ImageView favImage;
+    Bundle bundle;
+    Boolean favButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,22 +53,28 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
         tvDate = (TextView) findViewById(R.id.text_date);
         tvDescription = (TextView) findViewById(R.id.text_description);
         btnSolicitudAdopcion = (Button) findViewById(R.id.enviar_email_btn);
-        Bundle bundle = getIntent().getExtras();
+        bundle = getIntent().getExtras();
         calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MM yyyy");
         btnSolicitudAdopcion.setOnClickListener(this);
-
+        favImage = (ImageView) findViewById(R.id.petLikeBtn);
 
         if (bundle != null) {
             Pet pet = (Pet) bundle.getSerializable("Pet");
 //            Log.d("DEBUG_TAG","Pet image: " + pet.getIdImage());
 //            ivPet.setImageResource(pet.getIdImage());
-            Log.d("DEBUG_TAG","Receiving pet");
-            Glide.with(ivPet.getContext()).load(pet.getPhotoUrl()).into(ivPet);;
-            Log.d("DEBUG_TAG","Photo url: " + pet.getPhotoUrl());
+            Log.d("DEBUG_TAG", "Receiving pet");
+            Glide.with(ivPet.getContext()).load(pet.getPhotoUrl()).into(ivPet);
+
+            Log.d("DEBUG_TAG", "Photo url: " + pet.getPhotoUrl());
             tvName.setText(pet.getName());
             tvDescription.setText(pet.getDescription());
             tvDate.setText(simpleDateFormat.format(calendar.getTime()));
+            /*if(pet.petFavoriteButtonState() == true) {
+                favButton = true;
+            }else if (pet.petFavoriteButtonState() == false){
+                favButton = false;
+            }*/
         }
 
 
@@ -68,13 +85,36 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch ( item.getItemId()) {
+        switch (item.getItemId()) {
+            case R.id.action_favorite_border:
+
+                if (item.getIcon().getConstantState().equals(
+                        getResources().getDrawable(R.drawable.ic_favorite_border_black_24dp).getConstantState()
+                )) {
+                    item.setIcon(R.drawable.ic_favorite_black_24dp);
+                    favButton = true;
+                        Toast.makeText(getApplicationContext(),"Agregado a Favoritos", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    item.setIcon(R.drawable.ic_favorite_border_black_24dp);
+                    favButton = false;
+                }
+                return true;
+
             case android.R.id.home:
+                
                 finish();
-                break;
+                return true;
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
         }
-        return true;
     }
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -88,9 +128,19 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
             case R.id.enviar_email_btn:
                 enviarMail();
                 break;
+
         }
 
     }
+
+    public void showLikebutton(){
+        favImage.setVisibility(View.VISIBLE);
+    }
+    public void hideLikebutton(){
+        favImage.setVisibility(View.VISIBLE);
+    }
+
+
 
     public void enviarMail(){
         String TO [] = {"nobody@mail.com"};
@@ -115,4 +165,6 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
 
 
     }
+
+
 }

@@ -17,6 +17,7 @@ public class Pet implements Serializable {
     private int requests;
     private String photoUrl;
     private boolean isVisible;
+    private boolean petFavoriteButton;
 
     /**
      *  Default constructor.
@@ -42,6 +43,7 @@ public class Pet implements Serializable {
         this.requests = requests;
         this.photoUrl = photoUrl;
         this.isVisible = isVisible;
+        this.petFavoriteButton = false;
     }
 
 
@@ -165,6 +167,18 @@ public class Pet implements Serializable {
 
     public String getKey() {
         return this.key;
+    }
+
+
+    public boolean petFavoriteButtonState(){
+        return petFavoriteButton;
+    }
+    public void showPetFavoriteButton(){
+        petFavoriteButton = true;
+    }
+
+    public void notShowPetFavoriteButton(){
+        petFavoriteButton = false;
     }
 
     @Override

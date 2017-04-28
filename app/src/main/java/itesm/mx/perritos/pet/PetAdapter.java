@@ -30,6 +30,7 @@ public class PetAdapter extends ArrayAdapter<Pet> {
     /**
      * Constructor
      * @param context Application context
+     * @param context Application context
      * @param pets List of pets
      */
     public PetAdapter(Context context, ArrayList<Pet> pets) {
@@ -54,6 +55,7 @@ public class PetAdapter extends ArrayAdapter<Pet> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.pet_info,parent,false);
         }
 
+        ImageView ivPetFav = (ImageView) convertView.findViewById(R.id.petFavBtn);
         ImageView ivCover = (ImageView) convertView.findViewById(R.id.image_cover);
         TextView tvName = (TextView) convertView.findViewById(R.id.text_name);
         TextView tvGender = (TextView) convertView.findViewById(R.id.text_gender);
@@ -65,6 +67,12 @@ public class PetAdapter extends ArrayAdapter<Pet> {
         tvGender.setText(pet.getGender());
         tvAge.setText(String.valueOf(pet.getAge()));
         tvDescription.setText(pet.getDescription());
+
+        if(pet.petFavoriteButtonState() == true) {
+            ivPetFav.setVisibility(View.VISIBLE);
+        }else if (pet.petFavoriteButtonState() == false){
+            ivPetFav.setVisibility(View.INVISIBLE);
+        }
 
 
         return convertView;
