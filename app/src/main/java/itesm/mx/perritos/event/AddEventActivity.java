@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -13,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -22,6 +24,11 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
 import java.util.Calendar;
 
 import itesm.mx.perritos.R;
@@ -29,42 +36,49 @@ import itesm.mx.perritos.R;
 
 public class AddEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, View.OnClickListener, TimePickerDialog.OnTimeSetListener  {
 
+    private static final int RC_PHOTO_PICKER = 2;
     private TextView textStartDate;
     private TextView textEndDate;
+    private TextView textStartTime;
+    private TextView textEndTime;
     private Toolbar tlToolbar;
     private EditText tvTituloEvento;
     private TextView tvDescripcionEvento;
     private TextView textHoraInicio;
     private TextView tvHoraFinal;
-    private ImageButton ButonAgregar;
+    private Button ButonAgregar;
     private CheckBox LugarVisible;
     private TextView AgregarLugar;
-    private ImageView ImagenEvento;
+    private ImageButton AgregarImagen;
     private Evento MyEvent;
 
-    private Toolbar tlToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
-        textStartDate = (TextView) findViewById(R.id.text_startTime);
-        textEndDate = (TextView) findViewById(R.id.text_endTime);
+        textStartDate = (TextView) findViewById(R.id.text_startDate);
+        textEndDate = (TextView) findViewById(R.id.text_endDate);
+        textStartTime = (TextView) findViewById(R.id.text_startTime);
+        textEndTime = (TextView) findViewById(R.id.text_endTime);
         tlToolbar = (Toolbar) findViewById(R.id.toolbar);
         tvTituloEvento = (EditText) findViewById(R.id.edit_title);
         tvDescripcionEvento = (EditText) findViewById(R.id.edit_description);
         textHoraInicio = (TextView) findViewById(R.id.text_startTime);
         tvHoraFinal = (TextView) findViewById(R.id.text_startTime);
-        ButonAgregar = (ImageButton) findViewById(R.id.ButtonAgregarEvento);
+        LugarVisible = (CheckBox) findViewById(R.id.check_visible);
+        AgregarLugar = (TextView) findViewById(R.id.text_location);
+        AgregarImagen = (ImageButton) findViewById(R.id.AgregarImagen);
+        ButonAgregar = (Button) findViewById(R.id.ButtonAgregarEvento);
         setSupportActionBar(tlToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         textStartDate.setOnClickListener(this);
         textEndDate.setOnClickListener(this);
+        textStartTime.setOnClickListener(this);
+        textEndTime.setOnClickListener(this);
         ButonAgregar.setOnClickListener(this);
-        textStartDate = (TextView) findViewById(R.id.text_startTime);
-        textEndDate = (TextView) findViewById(R.id.text_endTime);
         tlToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tlToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -116,6 +130,12 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
             case R.id.text_endTime:
                 showTimePickerDialog();
                 break;
+            case R.id.AgregarImagen:
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/jpeg");
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
+                break;
 
             case R.id.ButtonAgregarEvento:
                 MyEvent = new Evento();
@@ -129,10 +149,10 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
                 MyEvent.setLugarVisible(LugarVisible.isChecked());
                 MyEvent.setLugar(AgregarLugar.getText().toString());
                 MyEvent.setTitle(tvTituloEvento.getText().toString());
-                MyEvent.setIdImage(ImagenEvento.getId());
+                //MyEvent.setIdImage(AgregarImagen.getId());
 
                 if (isAllDataCorrect()) {
-                    Intent intent = new Intent();
+                    intent = new Intent();
                     intent.putExtra("Event", MyEvent);
                     setResult(RESULT_OK,intent);
                     finish();
@@ -203,4 +223,27 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
                     true);
         }
     }
+
+   /* @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == RC_PHOTO_PICKER) {
+                Uri imageLink = data.getData();
+                StorageReference photoRef = mPetPhotosStorageReference.child(imageLink.getLastPathSegment());
+
+                photoRef.putFile(imageLink).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Uri downloadUri = taskSnapshot.getDownloadUrl();
+                        Glide.with(imgCover.getContext())
+                                .load(downloadUri.toString())
+                                .into(imgCover);
+                        selectedImage = downloadUri.toString();
+                        pet.setPhotoUrl(downloadUri.toString());
+                    }
+                });
+            }
+        }
+    }*/
 }
