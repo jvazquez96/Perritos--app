@@ -46,7 +46,6 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String DEBUG_TAG = "DEBUG_TAG";
-
     private FloatingActionButton floatingAddButton;
     private CoordinatorLayout coordinatorLayout;
 
@@ -181,7 +180,6 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         pets = new ArrayList<>();
         petAdapter = new PetAdapter(getActivity(), pets);
         setListAdapter(petAdapter);
-
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_pet, container, false);

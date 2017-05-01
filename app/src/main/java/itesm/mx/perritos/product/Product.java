@@ -78,7 +78,6 @@ public class Product implements Serializable {
         this.photoUrl = photoUrl;
     }
 
-
     public void setKey(String key) {
         this.key = key;
     }

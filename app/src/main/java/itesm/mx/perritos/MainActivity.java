@@ -56,15 +56,12 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     private TabLayout tlTabLayout;
     private Toolbar tbToolbar;
-    private ImageButton imgbtnMenu;
 
     private final int [] ICON ={ R.drawable.ic_pets_black_24dp,
             R.drawable.ic_event_black_24dp,
             R.drawable.ic_newspaper_black_24dp,
             R.drawable.ic_store_black_24dp};
-
     private ViewPager vpViewPager;
-
     // Firebase Objects
     private FirebaseDatabase mFirebaseDatabase;
 
@@ -146,7 +143,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 }
             }
         };
-
     }
 
     @Override
@@ -165,12 +161,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     @Override
     public void onClick(View v) {
-//
-//        switch (v.getId()){
-//            case R.id.button_menu:
-//                Log.d(DEBUG_TAG,"Menu Button");
-//                break;
-//        }
+
     }
 
     @Override
