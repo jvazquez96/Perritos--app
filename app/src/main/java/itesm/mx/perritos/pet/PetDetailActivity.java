@@ -67,7 +67,9 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_pet_detail);
          tlToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tlToolbar);
+
         cool = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+
         ivPet = (ImageView) findViewById(R.id.image_pet);
         btnSolicitudPet = (Button) findViewById(R.id.btn_solicitud_pet) ;
         tvName = (TextView) findViewById(R.id.text_name);
@@ -122,6 +124,10 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
                 finish();
                 return true;
             case R.id.action_confirm:
+                Intent intent2 = new Intent();
+                intent2.putExtra("Pet", pet);
+                intent2.putExtra("Delete", false);
+                setResult(RESULT_OK, intent2);
                 finish();
             default:
                 // If we got here, the user's action was not recognized.
@@ -139,15 +145,6 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
             menu.findItem(R.id.action_favorite_border).setIcon(R.drawable.ic_favorite_border_white_24dp);
         }
         return true;
-    }
-
-
-    public void showLikebutton() {
-        favImage.setVisibility(View.VISIBLE);
-    }
-
-    public void hideLikebutton() {
-        favImage.setVisibility(View.VISIBLE);
     }
 
     @Override
