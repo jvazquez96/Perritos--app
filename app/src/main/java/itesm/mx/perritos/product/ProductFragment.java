@@ -31,7 +31,7 @@ import static android.app.Activity.RESULT_OK;
  * Use the {@link ProductFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProductFragment extends ListFragment implements View.OnClickListener {
+public class ProductFragment extends ListFragment implements View.OnClickListener, AdapterView.OnItemLongClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -79,11 +79,17 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
             if (floatingActionButton != null) {
                 floatingActionButton.setVisibility(View.VISIBLE);
             }
+            if (getView() != null) {
+                getListView().setOnItemLongClickListener(this);
+            }
         } else {
             userProducts = new ArrayList<>();
             productAdapter = new ProductAdapter(context,userProducts);
             if (floatingActionButton != null) {
                 floatingActionButton.setVisibility(View.INVISIBLE);
+            }
+            if (getView() != null) {
+                getListView().setOnItemLongClickListener(null);
             }
         }
         setListAdapter(productAdapter);
@@ -126,10 +132,12 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
             adminProducts = new ArrayList<Product>();
             productAdapter  = new ProductAdapter(getActivity(),adminProducts);
             floatingActionButton.setVisibility(View.VISIBLE);
+            getListView().setOnItemLongClickListener(this);
         } else {
             userProducts = new ArrayList<Product>();
             productAdapter = new ProductAdapter(getActivity(),userProducts);
             floatingActionButton.setVisibility(View.INVISIBLE);
+            getListView().setOnItemLongClickListener(null);
         }
         setListAdapter(productAdapter);
         attachDatabaseReadListener();
@@ -161,21 +169,11 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        if (isAdmin) {
-            getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    Product product = adminProducts.get(position);
-                    mListenerProductSelected.onProductSelectedListener(product, true);
-                    editKey = product.getKey();
-                    return true;
-                }
-            });
-        } else {
-            floatingActionButton.setVisibility(View.INVISIBLE);
-        }
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        Product product = adminProducts.get(position);
+        mListenerProductSelected.onProductSelectedListener(product, true);
+        editKey = product.getKey();
+        return true;
     }
 
     private void attachDatabaseReadListener() {

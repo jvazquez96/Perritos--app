@@ -42,7 +42,7 @@ import itesm.mx.perritos.R;
 import static android.app.Activity.RESULT_OK;
 
 
-public class PetFragment extends ListFragment implements View.OnClickListener {
+public class PetFragment extends ListFragment implements View.OnClickListener, AdapterView.OnItemLongClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -92,11 +92,17 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
             if (floatingAddButton != null) {
                 floatingAddButton.setVisibility(View.VISIBLE);
             }
+            if (getView() != null) {
+                getListView().setOnItemLongClickListener(this);
+            }
         } else {
             userPets = new ArrayList<Pet>();
             petAdapter = new PetAdapter(context,userPets);
             if (floatingAddButton != null) {
                 floatingAddButton.setVisibility(View.INVISIBLE);
+            }
+            if (getView() != null) {
+                getListView().setOnItemLongClickListener(null);
             }
         }
         setListAdapter(petAdapter);
@@ -115,16 +121,26 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
     }
 
     @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        Pet pet = adminPets.get(position);
+        mListenerPetSelected.onPetSelectedListener(pet, true);
+        editKey = pet.getKey();
+        return true;
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         if (isAdmin) {
             adminPets = new ArrayList<Pet>();
             petAdapter = new PetAdapter(getActivity(),adminPets);
             floatingAddButton.setVisibility(View.VISIBLE);
+            getListView().setOnItemLongClickListener(this);
         } else {
             userPets = new ArrayList<Pet>();
             petAdapter = new PetAdapter(getActivity(),userPets);
             floatingAddButton.setVisibility(View.INVISIBLE);
+            getListView().setOnItemLongClickListener(null);
         }
         setListAdapter(petAdapter);
         attachDatabaseReadListener();
@@ -250,21 +266,9 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        if (isAdmin) {
-            getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    Pet pet = adminPets.get(position);
-                    mListenerPetSelected.onPetSelectedListener(pet, true);
-                    editKey = pet.getKey();
-                    return true;
-                }
-            });
-        } else {
-            floatingAddButton.setVisibility(View.INVISIBLE);
-        }
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getListView().setOnItemLongClickListener(this);
     }
 
     @Override

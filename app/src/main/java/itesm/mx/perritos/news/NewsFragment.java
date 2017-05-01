@@ -35,7 +35,7 @@ import static android.app.Activity.RESULT_OK;
  * Use the {@link NewsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewsFragment extends ListFragment implements View.OnClickListener{
+public class NewsFragment extends ListFragment implements View.OnClickListener, AdapterView.OnItemLongClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -103,11 +103,17 @@ public class NewsFragment extends ListFragment implements View.OnClickListener{
             if (floatingAddButon != null) {
                 floatingAddButon.setVisibility(View.VISIBLE);
             }
+            if (getView() != null) {
+                getListView().setOnItemLongClickListener(this);
+            }
         } else {
             userNews = new ArrayList<>();
             newsAdapter = new NewsAdapter(context,userNews);
             if (floatingAddButon != null) {
                 floatingAddButon.setVisibility(View.INVISIBLE);
+            }
+            if (getView() != null) {
+                getListView().setOnItemLongClickListener(null);
             }
         }
         setListAdapter(newsAdapter);
@@ -125,21 +131,11 @@ public class NewsFragment extends ListFragment implements View.OnClickListener{
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        if (isAdmin) {
-            getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    News news1 = adminNews.get(position);
-                    mListenerNewsSelected.onNewsSelectedListener(news1, true);
-                    editKey = news1.getKey();
-                    return true;
-                }
-            });
-        } else {
-            floatingAddButon.setVisibility(View.INVISIBLE);
-        }
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        News news1 = adminNews.get(position);
+        mListenerNewsSelected.onNewsSelectedListener(news1, true);
+        editKey = news1.getKey();
+        return true;
     }
 
     @Override
@@ -149,10 +145,12 @@ public class NewsFragment extends ListFragment implements View.OnClickListener{
             adminNews = new ArrayList<>();
             newsAdapter = new NewsAdapter(getActivity(),adminNews);
             floatingAddButon.setVisibility(View.VISIBLE);
+            getListView().setOnItemLongClickListener(this);
         } else {
             userNews = new ArrayList<>();
             newsAdapter = new NewsAdapter(getActivity(),userNews);
             floatingAddButon.setVisibility(View.INVISIBLE);
+            getListView().setOnItemLongClickListener(null);
         }
         setListAdapter(newsAdapter);
         attachDatabaseReadListener();
