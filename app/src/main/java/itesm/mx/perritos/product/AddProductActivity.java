@@ -42,7 +42,8 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
     private CheckBox checkVisible;
     private ImageView imgPicture;
     private Button btnPicture;
-    private Button btnDeleted;
+    private Button btnDelete;
+    private ImageView imgCover;
 
     private boolean isEditing;
 
@@ -56,10 +57,10 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
         editPrecio = (EditText) findViewById(R.id.edit_precio);
         checkVisible = (CheckBox) findViewById(R.id.check_visible);
         imgPicture = (ImageView) findViewById(R.id.image_cover);
-        btnPicture = (Button) findViewById(R.id.button_picture);
-        btnDeleted = (Button) findViewById(R.id.button_delete);
+        btnPicture = (Button) findViewById(R.id.action_confirm);
+        btnDelete = (Button) findViewById(R.id.button_delete);
         btnPicture.setOnClickListener(this);
-        btnDeleted.setOnClickListener(this);
+        btnDelete.setOnClickListener(this);
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseStorage = FirebaseStorage.getInstance();
@@ -80,7 +81,7 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
             selectedImage = product1.getPhotoUrl();
         } else {
             getSupportActionBar().setTitle("Nuevo producto");
-            btnDeleted.setVisibility(View.INVISIBLE);
+            btnDelete.setVisibility(View.INVISIBLE);
         }
 
     }
@@ -88,12 +89,17 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.button_picture) {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/jpeg");
-            intent.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
-            startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
-        } else if (id == R.id.button_delete) {
+        if (id == R.id.action_confirm) {
+            if (isAllDataCorrect()) {
+                product.setsName(editNombre.getText().toString());
+                product.setdPrice(Double.valueOf(editPrecio.getText().toString()));
+                product.setPhotoUrl(selectedImage);
+                Intent intent = new Intent();
+                intent.putExtra("Product", product);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        }else if (id == R.id.button_delete){
             Intent intent = new Intent();
             intent.putExtra("Delete",true);
             product.setsName(editNombre.getText().toString());
@@ -103,6 +109,22 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
             setResult(RESULT_OK,intent);
             finish();
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+            case R.id.button_picture:
+                Intent intent2 = new Intent(Intent.ACTION_GET_CONTENT);
+                intent2.setType("image/jpeg");
+                intent2.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
+                startActivityForResult(Intent.createChooser(intent2, "Complete action using"), RC_PHOTO_PICKER);
+        }
+
+        return true;
     }
 
     @Override
@@ -147,28 +169,6 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
     private boolean isAllDataCorrect() {
         if (editNombre.getText().toString().length() == 0 || editPrecio.getText().toString().trim().length() == 0 || selectedImage == null) {
             return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_confirm:
-                if (isAllDataCorrect()) {
-                    product.setsName(editNombre.getText().toString());
-                    product.setdPrice(Double.valueOf(editPrecio.getText().toString()));
-                    product.setPhotoUrl(selectedImage);
-                    Intent intent = new Intent();
-                    intent.putExtra("Product", product);
-                    setResult(RESULT_OK, intent);
-                    finish();
-                }
-                break;
-            case android.R.id.home:
-                finish();
-                break;
         }
 
         return true;

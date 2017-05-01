@@ -37,18 +37,13 @@ android:theme="@style/AppTheme">
         app:layout_collapseMode="pin"
         android:theme="@style/AppTheme" />
 
+
 </android.support.design.widget.CollapsingToolbarLayout>
 </android.support.design.widget.AppBarLayout>
 
 <include layout="@layout/activity_pet_detail_content" />
+    <include layout="@layout/solicitud_button" />
 
-<android.support.design.widget.FloatingActionButton
-android:id="@+id/fab"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_margin="@dimen/fab_margin"
-app:layout_anchor="@id/app_bar"
-app:layout_anchorGravity="bottom|end"
-app:srcCompat="@android:drawable/ic_dialog_email" />
+</android.support.design.widget.CoordinatorLayout>
 
-    </android.support.design.widget.CoordinatorLayout>
+

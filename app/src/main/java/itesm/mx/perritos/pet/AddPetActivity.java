@@ -35,14 +35,13 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
 
     private Toolbar tlToolbar;
 
-    private Button btnOK;
+    private Button btnPicture;
     private Button btnDelete;
-
     private ImageView imgCover;
+
     private static final int RC_PHOTO_PICKER = 2;
     private static final int CROP_IMAGE = 19;
     private Pet pet;
-
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseStorage mFirebaseStorage;
     private StorageReference mPetPhotosStorageReference;
@@ -52,15 +51,10 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
     private EditText editAge;
 
     private Spinner spinner;
-
     private String gender;
-
     private String selectedImage;
-
     private CheckBox checkVisibility;
-
     private boolean isEditing;
-
     private Uri imageLink;
 
 
@@ -71,9 +65,9 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
         tlToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tlToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        btnOK = (Button) findViewById(R.id.action_confirm);
+        btnPicture = (Button) findViewById(R.id.action_confirm);
         btnDelete = (Button) findViewById(R.id.button_delete);
-        btnOK.setOnClickListener(this);
+        btnPicture.setOnClickListener(this);
         btnDelete.setOnClickListener(this);
         imgCover = (ImageView) findViewById(R.id.image_pet);
 

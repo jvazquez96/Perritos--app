@@ -21,33 +21,64 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_margin="16dp">
-    <EditText
-        android:id="@+id/edit_nombre"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Nombre del producto"
-        android:textSize="32sp"
-        android:layout_marginTop="15dp"/>
-
-    <EditText
-        android:id="@+id/edit_precio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Precio"
-        android:paddingTop="24dp"
-        android:paddingBottom="8dp"
-        android:textSize="16sp"
-        android:inputType="number|numberDecimal"
-        android:layout_marginTop="15dp"/>
+        android:padding="16dp">
 
 
-    <CheckBox
-        android:layout_marginTop="20dp"
-        android:id="@+id/check_visible"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Visible"/>
+        <EditText
+            android:layout_marginTop="15dp"
+            android:id="@+id/edit_nombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nombre del producto"
+            android:textColor="@color/colorgrow"
+            android:paddingBottom="8dp"
+            android:textSize="32sp"
+           />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="24dp"
+            android:text="Precio en MXN:"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <EditText
+                android:id="@+id/edit_precio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Precio"
+                android:paddingBottom="8dp"
+                android:paddingRight="40dp"
+                android:textColor="@color/colorgrow"
+                android:textSize="16sp"
+                android:inputType="number|numberDecimal"/>
+
+            <CheckBox
+                android:id="@+id/check_visible"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="80dp"
+                android:layout_height="wrap_content"
+                android:text="Visible"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="24dp"
+            android:text="Descripción:"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_description"
+            android:textSize="16sp"
+            android:textColor="@color/colorgrow"
+            android:hint="Descripción"/>
 
 
         <ImageView
@@ -64,14 +95,14 @@
 
 
     <Button
-        android:id="@+id/button_picture"
+        android:id="@+id/action_confirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/button_delete"
         android:textColor="#ffffff"
         android:layout_alignParentEnd="true"
         android:background="@color/adopt"
-        android:text="TOMAR FOTO"/>
+        android:text="OK"/>
 
 
     <Button

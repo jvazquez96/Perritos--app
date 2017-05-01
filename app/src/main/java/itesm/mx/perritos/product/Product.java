@@ -10,6 +10,7 @@ public class Product implements Serializable {
     private String sName;
     private double dPrice;
     private String photoUrl;
+    private String description;
     private String key;
 
 
@@ -20,6 +21,7 @@ public class Product implements Serializable {
         sName = "";
         dPrice = 5;
         photoUrl = null;
+        description = "";
     }
 
     /**
@@ -28,9 +30,10 @@ public class Product implements Serializable {
      * @param dPrice Price of the product
      * @param iPicture Picture of the product
      */
-    public Product(String sName, double dPrice, String photoUrl){
+    public Product(String sName, double dPrice, String photoUrl,String description){
         this.sName = sName;
         this.dPrice = dPrice;
+        this.description = description;
         this.photoUrl = photoUrl;
     }
 
@@ -77,6 +80,23 @@ public class Product implements Serializable {
     public void setPhotoUrl(String photoUrl) {
         this.photoUrl = photoUrl;
     }
+
+    /**
+     * Set the description of the Product.
+     * @param description
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * Get the description of the product.
+     * @return description
+     */
+    public String getDescription() {
+        return this.description;
+    }
+
 
     public void setKey(String key) {
         this.key = key;
