@@ -171,10 +171,15 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
                         }
                     } else {
                         if (editPet.getIsVisible()) {
+                            boolean exist = false;
                             for (int i = 0; i < userPets.size(); ++i) {
                                 if (userPets.get(i).getKey().equals(editPet.getKey())) {
                                     userPets.set(i, editPet);
+                                    exist = true;
                                 }
+                            }
+                            if (!exist) {
+                                userPets.add(editPet);
                             }
                         }
                     }

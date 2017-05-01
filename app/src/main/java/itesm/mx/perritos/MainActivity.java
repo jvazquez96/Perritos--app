@@ -128,7 +128,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // user signed in
-                    if (user.getEmail().equals("jorgevzqz6@gmail.com")) {
+                    if (user.getEmail().equals("jorgevzqz6@gmail.com") ||
+                            user.getEmail().equals("Alexandro4v@gmail.com")) {
                         petFragment.setAdmin(true,getApplicationContext());
                     } else {
                         petFragment.setAdmin(false,getApplicationContext());
