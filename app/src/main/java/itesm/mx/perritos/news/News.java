@@ -12,6 +12,7 @@ public class News implements Serializable {
     private String description;
     private String photoUrl;
     private String key;
+    private boolean isVisible;
 
     /**
      * Default constructor
@@ -20,6 +21,7 @@ public class News implements Serializable {
         this.title = "";
         this.description = "";
         photoUrl = null;
+        isVisible = false;
     }
 
     /**
@@ -27,10 +29,11 @@ public class News implements Serializable {
      * @param title Title of the news
      * @param desciption Description of the news
      */
-    public News(String title, String desciption, String photoUrl) {
+    public News(String title, String desciption, String photoUrl, boolean isVisible) {
         this.title = title;
         this.description = desciption;
         this.photoUrl = photoUrl;
+        this.isVisible = isVisible;
     }
 
     /**
@@ -92,5 +95,13 @@ public class News implements Serializable {
         return this.title.equals(edit.getTitle()) &&
                 this.description.equals(edit.getDescription()) &&
                 this.photoUrl.equals(edit.getPhotoUrl());
+    }
+
+    public void setVisible(boolean isVisible) {
+        this.isVisible = isVisible;
+    }
+
+    public boolean getIsVisible() {
+        return this.isVisible;
     }
 }

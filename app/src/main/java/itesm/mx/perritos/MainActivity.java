@@ -132,9 +132,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                             user.getEmail().equals("Alexandro4v@gmail.com")) {
                         petFragment.setAdmin(true,getApplicationContext());
                         productFragment.setAdmin(true,getApplicationContext());
+                        newsFragment.setAdmin(true,getApplicationContext());
                     } else {
                         petFragment.setAdmin(false,getApplicationContext());
                         productFragment.setAdmin(false,getApplicationContext());
+                        newsFragment.setAdmin(false,getApplicationContext());
                     }
                 } else {
                     startActivityForResult(

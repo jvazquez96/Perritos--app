@@ -35,7 +35,7 @@ import static android.app.Activity.RESULT_OK;
  * Use the {@link NewsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class NewsFragment extends ListFragment implements View.OnClickListener {
+public class NewsFragment extends ListFragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -56,10 +56,13 @@ public class NewsFragment extends ListFragment implements View.OnClickListener {
     private DatabaseReference mNewsDatabaseReference;
     private ChildEventListener mChildEventListenerNews;
 
-    private ArrayList<News> news;
+    private ArrayList<News> userNews;
+    private ArrayList<News> adminNews;
     private ArrayAdapter<News> newsAdapter;
 
     private String editKey;
+
+    private boolean isAdmin;
 
 
     public NewsFragment() {
@@ -92,6 +95,24 @@ public class NewsFragment extends ListFragment implements View.OnClickListener {
         }
     }
 
+    public void setAdmin(boolean isAdmin, Context context) {
+        this.isAdmin = isAdmin;
+        if (isAdmin) {
+            adminNews = new ArrayList<>();
+            newsAdapter = new NewsAdapter(context,adminNews);
+            if (floatingAddButon != null) {
+                floatingAddButon.setVisibility(View.VISIBLE);
+            }
+        } else {
+            userNews = new ArrayList<>();
+            newsAdapter = new NewsAdapter(context,userNews);
+            if (floatingAddButon != null) {
+                floatingAddButon.setVisibility(View.INVISIBLE);
+            }
+        }
+        setListAdapter(newsAdapter);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,20 +127,34 @@ public class NewsFragment extends ListFragment implements View.OnClickListener {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                News news1 = news.get(position);
-                mListenerNewsSelected.onNewsSelectedListener(news1,true);
-                editKey = news1.getKey();
-                return true;
-            }
-        });
+        if (isAdmin) {
+            getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                    News news1 = adminNews.get(position);
+                    mListenerNewsSelected.onNewsSelectedListener(news1, true);
+                    editKey = news1.getKey();
+                    return true;
+                }
+            });
+        } else {
+            floatingAddButon.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        if (isAdmin) {
+            adminNews = new ArrayList<>();
+            newsAdapter = new NewsAdapter(getActivity(),adminNews);
+            floatingAddButon.setVisibility(View.VISIBLE);
+        } else {
+            userNews = new ArrayList<>();
+            newsAdapter = new NewsAdapter(getActivity(),userNews);
+            floatingAddButon.setVisibility(View.INVISIBLE);
+        }
+        setListAdapter(newsAdapter);
         attachDatabaseReadListener();
     }
 
@@ -130,15 +165,25 @@ public class NewsFragment extends ListFragment implements View.OnClickListener {
         newsAdapter.clear();
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        floatingAddButon.setVisibility(View.INVISIBLE);
+    }
+
     private void attachDatabaseReadListener() {
         if (mChildEventListenerNews  == null) {
             mChildEventListenerNews = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     News news1 = dataSnapshot.getValue(News.class);
-                    if (news1 != null) {
-                        news1.setKey(dataSnapshot.getKey());
-                        news.add(news1);
+                    news1.setKey(dataSnapshot.getKey());
+                    if (isAdmin) {
+                        adminNews.add(news1);
+                    } else {
+                        if (news1.getIsVisible()) {
+                            userNews.add(news1);
+                        }
                     }
                     newsAdapter.notifyDataSetChanged();
                 }
@@ -147,9 +192,24 @@ public class NewsFragment extends ListFragment implements View.OnClickListener {
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                     Log.d("DEBUG_TAG","Child Changed");
                     News editNews = dataSnapshot.getValue(News.class);
-                    for (int i = 0; i < news.size(); ++i) {
-                        if (news.get(i).getKey().equals(editNews.getKey())) {
-                            news.set(i,editNews);
+                    if (isAdmin) {
+                        for (int i = 0; i < adminNews.size(); ++i) {
+                            if (adminNews.get(i).getKey().equals(editNews.getKey())) {
+                                adminNews.set(i, editNews);
+                            }
+                        }
+                    } else {
+                        if (editNews.getIsVisible()) {
+                            boolean exist = false;
+                            for (int i = 0; i < userNews.size(); ++i) {
+                                if (userNews.get(i).getKey().equals(editNews.getKey())) {
+                                    userNews.set(i, editNews);
+                                    exist = true;
+                                }
+                            }
+                            if (!exist) {
+                                userNews.add(editNews);
+                            }
                         }
                     }
                     newsAdapter.notifyDataSetChanged();
@@ -158,7 +218,11 @@ public class NewsFragment extends ListFragment implements View.OnClickListener {
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
                     News removedNews = dataSnapshot.getValue(News.class);
-                    news.remove(removedNews);
+                    if (isAdmin) {
+                        adminNews.remove(removedNews);
+                    } else {
+                        userNews.remove(removedNews);
+                    }
                     newsAdapter.notifyDataSetChanged();
                 }
 
@@ -187,11 +251,6 @@ public class NewsFragment extends ListFragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
-        news = new ArrayList<>();
-        newsAdapter = new NewsAdapter(getActivity(),news);
-        setListAdapter(newsAdapter);
-
         View view = inflater.inflate(R.layout.fragment_noticias, container, false);
 
         floatingAddButon = (FloatingActionButton) view.findViewById(R.id.floating_add);
@@ -222,7 +281,12 @@ public class NewsFragment extends ListFragment implements View.OnClickListener {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        News news1 = news.get(position);
+        News news1;
+        if (isAdmin) {
+            news1 = adminNews.get(position);
+        } else {
+            news1 = userNews.get(position);
+        }
         mListenerNewsSelected.onNewsSelectedListener(news1,false);
     }
 
