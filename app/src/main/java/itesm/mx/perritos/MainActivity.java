@@ -1,14 +1,11 @@
 package itesm.mx.perritos;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
@@ -22,16 +19,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.auth.api.Auth;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
@@ -41,25 +32,26 @@ import java.util.List;
 import itesm.mx.perritos.event.EventDetailActivity;
 import itesm.mx.perritos.event.Evento;
 import itesm.mx.perritos.event.EventosFragment;
+import itesm.mx.perritos.news.AddNewsActivity;
 import itesm.mx.perritos.news.News;
 import itesm.mx.perritos.news.NewsDetailActivity;
-import itesm.mx.perritos.news.NoticiasFragment;
+import itesm.mx.perritos.news.NewsFragment;
+import itesm.mx.perritos.pet.AddPetActivity;
 import itesm.mx.perritos.pet.Pet;
 import itesm.mx.perritos.pet.PetDetailActivity;
 import itesm.mx.perritos.pet.PetFragment;
-import itesm.mx.perritos.store.Product;
-import itesm.mx.perritos.store.ProductDetailActivity;
-import itesm.mx.perritos.store.StoreFragment;
-
-import static java.lang.Boolean.TRUE;
+import itesm.mx.perritos.product.AddProductActivity;
+import itesm.mx.perritos.product.Product;
+import itesm.mx.perritos.product.ProductDetailActivity;
+import itesm.mx.perritos.product.ProductFragment;
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener,
                                                                 PetFragment.OnPetSelectedListener,
                                                                 View.OnClickListener,
                                                                 NavigationView.OnNavigationItemSelectedListener,
                                                                 EventosFragment.OnEventSelectedListener,
-                                                                StoreFragment.OnProductSelectedListener,
-                                                                NoticiasFragment.OnNewsSelectedListener{
+                                                                ProductFragment.OnProductSelectedListener,
+                                                                NewsFragment.OnNewsSelectedListener{
 
 
     private TabLayout tlTabLayout;
@@ -81,6 +73,18 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     private static final String DEBUG_TAG = "DEBUG_TAG";
     private static final int RC_SIGN_IN = 1;
+    private static final int RC_EDIT_PET =2;
+    private static final int RC_EDIT_NEWS = 3;
+    private static final int RC_EDIT_PRODUCT = 4;
+
+    private PetFragment petFragment;
+    private EventosFragment eventosFragment;
+    private NewsFragment newsFragment;
+    private ProductFragment productFragment;
+
+    private Pet editablePet;
+    private News editableNews;
+    private Product editableProduct;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +119,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        editablePet = null;
+
         // Initialize Firebase Componentes
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -128,13 +134,14 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     startActivityForResult(
                             AuthUI.getInstance()
                                     .createSignInIntentBuilder()
-                            .setIsSmartLockEnabled(false)
-                            .setProviders(Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                                    new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
-                                    new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
-                            .setTheme(R.style.LoginTheme)
-                            .build(),
-                            RC_SIGN_IN);
+                                    .setIsSmartLockEnabled(false)
+                                    .setProviders(Arrays.asList(
+                                            new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                            new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
+                                            new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
+                                    .setTheme(R.style.LoginTheme)
+                                    .build(),
+                                    RC_SIGN_IN);
                 }
             }
         };
@@ -205,22 +212,69 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     private void setUpViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new PetFragment());
-        adapter.addFragment(new EventosFragment());
-        adapter.addFragment(new NoticiasFragment());
-        adapter.addFragment(new StoreFragment());
+        petFragment = new PetFragment();
+        eventosFragment = new EventosFragment();
+        newsFragment = new NewsFragment();
+        productFragment = new ProductFragment();
+        adapter.addFragment(petFragment);
+        adapter.addFragment(eventosFragment);
+        adapter.addFragment(newsFragment);
+        adapter.addFragment(productFragment);
         viewPager.setAdapter(adapter);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == RC_EDIT_PET) {
+                Bundle bundle = data.getExtras();
+                Boolean isDeleted = false;
+                if (bundle != null) {
+                    editablePet = (Pet) bundle.getSerializable("Pet");
+                    isDeleted = bundle.getBoolean("Delete");
+                }
+                petFragment.updatePet(editablePet,isDeleted);
+            } else if (requestCode == RC_EDIT_NEWS) {
+                Bundle bundle = data.getExtras();
+                boolean isDeleted = false;
+                if (bundle != null) {
+                    editableNews = (News) bundle.getSerializable("News");
+                    isDeleted = bundle.getBoolean("Delete");
+                }
+                newsFragment.updateNews(editableNews,isDeleted);
+            } else if (requestCode == RC_EDIT_PRODUCT) {
+                Bundle bundle = data.getExtras();
+                boolean isDeleted = false;
+                if (bundle != null) {
+                    editableProduct = (Product) bundle.getSerializable("Product");
+                    isDeleted = bundle.getBoolean("Delete");
+                }
+                productFragment.updateProduct(editableProduct,isDeleted);
+            } else if (requestCode == RC_SIGN_IN) {
+                if (resultCode == RESULT_CANCELED) {
+                    finish();
+                }
+            }
+        }
+    }
 
     @Override
-    public void onPetSelectedListener(Pet pet) {
-        Log.d(DEBUG_TAG, "onPetSelectedListener");
+    public void onPetSelectedListener(Pet pet, boolean isEditing) {
         Bundle bundle = new Bundle();
-        Intent petDetailIntent = new Intent(this, PetDetailActivity.class);
         bundle.putSerializable("Pet",pet);
-        petDetailIntent.putExtras(bundle);
-        startActivity(petDetailIntent);
+        if (isEditing) {
+            // Editing pet
+            Intent petEditIntent= new Intent(this, AddPetActivity.class);
+            bundle.putBoolean("isEditing",true);
+            petEditIntent.putExtras(bundle);
+            editablePet = pet;
+            startActivityForResult(petEditIntent,RC_EDIT_PET);
+        } else {
+            Intent petDetailIntent = new Intent(this, PetDetailActivity.class);
+            petDetailIntent.putExtras(bundle);
+            startActivity(petDetailIntent);
+        }
     }
 
     @Override
@@ -231,19 +285,38 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     }
 
     @Override
-    public void onProductSelectedListener(Product product) {
+    public void onProductSelectedListener(Product product, boolean isEditing) {
         Bundle bundle = new Bundle();
-        Intent intent = new Intent(this, ProductDetailActivity.class);
-        startActivity(intent);
+        bundle.putSerializable("Product",product);
+        if (isEditing) {
+            Intent productEditIntent = new Intent(this, AddProductActivity.class);
+            bundle.putBoolean("isEditing",true);
+            productEditIntent.putExtras(bundle);
+            editableProduct = product;
+            startActivityForResult(productEditIntent,RC_EDIT_PRODUCT);
+        } else {
+            Intent productDetailIntent = new Intent(this, ProductDetailActivity.class);
+            productDetailIntent.putExtras(bundle);
+            startActivity(productDetailIntent);
+        }
     }
 
     @Override
-    public void onNewsSelectedListener(News news) {
-        Intent newsDetailIntent = new Intent(this,NewsDetailActivity.class);
+    public void onNewsSelectedListener(News news,boolean isEditing) {
+
         Bundle bundle = new Bundle();
         bundle.putSerializable("News",news);
-        newsDetailIntent.putExtras(bundle);
-        startActivity(newsDetailIntent);
+        if (isEditing) {
+            Intent newsEditIntent = new Intent(this, AddNewsActivity.class);
+            bundle.putBoolean("isEditing",true);
+            newsEditIntent.putExtras(bundle);
+            editableNews = news;
+            startActivityForResult(newsEditIntent,RC_EDIT_NEWS);
+        } else {
+            Intent newsDetailIntent = new Intent(this,NewsDetailActivity.class);
+            newsDetailIntent.putExtras(bundle);
+            startActivity(newsDetailIntent);
+        }
     }
 
     private class ViewPagerAdapter extends FragmentStatePagerAdapter {

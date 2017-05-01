@@ -15,20 +15,28 @@
         android:background="@color/colorPrimary"
         app:theme="@style/ActionBarTheme"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="16dp">
 
     <EditText
         android:id="@+id/edit_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
+        android:textSize="32sp"
         android:hint="Titulo de la noticia"
-        android:layout_marginTop="15dp"/>
+        android:textColor="@color/colorgrow"
+        android:paddingTop="24dp"/>
 
     <EditText
         android:id="@+id/edit_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="8dp"
+        android:textSize="16sp"
         android:hint="Descripcion de la noticia"
         android:layout_marginTop="20dp"/>
 
@@ -63,12 +71,24 @@
     </LinearLayout>
 
 
-    <ImageButton
-        android:id="@+id/image_cover"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginLeft="10dp"
-        android:background="@drawable/image_placeholder"/>
+        <ImageButton
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/image_cover"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/image_placeholder"/>
+
+
+        </LinearLayout>
+
+    <Button
+        android:id="@+id/button_delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="DELETE news" />
 
 
 </LinearLayout>
