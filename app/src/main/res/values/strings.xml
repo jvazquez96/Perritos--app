@@ -7,4 +7,6 @@
     <string name="navigation_drawer_close">Close Navigation drawer</string>
 
     <string name="default_toolbar_title">"Cultura perrona"</string>
+
+    <string name="facebook_app_id">130592740810715</string>
 </resources>
