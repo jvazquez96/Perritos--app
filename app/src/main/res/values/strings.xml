@@ -7,4 +7,6 @@
     <string name="navigation_drawer_close">Close Navigation drawer</string>
 
     <string name="default_toolbar_title">"Cultura perrona"</string>
+    <string name="action_settings">Settings</string>
+
 </resources>

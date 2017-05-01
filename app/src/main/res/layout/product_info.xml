@@ -53,8 +53,8 @@
                 android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:gravity="left"
                 android:maxLines="1"
+                android:gravity="left"
                 android:text="Esta noticia se escribió en ITESM MTY" />
 
         </LinearLayout>

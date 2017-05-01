@@ -1,8 +1,15 @@
 package itesm.mx.perritos.pet;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -26,6 +33,9 @@ import java.util.Calendar;
 
 import itesm.mx.perritos.R;
 
+import static android.R.id.primary;
+import static java.lang.System.load;
+
 
 public class PetDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -33,14 +43,13 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
     private TextView tvName;
     private TextView tvDescription;
     private TextView tvDate;
-    private Button btnSolicitudAdopcion;
     private Toolbar tlToolbar;
     private Calendar calendar;
     private ImageView favImage;
     private Bundle bundle;
     private Boolean favButton;
     private Pet pet;
-
+    private CollapsingToolbarLayout cool;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mPetsDataBaseReference;
     private ChildEventListener mChildEventListenerPets;
@@ -49,20 +58,48 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
     private ArrayAdapter<Pet> petAdapter;
     private static final String DEBUG_TAG = "DEBUG_TAG";
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pet_detail);
+
+         tlToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(tlToolbar);
+        cool = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String TO[] = {"nobody@mail.com"};
+                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                emailIntent.setData(Uri.EMPTY.parse("mailto:"));
+                emailIntent.setType("text/plain");
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Solicitud de adopción");
+                emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
+                try {
+                    startActivity(Intent.createChooser(emailIntent, "Solicitud de adopción por correo..."));
+                    finish();
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(PetDetailActivity.this,
+                            "No existe algún cliente de correo electronico en el dispositivo.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
         ivPet = (ImageView) findViewById(R.id.image_pet);
+
         tvName = (TextView) findViewById(R.id.text_name);
         tvDescription = (TextView) findViewById(R.id.text_description);
         tvDate = (TextView) findViewById(R.id.text_date);
         tvDescription = (TextView) findViewById(R.id.text_description);
-        btnSolicitudAdopcion = (Button) findViewById(R.id.enviar_email_btn);
         bundle = getIntent().getExtras();
         calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MM yyyy");
-        btnSolicitudAdopcion.setOnClickListener(this);
         favImage = (ImageView) findViewById(R.id.petLikeBtn);
 
         if (bundle != null) {
@@ -75,10 +112,11 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
             tvDate.setText(simpleDateFormat.format(calendar.getTime()));
             mFirebaseDatabase = FirebaseDatabase.getInstance();
             mPetsDataBaseReference = mFirebaseDatabase.getReference().child("Pets");
+            cool.setTitle(pet.getName());
+            cool.setExpandedTitleColor(Color.WHITE);
+            cool.setCollapsedTitleTextColor(Color.WHITE);
+
         }
-        tlToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(tlToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -86,14 +124,14 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
         switch (item.getItemId()) {
             case R.id.action_favorite_border:
                 if (item.getIcon().getConstantState().equals(
-                        getResources().getDrawable(R.drawable.ic_favorite_border_black_24dp).getConstantState()
+                        getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp).getConstantState()
                 )) {
-                    item.setIcon(R.drawable.ic_favorite_black_24dp);
+                    item.setIcon(R.drawable.heart);
                     favButton = true;
                     pet.setFav(true);
                     Toast.makeText(getApplicationContext(), "Agregado a Favoritos", Toast.LENGTH_SHORT).show();
                 } else {
-                    item.setIcon(R.drawable.ic_favorite_border_black_24dp);
+                    item.setIcon(R.drawable.ic_favorite_border_white_24dp);
                     pet.setFav(false);
                     favButton = false;
                 }
@@ -105,6 +143,8 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
                 setResult(RESULT_OK, intent);
                 finish();
                 return true;
+            case R.id.action_confirm:
+                finish();
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
@@ -116,21 +156,13 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.detail, menu);
         if (pet.getFav()) {
-            menu.findItem(R.id.action_favorite_border).setIcon(R.drawable.ic_favorite_black_24dp);
+            menu.findItem(R.id.action_favorite_border).setIcon(R.drawable.heart);
         } else {
-            menu.findItem(R.id.action_favorite_border).setIcon(R.drawable.ic_favorite_border_black_24dp);
+            menu.findItem(R.id.action_favorite_border).setIcon(R.drawable.ic_favorite_border_white_24dp);
         }
         return true;
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.enviar_email_btn:
-                enviarMail();
-                break;
-        }
-    }
 
     public void showLikebutton() {
         favImage.setVisibility(View.VISIBLE);
@@ -140,20 +172,8 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
         favImage.setVisibility(View.VISIBLE);
     }
 
-    public void enviarMail() {
-        String TO[] = {"nobody@mail.com"};
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
-        emailIntent.setData(Uri.EMPTY.parse("mailto:"));
-        emailIntent.setType("text/plain");
-        emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Solicitud de adopción");
-        emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
-        try {
-            startActivity(Intent.createChooser(emailIntent, "Solicitud de adopción por correo..."));
-            finish();
-        } catch (android.content.ActivityNotFoundException ex) {
-            Toast.makeText(PetDetailActivity.this,
-                    "No existe algún cliente de correo electronico en el dispositivo.", Toast.LENGTH_SHORT).show();
-        }
+    @Override
+    public void onClick(View v) {
+
     }
 }

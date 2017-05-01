@@ -1,87 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_pet_detail"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/activity_pet_detail"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:weightSum="10"
+    android:fitsSystemWindows="true"
     tools:context="itesm.mx.perritos.pet.PetDetailActivity">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:background="@color/colorPrimary"
-        app:theme="@style/ActionBarTheme"/>
+<android.support.design.widget.AppBarLayout
+android:id="@+id/app_bar"
+android:layout_width="match_parent"
+android:layout_height="@dimen/app_bar_height"
+android:fitsSystemWindows="true"
+android:theme="@style/AppTheme">
+
+<android.support.design.widget.CollapsingToolbarLayout
+    android:id="@+id/toolbar_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    app:contentScrim="?attr/colorPrimary"
+    app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
     <ImageView
         android:id="@+id/image_pet"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/ic_launcher"
-        android:layout_weight="7.99"/>
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"/>
 
-
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.80">
+        android:layout_height="?attr/actionBarSize"
+        app:layout_collapseMode="pin"
+        android:theme="@style/AppTheme" />
 
-        <ImageView
-            android:id="@+id/image_user"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher"/>
+</android.support.design.widget.CollapsingToolbarLayout>
+</android.support.design.widget.AppBarLayout>
 
+<include layout="@layout/activity_pet_detail_content" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+<android.support.design.widget.FloatingActionButton
+android:id="@+id/fab"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_margin="@dimen/fab_margin"
+app:layout_anchor="@id/app_bar"
+app:layout_anchorGravity="bottom|end"
+app:srcCompat="@android:drawable/ic_dialog_email" />
 
-
-            <TextView
-                android:id="@+id/text_user"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="User"/>
-
-            <TextView
-                android:id="@+id/text_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="NAME"/>
-
-            <TextView
-                android:id="@+id/text_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="DATE"/>
-
-
-            <TextView
-                android:id="@+id/text_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="DESCRIPTION"/>
-
-
-        </LinearLayout>
-
-
-    </LinearLayout>
-
-
-    <Button
-        android:id="@+id/enviar_email_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.4"
-        android:background="@color/adopt"
-        android:textColor="@color/colorWhite"
-        android:text="SOLICITUD DE ADOPCION" />
-
-
-</LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
