@@ -15,7 +15,6 @@ import itesm.mx.perritos.R;
 public class ProductDetailActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
-
     private ImageView imgPicture;
     private TextView textName;
     private TextView textPrice;
@@ -30,16 +29,13 @@ public class ProductDetailActivity extends AppCompatActivity {
         imgPicture = (ImageView) findViewById(R.id.image_product);
         textName = (TextView) findViewById(R.id.text_name);
         textPrice = (TextView) findViewById(R.id.text_price);
-
         Bundle bundle = getIntent().getExtras();
-
         if (bundle != null) {
             Product product = (Product) bundle.getSerializable("Product");
             Glide.with(imgPicture.getContext()).load(product.getPhotoUrl()).into(imgPicture);
             textName.setText(product.getsName());
             textPrice.setText(String.valueOf(product.getdPrice()));
         }
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Producto");

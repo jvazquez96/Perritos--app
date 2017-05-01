@@ -48,7 +48,6 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String DEBUG_TAG = "DEBUG_TAG";
-
     private FloatingActionButton floatingAddButton;
     private CoordinatorLayout coordinatorLayout;
 
@@ -222,6 +221,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
             if (requestCode == REQUEST_CODE_ADD_PET) {
                 Bundle extras = data.getExtras();
                 Pet pet = (Pet) extras.get("Pet");
+                Log.d(DEBUG_TAG,"Pet fav status: " + pet.getFav());
                 mPetsDataBaseReference.push().setValue(pet);
             }
         }
@@ -274,6 +274,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         } else  {
             pet = userPets.get(position);
         }
+        editKey = pet.getKey();
         mListenerPetSelected.onPetSelectedListener(pet,false);
     }
 

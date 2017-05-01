@@ -3,18 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_share"
+        android:id="@+id/action_confirm"
         android:orderInCategory="100"
         android:title="Share"
         app:showAsAction="always"
-        android:icon="@drawable/ic_share_variant_white_24dp"/>
+        android:icon="@drawable/ic_check_white_24dp"/>
 
     <item
-        android:id="@+id/action_favorite"
+        android:id="@+id/action_favorite_border"
         android:orderInCategory="99"
         android:title="Like"
         app:showAsAction="always"
-        android:icon="@drawable/ic_heart_white_24dp"/>
+        android:icon="@drawable/ic_favorite_border_white_24dp"/>
+
 
 
 </menu>

@@ -9,4 +9,6 @@
     <string name="default_toolbar_title">"Cultura perrona"</string>
 
     <string name="facebook_app_id">130592740810715</string>
+    <string name="action_settings">Settings</string>
+
 </resources>
