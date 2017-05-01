@@ -1,5 +1,6 @@
 package itesm.mx.perritos.pet;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -19,11 +20,14 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.model.ResourceLoader;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import itesm.mx.perritos.R;
 
@@ -36,6 +40,7 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
 
     private ImageView imgCover;
     private static final int RC_PHOTO_PICKER = 2;
+    private static final int CROP_IMAGE = 19;
     private Pet pet;
 
     private FirebaseDatabase mFirebaseDatabase;
@@ -55,6 +60,10 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
     private CheckBox checkVisibility;
 
     private boolean isEditing;
+
+    private Uri imageLink;
+
+    private Intent cropIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,20 +210,30 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == RC_PHOTO_PICKER) {
-                Uri imageLink = data.getData();
-                StorageReference photoRef = mPetPhotosStorageReference.child(imageLink.getLastPathSegment());
+                imageLink = data.getData();
+                CropImage.activity(imageLink)
+                        .setAspectRatio(4,4)
+                        .start(this);
 
-                photoRef.putFile(imageLink).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Uri downloadUri = taskSnapshot.getDownloadUrl();
-                        Glide.with(imgCover.getContext())
-                                .load(downloadUri.toString())
-                                .into(imgCover);
-                        selectedImage = downloadUri.toString();
-                        pet.setPhotoUrl(downloadUri.toString());
-                    }
-                });
+            }else if(requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if(resultCode == RESULT_OK){
+                    Uri resultUri = result.getUri();
+
+                    StorageReference photoRef = mPetPhotosStorageReference.child(resultUri.getLastPathSegment());
+
+                    photoRef.putFile(resultUri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Uri downloadUri = taskSnapshot.getDownloadUrl();
+                            Glide.with(imgCover.getContext())
+                                    .load(downloadUri.toString())
+                                    .into(imgCover);
+                            selectedImage = downloadUri.toString();
+                            pet.setPhotoUrl(downloadUri.toString());
+                        }
+                    });
+                }
             }
         }
     }
