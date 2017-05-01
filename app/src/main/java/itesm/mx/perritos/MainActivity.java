@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     private TabLayout tlTabLayout;
     private Toolbar tbToolbar;
-    private ImageButton imgbtnMenu;
 
     private final int [] ICON ={ R.drawable.ic_pets_black_24dp,
             R.drawable.ic_event_black_24dp,
@@ -131,10 +130,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 if (user != null) {
                     // user signed in
                     if (user.getEmail().equals("jorgevzqz6@gmail.com")) {
-                        Log.d(DEBUG_TAG,"user is admin");
                         petFragment.setAdmin(true,getApplicationContext());
                     } else {
-                        Log.d("DEBUG_TAG","user is not admin");
                         petFragment.setAdmin(false,getApplicationContext());
                     }
                 } else {
@@ -336,7 +333,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         @Override
         public android.support.v4.app.Fragment getItem(int position) {
-            Log.d(DEBUG_TAG,"position: " + position);
             return mFragmentList.get(position);
         }
 

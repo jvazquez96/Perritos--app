@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.media.DeniedByServerException;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -86,19 +87,21 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
 
     public void setAdmin(boolean isAdmin, Context context) {
         this.isAdmin = isAdmin;
-        Log.d(DEBUG_TAG,"setAdmin");
         if (isAdmin) {
-            Log.d(DEBUG_TAG,"new admin list");
             adminPets = new ArrayList<Pet>();
             petAdapter = new PetAdapter(context,adminPets);
+            if (floatingAddButton != null) {
+                floatingAddButton.setVisibility(View.VISIBLE);
+            }
         } else {
-            Log.d(DEBUG_TAG,"new user list");
             userPets = new ArrayList<Pet>();
             petAdapter = new PetAdapter(context,userPets);
+            if (floatingAddButton != null) {
+                floatingAddButton.setVisibility(View.INVISIBLE);
+            }
         }
         setListAdapter(petAdapter);
     }
-
 
 
     @Override
@@ -115,14 +118,11 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(DEBUG_TAG,"onResume()");
         if (isAdmin) {
-            Log.d(DEBUG_TAG,"new admin list");
             adminPets = new ArrayList<Pet>();
             petAdapter = new PetAdapter(getActivity(),adminPets);
             floatingAddButton.setVisibility(View.VISIBLE);
         } else {
-            Log.d(DEBUG_TAG,"new user list");
             userPets = new ArrayList<Pet>();
             petAdapter = new PetAdapter(getActivity(),userPets);
             floatingAddButton.setVisibility(View.INVISIBLE);
@@ -138,9 +138,14 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
         petAdapter.clear();
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        floatingAddButton.setVisibility(View.INVISIBLE);
+    }
+
     private void attachDatabaseReadListener() {
         if (mChildEventListenerPets == null) {
-            Log.d(DEBUG_TAG,"Listener is null");
             mChildEventListenerPets = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -159,9 +164,19 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                     Pet editPet = dataSnapshot.getValue(Pet.class);
-                    for (int i = 0; i < adminPets.size(); ++i) {
-                        if (adminPets.get(i).getKey().equals(editPet.getKey())) {
-                            adminPets.set(i,editPet);
+                    if (isAdmin) {
+                        for (int i = 0; i < adminPets.size(); ++i) {
+                            if (adminPets.get(i).getKey().equals(editPet.getKey())) {
+                                adminPets.set(i, editPet);
+                            }
+                        }
+                    } else {
+                        if (editPet.getIsVisible()) {
+                            for (int i = 0; i < userPets.size(); ++i) {
+                                if (userPets.get(i).getKey().equals(editPet.getKey())) {
+                                    userPets.set(i, editPet);
+                                }
+                            }
                         }
                     }
                     petAdapter.notifyDataSetChanged();
@@ -196,7 +211,6 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Log.d("DEBUG_TAG","CLICK");
         Intent startAddPetActivity = new Intent(getActivity(),AddPetActivity.class);
         startActivityForResult(startAddPetActivity,REQUEST_CODE_ADD_PET);
     }
@@ -216,18 +230,13 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-//        setListAdapter(petAdapter);
         // Inflate the layout for this fragment
-        Log.d(DEBUG_TAG,"onCreateView");
         View view = inflater.inflate(R.layout.fragment_pet, container, false);
         coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id.coordinator);
         
         floatingAddButton = (FloatingActionButton) view.findViewById(R.id.floating_add);
         floatingAddButton.setOnClickListener(this);
 
-        if (mPetsDataBaseReference  ==  null) {
-            Log.d("DEBUG_TAG","THIS THING IS NULL");
-        }
         return view;
     }
 
@@ -259,7 +268,6 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        Log.d("POSITION: ", String.valueOf(position));
         Pet pet;
         if (isAdmin) {
             pet = adminPets.get(position);
