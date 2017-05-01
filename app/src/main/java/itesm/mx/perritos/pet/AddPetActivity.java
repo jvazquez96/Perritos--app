@@ -154,11 +154,11 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
                 finish();
                 break;
             case R.id.button_picture:
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/jpeg");
-            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-            startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
-
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/jpeg");
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
+                break;
         }
         return true;
     }
@@ -190,7 +190,7 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
                 setToastMessage("Por favor introduce todos los campos");
             }
 
-        } else if (id == R.id.button_delete ){
+        } else if (id == R.id.button_delete){
             Intent intent = new Intent();
             intent.putExtra("Delete",true);
             pet.setName(editName.getText().toString());

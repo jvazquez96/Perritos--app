@@ -189,7 +189,11 @@ public class PetFragment extends ListFragment implements View.OnClickListener {
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
                     Pet removedPet = dataSnapshot.getValue(Pet.class);
-                    adminPets.remove(removedPet);
+                    if (isAdmin) {
+                        adminPets.remove(removedPet);
+                    } else {
+                        userPets.remove(removedPet);
+                    }
                     petAdapter.notifyDataSetChanged();
                 }
 
