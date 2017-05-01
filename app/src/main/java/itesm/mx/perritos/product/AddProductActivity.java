@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import itesm.mx.perritos.R;
 
@@ -110,18 +111,28 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
         if (resultCode == RESULT_OK) {
             if (requestCode == RC_PHOTO_PICKER) {
                 Uri imageLink = data.getData();
-                StorageReference photoRef = mProductsPhotosStorageReference.child(imageLink.getLastPathSegment());
-                photoRef.putFile(imageLink).addOnSuccessListener(this,new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Uri downloadUri = taskSnapshot.getDownloadUrl();
-                        Glide.with(imgPicture.getContext())
-                                .load(downloadUri.toString())
-                                .into(imgPicture);
-                        selectedImage = downloadUri.toString();
-                        product.setPhotoUrl(downloadUri.toString());
-                    }
-                });
+                CropImage.activity(imageLink)
+                        .setAspectRatio(4,4)
+                        .start(this);
+            }else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    Uri resultUri = result.getUri();
+
+                    StorageReference photoRef = mProductsPhotosStorageReference.child(resultUri.getLastPathSegment());
+
+                    photoRef.putFile(resultUri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Uri downloadUri = taskSnapshot.getDownloadUrl();
+                            Glide.with(imgPicture.getContext())
+                                    .load(downloadUri.toString())
+                                    .into(imgPicture);
+                            selectedImage = downloadUri.toString();
+                            product.setPhotoUrl(downloadUri.toString());
+                        }
+                    });
+                }
             }
         }
     }

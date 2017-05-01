@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import itesm.mx.perritos.R;
 
@@ -86,7 +87,7 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private boolean isAllDataCorrect() {
-        if (editTitle.getText().toString().length() == 0 || editDescription.getText().toString().trim().length() == 0 ||selectedImage == null) {
+        if (editTitle.getText().toString().length() == 0 || editDescription.getText().toString().trim().length() == 0 || selectedImage == null) {
             return false;
         }
         return true;
@@ -94,7 +95,7 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.confirm,menu);
+        getMenuInflater().inflate(R.menu.confirm, menu);
         return true;
     }
 
@@ -107,11 +108,11 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
                 news.setPhotoUrl(selectedImage);
                 if (isAllDataCorrect()) {
                     Intent intent = new Intent();
-                    intent.putExtra("News",news);
-                    setResult(RESULT_OK,intent);
+                    intent.putExtra("News", news);
+                    setResult(RESULT_OK, intent);
                     finish();
                 } else {
-                    Toast.makeText(getApplicationContext(),"Por favor introduce todos los campos",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Por favor introduce todos los campos", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case android.R.id.home:
@@ -131,12 +132,12 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
             startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
         } else if (id == R.id.button_delete) {
             Intent intent = new Intent();
-            intent.putExtra("Delete",true);
+            intent.putExtra("Delete", true);
             news.setTitle(editTitle.getText().toString());
             news.setDescription((editDescription.getText().toString()));
             news.setPhotoUrl(selectedImage);
-            intent.putExtra("News",news);
-            setResult(RESULT_OK,intent);
+            intent.putExtra("News", news);
+            setResult(RESULT_OK, intent);
             finish();
         }
     }
@@ -147,18 +148,28 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
         if (resultCode == RESULT_OK) {
             if (requestCode == RC_PHOTO_PICKER) {
                 Uri imageLink = data.getData();
-                StorageReference photoRef = mNewsPhotosStorageReference.child(imageLink.getLastPathSegment());
-                photoRef.putFile(imageLink).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Uri downloadUri = taskSnapshot.getDownloadUrl();
-                        Glide.with(imageCover.getContext())
-                                .load(downloadUri.toString())
-                                .into(imageCover);
-                        selectedImage = downloadUri.toString();
-                        news.setPhotoUrl(downloadUri.toString());
-                    }
-                });
+                CropImage.activity(imageLink)
+                        .setAspectRatio(4, 4)
+                        .start(this);
+            }else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    Uri resultUri = result.getUri();
+
+                    StorageReference photoRef = mNewsPhotosStorageReference.child(resultUri.getLastPathSegment());
+
+                    photoRef.putFile(resultUri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Uri downloadUri = taskSnapshot.getDownloadUrl();
+                            Glide.with(imageCover.getContext())
+                                    .load(downloadUri.toString())
+                                    .into(imageCover);
+                            selectedImage = downloadUri.toString();
+                            news.setPhotoUrl(downloadUri.toString());
+                        }
+                    });
+                }
             }
         }
     }
