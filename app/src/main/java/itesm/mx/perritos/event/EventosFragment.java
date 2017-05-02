@@ -195,8 +195,8 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
                 Bundle extras = data.getExtras();
-                News news1 = (News) extras.get("News");
-                mEventsDatabaseReference.push().setValue(news1);
+                Evento evento1 = (Evento) extras.get("Event");
+                mEventsDatabaseReference.push().setValue(evento1);
         }
     }
 }
