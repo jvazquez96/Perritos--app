@@ -10,6 +10,8 @@ public class Product implements Serializable {
     private String sName;
     private double dPrice;
     private String photoUrl;
+    private boolean isFavorite;
+    private String description;
     private String key;
     private boolean isVisible;
 
@@ -21,6 +23,7 @@ public class Product implements Serializable {
         sName = "";
         dPrice = 5;
         photoUrl = null;
+        description = "";
     }
 
     /**
@@ -33,6 +36,7 @@ public class Product implements Serializable {
         this.sName = sName;
         this.dPrice = dPrice;
         this.photoUrl = photoUrl;
+        this.isFavorite = false;
         this.isVisible = isVisible;
     }
 
@@ -80,8 +84,33 @@ public class Product implements Serializable {
         this.photoUrl = photoUrl;
     }
 
+    /**
+     * Set the description of the Product.
+     * @param description
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * Get the description of the product.
+     * @return description
+     */
+    public String getDescription() {
+        return this.description;
+    }
+
+
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public void setFav(boolean fav) {
+        this.isFavorite = fav;
+    }
+
+    public boolean getFav() {
+        return this.isFavorite;
     }
 
     public String getKey() {

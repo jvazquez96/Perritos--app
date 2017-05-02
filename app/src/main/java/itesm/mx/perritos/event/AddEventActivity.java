@@ -51,6 +51,7 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
     private TextView AgregarLugar;
     private ImageButton AgregarImagen;
     private Evento MyEvent;
+    private boolean StartDating = true;
 
 
     @Override
@@ -93,13 +94,13 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
         return true;
     }
 
-    private void showDatePickerDialog() {
+    private void showDatePickerDialog(TextView Paramater) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         DialogFragment newFragment = new DatePickerFragment(AddEventActivity.this);
         newFragment.show(ft, "date_dialog");
     }
 
-    private void showTimePickerDialog() {
+    private void showTimePickerDialog(TextView Paramater) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         DialogFragment newFragment = new TimePickerFragment(AddEventActivity.this);
         newFragment.show(fragmentTransaction,"time_dialog");
@@ -119,16 +120,20 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.text_startDate:
-                showDatePickerDialog();
+                StartDating = true;
+                showDatePickerDialog(textStartDate);
                 break;
             case R.id.text_startTime:
-                showTimePickerDialog();
+                StartDating = true;
+                showTimePickerDialog(textStartTime);
                 break;
             case R.id.text_endDate:
-                showDatePickerDialog();
+                StartDating = false;
+                showDatePickerDialog(textEndDate);
                 break;
             case R.id.text_endTime:
-                showTimePickerDialog();
+                StartDating = false;
+                showTimePickerDialog(textEndTime);
                 break;
             case R.id.AgregarImagen:
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -165,17 +170,28 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
+        if(StartDating){
+            textStartDate.setText(String.valueOf(dayOfMonth) + "/" + String.valueOf(month) + "/" + String.valueOf(year));
+        }
+        else{
+            textEndDate.setText(String.valueOf(dayOfMonth) + "/" + String.valueOf(month) + "/" + String.valueOf(year));
+        }
     }
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
+        if(StartDating){
+            textStartTime.setText(String.valueOf(hourOfDay) + ":" + String.valueOf(minute));
+        }
+        else{
+            textEndTime.setText(String.valueOf(hourOfDay) + ":" + String.valueOf(minute));
+        }
     }
 
     public static class DatePickerFragment extends DialogFragment {
 
         private DatePickerDialog.OnDateSetListener mDateSetListener;
+        public String Date;
 
         public DatePickerFragment() {
 
@@ -197,12 +213,13 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
                     cal.get(Calendar.MONTH),
                     cal.get(Calendar.DAY_OF_MONTH));
         }
+
+
     }
 
     public static class TimePickerFragment extends DialogFragment {
 
         private TimePickerDialog.OnTimeSetListener mTimeSetListener;
-
         public TimePickerFragment() {
 
         }

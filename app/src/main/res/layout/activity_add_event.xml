@@ -158,19 +158,10 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/image_placeholder" />
-
-
+            android:layout_marginTop="20dp"
+            android:background="@color/colorPrimary"
+            android:text="AGREGAR EVENTO" />
     </LinearLayout>
-    <Button
-        android:id="@+id/button_picture"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#ffffff"
-        android:layout_alignParentEnd="true"
-        android:background="@color/adopt"
-        android:text="TOMAR FOTO"/>
 
 
     <Button

@@ -43,6 +43,7 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
     private ImageView imgPicture;
     private Button btnPicture;
     private Button btnDeleted;
+    private ImageView imgCover;
 
     private Button btnOk;
 

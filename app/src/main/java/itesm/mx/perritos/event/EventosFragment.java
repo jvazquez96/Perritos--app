@@ -86,7 +86,7 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mEventsDatabaseReference = mFirebaseDatabase.getReference().child("News");
+        mEventsDatabaseReference = mFirebaseDatabase.getReference().child("Event");
     }
 
     @Override
@@ -95,11 +95,7 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
         // Inflate the layout for this fragment
 
         EventoList = new ArrayList<>();
-        Evento eventos1 = new Evento("Titulo","Descripcion", R.mipmap.ic_launcher);
-        EventoList.add(eventos1);
         eventsAdapter = new EventoAdapter(getActivity(),EventoList);
-        Evento evento = new Evento("Titulo","Descripcion", R.mipmap.ic_launcher);
-        EventoList.add(evento);
         setListAdapter(eventsAdapter);
 
         View view  = inflater.inflate(R.layout.fragment_eventos, container, false);

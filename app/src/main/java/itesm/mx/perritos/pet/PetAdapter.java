@@ -66,7 +66,6 @@ public class PetAdapter extends ArrayAdapter<Pet> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.pet_info,parent,false);
         }
-
         ImageView ivPetFav = (ImageView) convertView.findViewById(R.id.petFavBtn);
         TextView tvName = (TextView) convertView.findViewById(R.id.text_name);
         TextView tvGender = (TextView) convertView.findViewById(R.id.text_gender);

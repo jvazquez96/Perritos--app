@@ -47,6 +47,7 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
     private Calendar calendar;
     private ImageView favImage;
     private Bundle bundle;
+    private  Button btnSolicitudPet;
     private Boolean favButton;
     private Pet pet;
     private CollapsingToolbarLayout cool;
@@ -64,35 +65,13 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pet_detail);
-
          tlToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tlToolbar);
+
         cool = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String TO[] = {"nobody@mail.com"};
-                Intent emailIntent = new Intent(Intent.ACTION_SEND);
-                emailIntent.setData(Uri.EMPTY.parse("mailto:"));
-                emailIntent.setType("text/plain");
-                emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
-                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Solicitud de adopción");
-                emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
-                try {
-                    startActivity(Intent.createChooser(emailIntent, "Solicitud de adopción por correo..."));
-                    finish();
-                } catch (android.content.ActivityNotFoundException ex) {
-                    Toast.makeText(PetDetailActivity.this,
-                            "No existe algún cliente de correo electronico en el dispositivo.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
         ivPet = (ImageView) findViewById(R.id.image_pet);
-
+        btnSolicitudPet = (Button) findViewById(R.id.btn_solicitud_pet) ;
         tvName = (TextView) findViewById(R.id.text_name);
         tvDescription = (TextView) findViewById(R.id.text_description);
         tvDate = (TextView) findViewById(R.id.text_date);
@@ -101,6 +80,7 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
         calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MM yyyy");
         favImage = (ImageView) findViewById(R.id.petLikeBtn);
+        btnSolicitudPet.setOnClickListener(this);
 
         if (bundle != null) {
             pet = (Pet) bundle.getSerializable("Pet");
@@ -144,6 +124,10 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
                 finish();
                 return true;
             case R.id.action_confirm:
+                Intent intent2 = new Intent();
+                intent2.putExtra("Pet", pet);
+                intent2.putExtra("Delete", false);
+                setResult(RESULT_OK, intent2);
                 finish();
             default:
                 // If we got here, the user's action was not recognized.
@@ -163,17 +147,21 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
         return true;
     }
 
-
-    public void showLikebutton() {
-        favImage.setVisibility(View.VISIBLE);
-    }
-
-    public void hideLikebutton() {
-        favImage.setVisibility(View.VISIBLE);
-    }
-
     @Override
     public void onClick(View v) {
-
-    }
+            String TO[] = {"nobody@mail.com"};
+            Intent emailIntent = new Intent(Intent.ACTION_SEND);
+            emailIntent.setData(Uri.EMPTY.parse("mailto:"));
+            emailIntent.setType("text/plain");
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Solicitud de adopción");
+            emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
+            try {
+                startActivity(Intent.createChooser(emailIntent, "Solicitud de adopción por correo..."));
+                finish();
+            } catch (android.content.ActivityNotFoundException ex) {
+                Toast.makeText(PetDetailActivity.this,
+                        "No existe algún cliente de correo electronico en el dispositivo.", Toast.LENGTH_SHORT).show();
+            }
+        }
 }
