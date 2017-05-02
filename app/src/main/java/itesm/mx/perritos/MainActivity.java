@@ -59,8 +59,13 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     private final int [] ICON ={ R.drawable.ic_pets_black_24dp,
             R.drawable.ic_event_black_24dp,
-            R.drawable.ic_newspaper_black_24dp,
-            R.drawable.ic_store_black_24dp};
+            R.drawable.ic_web_black_24dp,
+            R.drawable.ic_store_black_24dp,
+            R.drawable.ic_pets_black_24dp_2,
+            R.drawable.ic_event_black_24dp_2,
+            R.drawable.ic_web_black_24dp_2,
+            R.drawable.ic_store_black_24dp_2};
+    
     private ViewPager vpViewPager;
     // Firebase Objects
     private FirebaseDatabase mFirebaseDatabase;
@@ -83,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private Pet editablePet;
     private News editableNews;
     private Product editableProduct;
+    private int actualTab = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,9 +102,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         tlTabLayout = (TabLayout) findViewById(R.id.tabs);
         tlTabLayout.setupWithViewPager(vpViewPager);
         tlTabLayout.getTabAt(0).setIcon(ICON[0]);
-        tlTabLayout.getTabAt(1).setIcon(ICON[1]);
-        tlTabLayout.getTabAt(2).setIcon(ICON[2]);
-        tlTabLayout.getTabAt(3).setIcon(ICON[3]);
+        tlTabLayout.getTabAt(1).setIcon(ICON[5]);
+        tlTabLayout.getTabAt(2).setIcon(ICON[6]);
+        tlTabLayout.getTabAt(3).setIcon(ICON[7]);
         tlTabLayout.addOnTabSelectedListener(this);
 
         // Custom toolbar
@@ -128,6 +134,17 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // user signed in
+                    if (user.getEmail().equals("jorgevzqz6@gmail.com") ||
+                            user.getEmail().equals("Alexandro4v@gmail.com") ||
+                            user.getEmail().equals("prueba@prueba.com")) {
+                        petFragment.setAdmin(true,getApplicationContext());
+                        productFragment.setAdmin(true,getApplicationContext());
+                        newsFragment.setAdmin(true,getApplicationContext());
+                    } else {
+                        petFragment.setAdmin(false,getApplicationContext());
+                        productFragment.setAdmin(false,getApplicationContext());
+                        newsFragment.setAdmin(false,getApplicationContext());
+                    }
                 } else {
                     startActivityForResult(
                             AuthUI.getInstance()
@@ -189,7 +206,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
+        tlTabLayout.getTabAt(actualTab).setIcon(ICON[actualTab + 4]);
+        actualTab = tab.getPosition();
         vpViewPager.setCurrentItem(tab.getPosition());
+        tlTabLayout.getTabAt(actualTab).setIcon(ICON[actualTab]);
     }
 
     @Override
@@ -329,7 +349,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         @Override
         public android.support.v4.app.Fragment getItem(int position) {
-            Log.d(DEBUG_TAG,"position: " + position);
             return mFragmentList.get(position);
         }
 

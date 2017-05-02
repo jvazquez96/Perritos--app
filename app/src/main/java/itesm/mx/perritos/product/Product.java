@@ -13,6 +13,7 @@ public class Product implements Serializable {
     private boolean isFavorite;
     private String description;
     private String key;
+    private boolean isVisible;
 
 
     /**
@@ -29,14 +30,14 @@ public class Product implements Serializable {
      * Constructor
      * @param sName Name of the product
      * @param dPrice Price of the product
-     * @param iPicture Picture of the product
+     * @param photoUrl Picture of the product
      */
-    public Product(String sName, double dPrice, String photoUrl,String description){
+    public Product(String sName, double dPrice, String photoUrl, boolean isVisible){
         this.sName = sName;
         this.dPrice = dPrice;
-        this.description = description;
         this.photoUrl = photoUrl;
         this.isFavorite = false;
+        this.isVisible = isVisible;
     }
 
     /**
@@ -114,5 +115,13 @@ public class Product implements Serializable {
 
     public String getKey() {
         return key;
+    }
+
+    public void setVisible(boolean isVisible) {
+        this.isVisible = isVisible;
+    }
+
+    public boolean getIsVisible() {
+        return this.isVisible;
     }
 }
