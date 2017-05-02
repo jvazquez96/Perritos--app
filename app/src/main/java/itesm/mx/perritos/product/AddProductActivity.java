@@ -19,6 +19,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import itesm.mx.perritos.R;
 
@@ -43,6 +44,10 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
     private Button btnPicture;
     private Button btnDeleted;
 
+    private Button btnOk;
+
+
+
     private boolean isEditing;
 
     @Override
@@ -55,10 +60,10 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
         editPrecio = (EditText) findViewById(R.id.edit_precio);
         checkVisible = (CheckBox) findViewById(R.id.check_visible);
         imgPicture = (ImageView) findViewById(R.id.image_cover);
-        btnPicture = (Button) findViewById(R.id.button_picture);
         btnDeleted = (Button) findViewById(R.id.button_delete);
-        btnPicture.setOnClickListener(this);
+        btnOk = (Button) findViewById(R.id.action_confirm);
         btnDeleted.setOnClickListener(this);
+        btnOk.setOnClickListener(this);
 
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         mFirebaseStorage = FirebaseStorage.getInstance();
@@ -77,6 +82,7 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
             editPrecio.setText(String.valueOf(product1.getdPrice()));
             Glide.with(imgPicture.getContext()).load(product1.getPhotoUrl()).into(imgPicture);
             selectedImage = product1.getPhotoUrl();
+            checkVisible.setChecked(product1.getIsVisible());
         } else {
             getSupportActionBar().setTitle("Nuevo producto");
             btnDeleted.setVisibility(View.INVISIBLE);
@@ -87,11 +93,17 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.button_picture) {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/jpeg");
-            intent.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
-            startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
+        if (id == R.id.action_confirm) {
+            if (isAllDataCorrect()) {
+                product.setsName(editNombre.getText().toString());
+                product.setdPrice(Double.valueOf(editPrecio.getText().toString()));
+                product.setPhotoUrl(selectedImage);
+                product.setVisible(checkVisible.isChecked());
+                Intent intent = new Intent();
+                intent.putExtra("Product", product);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
         } else if (id == R.id.button_delete) {
             Intent intent = new Intent();
             intent.putExtra("Delete",true);
@@ -110,18 +122,28 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
         if (resultCode == RESULT_OK) {
             if (requestCode == RC_PHOTO_PICKER) {
                 Uri imageLink = data.getData();
-                StorageReference photoRef = mProductsPhotosStorageReference.child(imageLink.getLastPathSegment());
-                photoRef.putFile(imageLink).addOnSuccessListener(this,new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Uri downloadUri = taskSnapshot.getDownloadUrl();
-                        Glide.with(imgPicture.getContext())
-                                .load(downloadUri.toString())
-                                .into(imgPicture);
-                        selectedImage = downloadUri.toString();
-                        product.setPhotoUrl(downloadUri.toString());
-                    }
-                });
+                CropImage.activity(imageLink)
+                        .setAspectRatio(4,4)
+                        .start(this);
+            }else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    Uri resultUri = result.getUri();
+
+                    StorageReference photoRef = mProductsPhotosStorageReference.child(resultUri.getLastPathSegment());
+
+                    photoRef.putFile(resultUri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Uri downloadUri = taskSnapshot.getDownloadUrl();
+                            Glide.with(imgPicture.getContext())
+                                    .load(downloadUri.toString())
+                                    .into(imgPicture);
+                            selectedImage = downloadUri.toString();
+                            product.setPhotoUrl(downloadUri.toString());
+                        }
+                    });
+                }
             }
         }
     }
@@ -144,16 +166,11 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_confirm:
-                if (isAllDataCorrect()) {
-                    product.setsName(editNombre.getText().toString());
-                    product.setdPrice(Double.valueOf(editPrecio.getText().toString()));
-                    product.setPhotoUrl(selectedImage);
-                    Intent intent = new Intent();
-                    intent.putExtra("Product", product);
-                    setResult(RESULT_OK, intent);
-                    finish();
-                }
+            case R.id.button_picture:
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/jpeg");
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY,true);
+                startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
                 break;
             case android.R.id.home:
                 finish();

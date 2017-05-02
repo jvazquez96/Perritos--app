@@ -34,11 +34,16 @@ dependencies {
     compile 'com.google.firebase:firebase-storage:10.2.0'
     compile 'com.google.firebase:firebase-messaging:10.2.0'
     compile 'com.google.firebase:firebase-config:10.2.0'
+    compile 'com.google.android.gms:play-services-auth:10.2.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.5'
     // Firebase UI
     compile 'com.firebaseui:firebase-ui-auth:1.2.0'
 
     // Displaying images
     compile 'com.github.bumptech.glide:glide:3.6.1'
+
+    //CROP
+    compile 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
 
     testCompile 'junit:junit:4.12'
 }

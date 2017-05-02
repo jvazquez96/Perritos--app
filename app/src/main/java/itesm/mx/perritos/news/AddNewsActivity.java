@@ -22,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import itesm.mx.perritos.R;
 
@@ -35,6 +36,7 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
     private CheckBox checkBox;
 
     private Button btnDelete;
+    private Button btnAccept;
 
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseStorage mFirebaseStorage;
@@ -58,6 +60,8 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
         imageCover = (ImageButton) findViewById(R.id.image_cover);
         checkBox = (CheckBox) findViewById(R.id.check_visible);
         btnDelete = (Button) findViewById(R.id.button_delete);
+        btnAccept = (Button) findViewById(R.id.action_confirm);
+        btnAccept.setOnClickListener(this);
         btnDelete.setOnClickListener(this);
         setSupportActionBar(tlToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -78,6 +82,7 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
             editDescription.setText(news1.getDescription());
             Glide.with(imageCover.getContext()).load(news1.getPhotoUrl()).into(imageCover);
             selectedImage = news1.getPhotoUrl();
+            checkBox.setChecked(news1.getIsVisible());
         } else {
             getSupportActionBar().setTitle("Nueva noticia");
             btnDelete.setVisibility(View.INVISIBLE);
@@ -86,7 +91,8 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private boolean isAllDataCorrect() {
-        if (editTitle.getText().toString().length() == 0 || editDescription.getText().toString().trim().length() == 0 ||selectedImage == null) {
+        if (editTitle.getText().toString().length() == 0 || editDescription.getText().toString().trim().length() == 0 || selectedImage == null) {
+
             return false;
         }
         return true;
@@ -94,25 +100,18 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.confirm,menu);
+        getMenuInflater().inflate(R.menu.confirm, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_confirm:
-                news.setTitle(editTitle.getText().toString());
-                news.setDescription((editDescription.getText().toString()));
-                news.setPhotoUrl(selectedImage);
-                if (isAllDataCorrect()) {
-                    Intent intent = new Intent();
-                    intent.putExtra("News",news);
-                    setResult(RESULT_OK,intent);
-                    finish();
-                } else {
-                    Toast.makeText(getApplicationContext(),"Por favor introduce todos los campos",Toast.LENGTH_SHORT).show();
-                }
+            case R.id.button_picture:
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/jpeg");
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
                 break;
             case android.R.id.home:
                 finish();
@@ -124,19 +123,27 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.image_cover) {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/jpeg");
-            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-            startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
-        } else if (id == R.id.button_delete) {
-            Intent intent = new Intent();
-            intent.putExtra("Delete",true);
+        if (id == R.id.action_confirm) {
             news.setTitle(editTitle.getText().toString());
             news.setDescription((editDescription.getText().toString()));
             news.setPhotoUrl(selectedImage);
-            intent.putExtra("News",news);
-            setResult(RESULT_OK,intent);
+            news.setVisible(checkBox.isChecked());
+            if (isAllDataCorrect()) {
+                Intent intent = new Intent();
+                intent.putExtra("News", news);
+                setResult(RESULT_OK, intent);
+                finish();
+            } else {
+                Toast.makeText(getApplicationContext(), "Por favor introduce todos los campos", Toast.LENGTH_SHORT).show();
+            }
+        } else if (id == R.id.button_delete) {
+            Intent intent = new Intent();
+            intent.putExtra("Delete", true);
+            news.setTitle(editTitle.getText().toString());
+            news.setDescription((editDescription.getText().toString()));
+            news.setPhotoUrl(selectedImage);
+            intent.putExtra("News", news);
+            setResult(RESULT_OK, intent);
             finish();
         }
     }
@@ -147,18 +154,28 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
         if (resultCode == RESULT_OK) {
             if (requestCode == RC_PHOTO_PICKER) {
                 Uri imageLink = data.getData();
-                StorageReference photoRef = mNewsPhotosStorageReference.child(imageLink.getLastPathSegment());
-                photoRef.putFile(imageLink).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Uri downloadUri = taskSnapshot.getDownloadUrl();
-                        Glide.with(imageCover.getContext())
-                                .load(downloadUri.toString())
-                                .into(imageCover);
-                        selectedImage = downloadUri.toString();
-                        news.setPhotoUrl(downloadUri.toString());
-                    }
-                });
+                CropImage.activity(imageLink)
+                        .setAspectRatio(4, 4)
+                        .start(this);
+            }else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    Uri resultUri = result.getUri();
+
+                    StorageReference photoRef = mNewsPhotosStorageReference.child(resultUri.getLastPathSegment());
+
+                    photoRef.putFile(resultUri).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Uri downloadUri = taskSnapshot.getDownloadUrl();
+                            Glide.with(imageCover.getContext())
+                                    .load(downloadUri.toString())
+                                    .into(imageCover);
+                            selectedImage = downloadUri.toString();
+                            news.setPhotoUrl(downloadUri.toString());
+                        }
+                    });
+                }
             }
         }
     }
