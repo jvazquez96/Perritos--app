@@ -38,11 +38,9 @@ public class EventoAdapter extends ArrayAdapter<Evento> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.evento_info,parent,false);
         }
 
-        ImageView ivCover = (ImageView) convertView.findViewById(R.id.image_evento);
         TextView tvTitle = (TextView) convertView.findViewById(R.id.text_title);
         TextView tvDescription = (TextView) convertView.findViewById(R.id.text_description);
 
-        ivCover.setImageResource(eventos1.getIdImage());
         tvTitle.setText(eventos1.getTitle());
         tvDescription.setText(eventos1.getDescription());
 
