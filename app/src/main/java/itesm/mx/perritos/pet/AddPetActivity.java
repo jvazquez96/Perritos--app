@@ -35,7 +35,7 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
 
     private Toolbar tlToolbar;
 
-    private Button btnPicture;
+    private Button btnOK;
     private Button btnDelete;
 
     private ImageView imgCover;
@@ -63,7 +63,6 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
 
     private Uri imageLink;
 
-    private Intent cropIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +71,9 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
         tlToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tlToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        btnPicture = (Button) findViewById(R.id.button_picture);
+        btnOK = (Button) findViewById(R.id.action_confirm);
         btnDelete = (Button) findViewById(R.id.button_delete);
-        btnPicture.setOnClickListener(this);
+        btnOK.setOnClickListener(this);
         btnDelete.setOnClickListener(this);
         imgCover = (ImageView) findViewById(R.id.image_pet);
 
@@ -151,30 +150,14 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_confirm:
-                pet.setName(editName.getText().toString());
-                pet.setDescription(editDescription.getText().toString());
-                pet.setAge(editAge.getText().toString());
-                pet.setGender(this.gender);
-                pet.setVisible(checkVisibility.isChecked());
-                pet.setRequests(0);
-                pet.setPhotoUrl(selectedImage);
-                if (isAllDataCorrect()) {
-                    Intent intent = new Intent();
-                    intent.putExtra("Pet", pet);
-                    setResult(RESULT_OK, intent);
-                    if (isEditing) {
-                        setToastMessage("Mascota editada");
-                    } else {
-                        setToastMessage("Mascota agregada");
-                    }
-                    finish();
-                } else {
-                    setToastMessage("Por favor introduce todos los campos");
-                }
-                break;
             case android.R.id.home:
                 finish();
+                break;
+            case R.id.button_picture:
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/jpeg");
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
                 break;
         }
         return true;
@@ -183,12 +166,31 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.button_picture) {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/jpeg");
-            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-            startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
-        } else if (id == R.id.button_delete ){
+        if (id == R.id.action_confirm) {
+
+            pet.setName(editName.getText().toString());
+            pet.setDescription(editDescription.getText().toString());
+            pet.setAge(editAge.getText().toString());
+            pet.setGender(this.gender);
+            pet.setVisible(checkVisibility.isChecked());
+            pet.setRequests(0);
+            pet.setPhotoUrl(selectedImage);
+            pet.setFav(false);
+            if (isAllDataCorrect()) {
+                Intent intent = new Intent();
+                intent.putExtra("Pet", pet);
+                setResult(RESULT_OK, intent);
+                if (isEditing) {
+                    setToastMessage("Mascota editada");
+                } else {
+                    setToastMessage("Mascota agregada");
+                }
+                finish();
+            } else {
+                setToastMessage("Por favor introduce todos los campos");
+            }
+
+        } else if (id == R.id.button_delete){
             Intent intent = new Intent();
             intent.putExtra("Delete",true);
             pet.setName(editName.getText().toString());

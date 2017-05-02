@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     private TabLayout tlTabLayout;
     private Toolbar tbToolbar;
-    private ImageButton imgbtnMenu;
 
     private final int [] ICON ={ R.drawable.ic_pets_black_24dp,
             R.drawable.ic_event_black_24dp,
@@ -66,9 +65,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             R.drawable.ic_event_black_24dp_2,
             R.drawable.ic_web_black_24dp_2,
             R.drawable.ic_store_black_24dp_2};
-
+    
     private ViewPager vpViewPager;
-
     // Firebase Objects
     private FirebaseDatabase mFirebaseDatabase;
 
@@ -80,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private static final int RC_EDIT_PET =2;
     private static final int RC_EDIT_NEWS = 3;
     private static final int RC_EDIT_PRODUCT = 4;
+    private static final int RC_EDIT_PET_FAV = 5;
 
     private PetFragment petFragment;
     private EventosFragment eventosFragment;
@@ -135,6 +134,16 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // user signed in
+                    if (user.getEmail().equals("jorgevzqz6@gmail.com") ||
+                            user.getEmail().equals("Alexandro4v@gmail.com")) {
+                        petFragment.setAdmin(true,getApplicationContext());
+                        productFragment.setAdmin(true,getApplicationContext());
+                        newsFragment.setAdmin(true,getApplicationContext());
+                    } else {
+                        petFragment.setAdmin(false,getApplicationContext());
+                        productFragment.setAdmin(false,getApplicationContext());
+                        newsFragment.setAdmin(false,getApplicationContext());
+                    }
                 } else {
                     startActivityForResult(
                             AuthUI.getInstance()
@@ -150,7 +159,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 }
             }
         };
-
     }
 
     @Override
@@ -169,12 +177,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     @Override
     public void onClick(View v) {
-//
-//        switch (v.getId()){
-//            case R.id.button_menu:
-//                Log.d(DEBUG_TAG,"Menu Button");
-//                break;
-//        }
+
     }
 
     @Override
@@ -263,6 +266,14 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 if (resultCode == RESULT_CANCELED) {
                     finish();
                 }
+            }else if (requestCode == RC_EDIT_PET_FAV){
+                Bundle bundle = data.getExtras();
+                boolean isDeleted = false;
+                if (bundle != null) {
+                    editablePet = (Pet) bundle.getSerializable("Pet");
+                    isDeleted = bundle.getBoolean("Delete");
+                }
+                petFragment.updatePet(editablePet,isDeleted);
             }
         }
     }
@@ -281,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         } else {
             Intent petDetailIntent = new Intent(this, PetDetailActivity.class);
             petDetailIntent.putExtras(bundle);
-            startActivity(petDetailIntent);
+            startActivityForResult(petDetailIntent, RC_EDIT_PET_FAV);
         }
     }
 
@@ -337,7 +348,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         @Override
         public android.support.v4.app.Fragment getItem(int position) {
-            Log.d(DEBUG_TAG,"position: " + position);
             return mFragmentList.get(position);
         }
 

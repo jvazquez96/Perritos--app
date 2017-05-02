@@ -31,7 +31,7 @@ import static android.app.Activity.RESULT_OK;
  * Use the {@link ProductFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProductFragment extends ListFragment implements View.OnClickListener {
+public class ProductFragment extends ListFragment implements View.OnClickListener, AdapterView.OnItemLongClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -51,11 +51,13 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
     private DatabaseReference mProductsDatabaseReference;
     private ChildEventListener mChildEventListenerProducts;
 
-    private ArrayList<Product> products;
+    private ArrayList<Product> adminProducts;
+    private ArrayList<Product> userProducts;
     private ArrayAdapter<Product> productAdapter;
 
     private String editKey;
 
+    private boolean isAdmin;
 
     public ProductFragment() {
         // Required empty public constructor
@@ -67,6 +69,30 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
         } else {
             mProductsDatabaseReference.child(editKey).setValue(product);
         }
+    }
+
+    public void setAdmin(boolean isAdmin, Context context) {
+        this.isAdmin = isAdmin;
+        if (isAdmin) {
+            adminProducts = new ArrayList<>();
+            productAdapter  = new ProductAdapter(context,adminProducts);
+            if (floatingActionButton != null) {
+                floatingActionButton.setVisibility(View.VISIBLE);
+            }
+            if (getView() != null) {
+                getListView().setOnItemLongClickListener(this);
+            }
+        } else {
+            userProducts = new ArrayList<>();
+            productAdapter = new ProductAdapter(context,userProducts);
+            if (floatingActionButton != null) {
+                floatingActionButton.setVisibility(View.INVISIBLE);
+            }
+            if (getView() != null) {
+                getListView().setOnItemLongClickListener(null);
+            }
+        }
+        setListAdapter(productAdapter);
     }
 
 
@@ -102,6 +128,18 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
     @Override
     public void onResume() {
         super.onResume();
+        if (isAdmin) {
+            adminProducts = new ArrayList<Product>();
+            productAdapter  = new ProductAdapter(getActivity(),adminProducts);
+            floatingActionButton.setVisibility(View.VISIBLE);
+            getListView().setOnItemLongClickListener(this);
+        } else {
+            userProducts = new ArrayList<Product>();
+            productAdapter = new ProductAdapter(getActivity(),userProducts);
+            floatingActionButton.setVisibility(View.INVISIBLE);
+            getListView().setOnItemLongClickListener(null);
+        }
+        setListAdapter(productAdapter);
         attachDatabaseReadListener();
     }
 
@@ -113,14 +151,15 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        floatingActionButton.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-//        Product product = new Product("Nombre del producto", 74, R.mipmap.ic_launcher);
-        products = new ArrayList<>();
-        productAdapter = new ProductAdapter(getActivity(), products);
-        setListAdapter(productAdapter);
-
+        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_store, container, false);
 
         floatingActionButton = (FloatingActionButton) view.findViewById(R.id.floating_add);
@@ -130,17 +169,11 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Product product = products.get(position);
-                mListenerProductSelected.onProductSelectedListener(product,true);
-                editKey = product.getKey();
-                return true;
-            }
-        });
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        Product product = adminProducts.get(position);
+        mListenerProductSelected.onProductSelectedListener(product, true);
+        editKey = product.getKey();
+        return true;
     }
 
     private void attachDatabaseReadListener() {
@@ -150,16 +183,37 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     Product product1 = dataSnapshot.getValue(Product.class);
                     product1.setKey(dataSnapshot.getKey());
-                    products.add(product1);
+                    if (isAdmin) {
+                        adminProducts.add(product1);
+                    } else {
+                        if (product1.getIsVisible()) {
+                            userProducts.add(product1);
+                        }
+                    }
                     productAdapter.notifyDataSetChanged();
                 }
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                     Product editedProduct = dataSnapshot.getValue(Product.class);
-                    for (int i = 0; i < products.size(); ++i) {
-                        if (products.get(i).getKey().equals(editedProduct.getKey())) {
-                            products.set(i,editedProduct);
+                    if (isAdmin) {
+                        for (int i = 0; i < adminProducts.size(); ++i) {
+                            if (adminProducts.get(i).getKey().equals(editedProduct.getKey())) {
+                                adminProducts.set(i, editedProduct);
+                            }
+                        }
+                    } else {
+                        if (editedProduct.getIsVisible()) {
+                            boolean exist = false;
+                            for (int i = 0; i < adminProducts.size(); ++i) {
+                                if (adminProducts.get(i).getKey().equals(editedProduct.getKey())) {
+                                    adminProducts.set(i, editedProduct);
+                                    exist = true;
+                                }
+                            }
+                            if (!exist) {
+                                userProducts.add(editedProduct);
+                            }
                         }
                     }
                     productAdapter.notifyDataSetChanged();
@@ -168,7 +222,11 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
                     Product removedProduct = dataSnapshot.getValue(Product.class);
-                    products.remove(removedProduct);
+                    if (isAdmin) {
+                        adminProducts.remove(removedProduct);
+                    } else  {
+                        userProducts.remove(removedProduct);
+                    }
                     productAdapter.notifyDataSetChanged();
                 }
 
@@ -195,7 +253,12 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
    @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
        super.onListItemClick(l, v, position, id);
-       Product product1 = products.get(position);
+       Product product1;
+       if (isAdmin) {
+           product1 = adminProducts.get(position);
+       } else {
+           product1 = userProducts.get(position);
+       }
        mListenerProductSelected.onProductSelectedListener(product1,false);
     }
 

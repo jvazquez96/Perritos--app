@@ -36,6 +36,7 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
     private CheckBox checkBox;
 
     private Button btnDelete;
+    private Button btnAccept;
 
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseStorage mFirebaseStorage;
@@ -59,6 +60,8 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
         imageCover = (ImageButton) findViewById(R.id.image_cover);
         checkBox = (CheckBox) findViewById(R.id.check_visible);
         btnDelete = (Button) findViewById(R.id.button_delete);
+        btnAccept = (Button) findViewById(R.id.action_confirm);
+        btnAccept.setOnClickListener(this);
         btnDelete.setOnClickListener(this);
         setSupportActionBar(tlToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -79,6 +82,7 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
             editDescription.setText(news1.getDescription());
             Glide.with(imageCover.getContext()).load(news1.getPhotoUrl()).into(imageCover);
             selectedImage = news1.getPhotoUrl();
+            checkBox.setChecked(news1.getIsVisible());
         } else {
             getSupportActionBar().setTitle("Nueva noticia");
             btnDelete.setVisibility(View.INVISIBLE);
@@ -88,6 +92,7 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
 
     private boolean isAllDataCorrect() {
         if (editTitle.getText().toString().length() == 0 || editDescription.getText().toString().trim().length() == 0 || selectedImage == null) {
+
             return false;
         }
         return true;
@@ -102,18 +107,11 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_confirm:
-                news.setTitle(editTitle.getText().toString());
-                news.setDescription((editDescription.getText().toString()));
-                news.setPhotoUrl(selectedImage);
-                if (isAllDataCorrect()) {
-                    Intent intent = new Intent();
-                    intent.putExtra("News", news);
-                    setResult(RESULT_OK, intent);
-                    finish();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Por favor introduce todos los campos", Toast.LENGTH_SHORT).show();
-                }
+            case R.id.button_picture:
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/jpeg");
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
                 break;
             case android.R.id.home:
                 finish();
@@ -125,11 +123,19 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.image_cover) {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/jpeg");
-            intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-            startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
+        if (id == R.id.action_confirm) {
+            news.setTitle(editTitle.getText().toString());
+            news.setDescription((editDescription.getText().toString()));
+            news.setPhotoUrl(selectedImage);
+            news.setVisible(checkBox.isChecked());
+            if (isAllDataCorrect()) {
+                Intent intent = new Intent();
+                intent.putExtra("News", news);
+                setResult(RESULT_OK, intent);
+                finish();
+            } else {
+                Toast.makeText(getApplicationContext(), "Por favor introduce todos los campos", Toast.LENGTH_SHORT).show();
+            }
         } else if (id == R.id.button_delete) {
             Intent intent = new Intent();
             intent.putExtra("Delete", true);

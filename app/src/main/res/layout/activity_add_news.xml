@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -16,6 +16,9 @@
         app:theme="@style/ActionBarTheme"/>
 
     <LinearLayout
+        android:layout_below="@+id/toolbar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -84,11 +87,26 @@
 
         </LinearLayout>
 
+
+    <Button
+        android:id="@+id/action_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/button_delete"
+        android:textColor="#ffffff"
+        android:layout_alignParentEnd="true"
+        android:background="@color/adopt"
+        android:text="ACEPTAR"/>
+
+
     <Button
         android:id="@+id/button_delete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="DELETE news" />
+        android:layout_alignParentBottom="true"
+        android:textColor="#ffffff"
+        android:background="@color/colorPrimary"
+        android:text="ELIMINAR NOTICIA"/>
 
 
-</LinearLayout>
+</RelativeLayout>

@@ -11,6 +11,7 @@ public class Product implements Serializable {
     private double dPrice;
     private String photoUrl;
     private String key;
+    private boolean isVisible;
 
 
     /**
@@ -26,12 +27,13 @@ public class Product implements Serializable {
      * Constructor
      * @param sName Name of the product
      * @param dPrice Price of the product
-     * @param iPicture Picture of the product
+     * @param photoUrl Picture of the product
      */
-    public Product(String sName, double dPrice, String photoUrl){
+    public Product(String sName, double dPrice, String photoUrl, boolean isVisible){
         this.sName = sName;
         this.dPrice = dPrice;
         this.photoUrl = photoUrl;
+        this.isVisible = isVisible;
     }
 
     /**
@@ -78,12 +80,19 @@ public class Product implements Serializable {
         this.photoUrl = photoUrl;
     }
 
-
     public void setKey(String key) {
         this.key = key;
     }
 
     public String getKey() {
         return key;
+    }
+
+    public void setVisible(boolean isVisible) {
+        this.isVisible = isVisible;
+    }
+
+    public boolean getIsVisible() {
+        return this.isVisible;
     }
 }
