@@ -12,18 +12,25 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.bumptech.glide.Glide;
+
 import java.util.Calendar;
 
 import itesm.mx.perritos.R;
+import itesm.mx.perritos.pet.Pet;
 
 public class AddEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, View.OnClickListener, TimePickerDialog.OnTimeSetListener  {
 
     private TextView textStartDate;
     private TextView textEndDate;
+
+    private Button btnEliminar;
+    private Button btnAceptar;
 
     private Toolbar tlToolbar;
 
@@ -39,6 +46,22 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
         textStartDate.setOnClickListener(this);
         textEndDate.setOnClickListener(this);
         getSupportActionBar().setTitle("Nuevo Evento");
+
+        btnEliminar = (Button) findViewById(R.id.button_eliminar);
+        btnAceptar = (Button) findViewById(R.id.button_aceptar);
+        btnEliminar.setOnClickListener(this);
+        btnAceptar.setOnClickListener(this);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            // Editing pet
+            getSupportActionBar().setTitle("Editar mascota");
+            Evento evento = (Evento) bundle.getSerializable("Evento");
+            //getEvento
+        } else {
+            getSupportActionBar().setTitle("Nuevo evento");
+            btnEliminar.setVisibility(View.INVISIBLE);
+        }
+
     }
 
     @Override
@@ -69,6 +92,8 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
             case R.id.text_endTime:
                 showTimePickerDialog();
                 break;
+            case R.id.button_aceptar:
+                finish();
         }
     }
 

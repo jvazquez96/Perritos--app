@@ -14,5 +14,5 @@
         android:paddingBottom="24dp"
         android:gravity="center_vertical|center_horizontal"
         android:text="SOLICITUD DE ADOPCIÓN"
-        android:textColor="@color/colorWhite"/>
+        android:textColor="@color/blanco"/>
 </LinearLayout>

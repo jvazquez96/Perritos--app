@@ -82,6 +82,6 @@
         android:layout_gravity="bottom"
         android:background="@color/adopt"
         android:text="VER DISPONIBILIDAD"
-        android:textColor="@color/colorWhite" />
+        android:textColor="@color/blanco" />
 
 </RelativeLayout>

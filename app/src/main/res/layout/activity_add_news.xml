@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:textSize="32sp"
         android:hint="Titulo de la noticia"
-        android:textColor="@color/colorgrow"
+        android:textColor="@color/negro"
         android:paddingTop="24dp"/>
 
     <EditText
@@ -92,7 +92,6 @@
         android:id="@+id/action_confirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/button_delete"
         android:textColor="#ffffff"
         android:layout_alignParentEnd="true"
         android:background="@color/adopt"
@@ -100,7 +99,7 @@
 
 
     <Button
-        android:id="@+id/button_delete"
+        android:id="@+id/button_delete2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

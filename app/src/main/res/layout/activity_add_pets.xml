@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:hint="Nombre de la mascota"
-            android:textSize="32sp" />
+            android:textSize="30sp" />
 
 
         <TextView
@@ -114,14 +114,14 @@
         android:id="@+id/action_confirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/button_delete"
         android:layout_alignParentEnd="true"
         android:background="@color/adopt"
         android:text="ACEPTAR"
+        android:maxLines="1"
         android:textColor="#ffffff" />
 
     <Button
-        android:id="@+id/button_delete"
+        android:id="@+id/button_delete3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

@@ -10,13 +10,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+
 import itesm.mx.perritos.R;
+import itesm.mx.perritos.pet.Pet;
 import itesm.mx.perritos.pet.PetDetailActivity;
 
 public class EventDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Toolbar tlToolbar;
-    private Button btnEvento;
+    private Button btnIr;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +31,8 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Evento");
 
-        btnEvento = (Button) findViewById(R.id.ir_a_lugar_btn);
-
-        btnEvento.setOnClickListener(this);
+        btnIr = (Button) findViewById(R.id.button_ir);
+        btnIr.setOnClickListener(this);
     }
 
     @Override

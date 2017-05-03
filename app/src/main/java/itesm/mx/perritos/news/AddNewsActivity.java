@@ -59,7 +59,7 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
         editDescription = (EditText) findViewById(R.id.edit_description);
         imageCover = (ImageButton) findViewById(R.id.image_cover);
         checkBox = (CheckBox) findViewById(R.id.check_visible);
-        btnDelete = (Button) findViewById(R.id.button_delete);
+        //btnDelete = (Button) findViewById(R.id.button_delete);
         btnAccept = (Button) findViewById(R.id.action_confirm);
         btnAccept.setOnClickListener(this);
         btnDelete.setOnClickListener(this);
@@ -136,7 +136,7 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
             } else {
                 Toast.makeText(getApplicationContext(), "Por favor introduce todos los campos", Toast.LENGTH_SHORT).show();
             }
-        } else if (id == R.id.button_delete) {
+        }/* else if (id == R.id.button_delete) {
             Intent intent = new Intent();
             intent.putExtra("Delete", true);
             news.setTitle(editTitle.getText().toString());
@@ -145,7 +145,7 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
             intent.putExtra("News", news);
             setResult(RESULT_OK, intent);
             finish();
-        }
+        }*/
     }
 
     @Override

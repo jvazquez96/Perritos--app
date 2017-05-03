@@ -38,7 +38,7 @@
             android:paddingBottom="8dp"
             android:textSize="16dp"
             android:textStyle="bold"
-            android:textColor="@color/colorgrow" />
+            android:textColor="@color/negro" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -60,7 +60,7 @@
                 android:text="Masculino"
                 android:textSize="14sp"
                 android:paddingRight="16dp"
-                android:textColor="@color/colorgrow"
+                android:textColor="@color/negro"
                 android:layout_alignParentTop="true"
                 android:layout_toEndOf="@+id/textView2" />
 
@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:text="5 años"
                 android:textSize="14sp"
-                android:textColor="@color/colorgrow"
+                android:textColor="@color/negro"
                 android:layout_alignParentTop="true"
                 android:layout_toEndOf="@+id/textView4" />
 
