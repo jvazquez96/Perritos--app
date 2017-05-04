@@ -38,15 +38,15 @@ public class User {
     }
 
 
+
     public void setUserName(String userName){
         this.userName = userName;
     }
 
-    public void setUserEmail(String userEmail){
-        this.userEmail = userEmail;
+    public void setUserEmail(String userEmail){this.userEmail = userEmail;
     }
 
-    public void setUserFavoritePets( ArrayList<Pet>  userFavoritePets){
+    public void setUserFavoritePets(ArrayList<Pet> userFavoritePets){
         this.userFavoritePets = userFavoritePets;
     }
 
@@ -56,6 +56,26 @@ public class User {
 
     public void setUserFavoriteNews( ArrayList<News>  userFavoriteNews){
         this.userFavoriteNews = userFavoriteNews;
+    }
+
+    public String getUserName() {
+        return this.userName;
+    }
+
+    public String getUserEmail() {
+        return this.userEmail;
+    }
+    
+    public ArrayList<Pet> getUserFavoritePets() {
+        return this.userFavoritePets;
+    }
+
+    public ArrayList<Product> getUserFavoriteProducts() {
+        return this.userFavoriteProducts;
+    }
+
+    public ArrayList<News> getUserFavoriteNews() {
+        return this.userFavoriteNews;
     }
 
 
