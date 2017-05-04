@@ -4,8 +4,7 @@
     android:layout_height="wrap_content"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:paddingTop="8dp"
-    android:paddingBottom="20dp"
+    android:paddingBottom="16dp"
     android:orientation="horizontal">
 
     <ImageView
@@ -84,10 +83,6 @@
                 android:layout_toEndOf="@+id/textView4" />
 
         </RelativeLayout>
-
-
-
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

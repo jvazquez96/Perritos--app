@@ -15,26 +15,42 @@
             <ImageView
                 android:id="@+id/image_cover"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:src="@mipmap/ic_launcher"
-                android:layout_weight="6"/>
+                android:layout_height="340dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/perrito"/>
 
-
-            <TextView
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:text="Evento"
-                android:layout_weight="1"/>
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:orientation="vertical">
 
-            <TextView
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:text="Descripción"
-                android:layout_weight="1"/>
+                <TextView
+                    android:id="@+id/event_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="13dp"
+                    android:paddingTop="8dp"
+                    android:text="NOMBRE DEL EVENTO"
+                    android:paddingBottom="8dp"
+                    android:textStyle="bold"
+                    android:textSize="24sp" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:text="Descripción:"/>
+
+                <TextView
+                    android:id="@+id/text_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Descripcion"
+                    android:paddingBottom="50dp"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

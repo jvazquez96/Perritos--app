@@ -35,6 +35,7 @@
         android:layout_gravity="left"
         android:text="Hoy habrá un excelente día para salir a correr con tu mascota"
         android:textSize="16dp"
+        android:textColor="@color/negro"
         android:maxLines="2"
         android:textStyle="bold" />
 

@@ -34,6 +34,8 @@
             android:gravity="left"
             android:text="Nombre del producto"
             android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/negro"
             android:layout_alignTop="@+id/linearLayout2"
             android:layout_toEndOf="@+id/image_evento"/>
 
