@@ -32,7 +32,7 @@
             android:textColor="@color/negro"
             android:paddingTop="24dp"
             android:paddingBottom="8dp"
-            android:textSize="16sp"
+            android:textSize="12sp"
             android:fontFamily="sans-serif"/>
 
         <TextView

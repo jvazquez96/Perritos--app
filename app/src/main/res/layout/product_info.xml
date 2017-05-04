@@ -88,5 +88,5 @@
         android:layout_alignParentTop="true"
         android:background="?android:selectableItemBackground"
         android:src="@drawable/ic_favorite_black_24dp"
-        android:tint="@color/adopt" />
+        android:tint="@color/colorSecondary" />
 </RelativeLayout>

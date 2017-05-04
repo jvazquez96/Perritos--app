@@ -1,111 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="itesm.mx.perritos.news.AddNewsActivity">
-
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:background="@color/colorPrimary"
-        app:theme="@style/ActionBarTheme"/>
-
-    <LinearLayout
-        android:layout_below="@+id/toolbar"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
+    tools:context="itesm.mx.perritos.event.AddEventActivity">
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_margin="16dp">
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme">
 
-    <EditText
-        android:id="@+id/edit_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="32sp"
-        android:hint="Titulo de la noticia"
-        android:textColor="@color/negro"
-        android:paddingTop="24dp"/>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="@color/colorPrimary"
+            app:theme="@style/ActionBarTheme"/>
 
-    <EditText
-        android:id="@+id/edit_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="24dp"
-        android:paddingBottom="8dp"
-        android:textSize="16sp"
-        android:hint="Descripcion de la noticia"
-        android:layout_marginTop="20dp"/>
+    </android.support.design.widget.AppBarLayout>
+    <include layout="@layout/activity_add_news_content"/>
+    <include layout="@layout/button_aceptar_eliminar" />
+
+</android.support.design.widget.CoordinatorLayout>
 
 
-    <CheckBox
-        android:layout_marginTop="50dp"
-        android:id="@+id/check_visible"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Visible"/>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="20dp">
-
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/ic_location_on_black_24dp"/>
-
-
-        <TextView
-            android:id="@+id/text_location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Agregar Lugar"/>
-
-    </LinearLayout>
-
-
-        <ImageButton
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/image_cover"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/image_placeholder"/>
-
-
-        </LinearLayout>
-
-
-    <Button
-        android:id="@+id/action_confirm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#ffffff"
-        android:layout_alignParentEnd="true"
-        android:background="@color/adopt"
-        android:text="ACEPTAR"/>
-
-
-    <Button
-        android:id="@+id/button_delete2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:textColor="#ffffff"
-        android:background="@color/colorPrimary"
-        android:text="ELIMINAR NOTICIA"/>
-
-
-</RelativeLayout>

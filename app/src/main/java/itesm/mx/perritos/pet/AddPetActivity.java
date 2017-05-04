@@ -65,8 +65,8 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
         tlToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tlToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        btnPicture = (Button) findViewById(R.id.action_confirm);
-        btnDelete = (Button) findViewById(R.id.button_delete3);
+        btnPicture = (Button) findViewById(R.id.button_aceptar);
+        btnDelete = (Button) findViewById(R.id.button_eliminar);
         btnPicture.setOnClickListener(this);
         btnDelete.setOnClickListener(this);
         imgCover = (ImageView) findViewById(R.id.image_pet);
@@ -160,7 +160,7 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.action_confirm) {
+        if (id == R.id.button_aceptar) {
 
             pet.setName(editName.getText().toString());
             pet.setDescription(editDescription.getText().toString());
@@ -184,7 +184,7 @@ public class AddPetActivity extends AppCompatActivity implements View.OnClickLis
                 setToastMessage("Por favor introduce todos los campos");
             }
 
-        } else if (id == R.id.button_delete3){
+        } else if (id == R.id.button_eliminar){
             Intent intent = new Intent();
             intent.putExtra("Delete",true);
             pet.setName(editName.getText().toString());

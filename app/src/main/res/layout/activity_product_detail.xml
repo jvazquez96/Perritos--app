@@ -80,7 +80,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_gravity="bottom"
-        android:background="@color/adopt"
+        android:background="@color/colorSecondary"
         android:text="VER DISPONIBILIDAD"
         android:textColor="@color/blanco" />
 

@@ -59,8 +59,8 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
         editDescription = (EditText) findViewById(R.id.edit_description);
         imageCover = (ImageButton) findViewById(R.id.image_cover);
         checkBox = (CheckBox) findViewById(R.id.check_visible);
-        //btnDelete = (Button) findViewById(R.id.button_delete);
-        btnAccept = (Button) findViewById(R.id.action_confirm);
+        btnDelete = (Button) findViewById(R.id.button_eliminar);
+        btnAccept = (Button) findViewById(R.id.button_aceptar);
         btnAccept.setOnClickListener(this);
         btnDelete.setOnClickListener(this);
         setSupportActionBar(tlToolbar);
@@ -123,7 +123,7 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.action_confirm) {
+        if (id == R.id.button_aceptar) {
             news.setTitle(editTitle.getText().toString());
             news.setDescription((editDescription.getText().toString()));
             news.setPhotoUrl(selectedImage);
@@ -136,7 +136,7 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
             } else {
                 Toast.makeText(getApplicationContext(), "Por favor introduce todos los campos", Toast.LENGTH_SHORT).show();
             }
-        }/* else if (id == R.id.button_delete) {
+        } else if (id == R.id.button_eliminar) {
             Intent intent = new Intent();
             intent.putExtra("Delete", true);
             news.setTitle(editTitle.getText().toString());
@@ -145,7 +145,7 @@ public class AddNewsActivity extends AppCompatActivity implements View.OnClickLi
             intent.putExtra("News", news);
             setResult(RESULT_OK, intent);
             finish();
-        }*/
+        }
     }
 
     @Override

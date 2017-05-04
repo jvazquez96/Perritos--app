@@ -12,7 +12,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_gravity="bottom|end"
-        android:background="@color/azul"
+        android:background="@color/colorPrimary"
         android:gravity="center_vertical|center_horizontal"
         android:text="ELIMINAR EVETO"
         android:textColor="@color/blanco" />
@@ -23,7 +23,7 @@
         android:layout_gravity="bottom|end"
         android:paddingBottom="20dp"
         android:paddingTop="20dp"
-        android:background="@color/adopt"
+        android:background="@color/colorSecondary"
         android:gravity="center_vertical|center_horizontal"
         android:text="ACEPTAR"
         android:textColor="@color/blanco" />
