@@ -11,11 +11,13 @@ import itesm.mx.perritos.product.Product;
  */
 
 public class User {
+
     private String userName;
     private String userEmail;
     private ArrayList<Pet> userFavoritePets;
     private ArrayList<Product> userFavoriteProducts;
     private ArrayList<News> userFavoriteNews;
+    private String key;
 
     public User() {
 
@@ -35,21 +37,50 @@ public class User {
         this.userFavoritePets = userFavoritePets;
         this.userFavoriteProducts = userFavoriteProducts;
         this.userFavoriteNews = userFavoriteNews;
+        this.key = null;
     }
 
+    /**
+     * Constructor
+     * @param userName
+     * @param userEmail
+     */
+    public User(String userName, String userEmail) {
+        this.userName = userName;
+        this.userEmail = userEmail;
+        this.userFavoritePets = new ArrayList<>();
+        this.userFavoriteNews = new ArrayList<>();
+        this.userFavoriteProducts = new ArrayList<>();
+        this.key = null;
+    }
 
-
+    /**
+     * Setter for userName
+     * @param userName
+     */
     public void setUserName(String userName){
         this.userName = userName;
     }
 
+    /**
+     * Setter for userEmail
+     * @param userEmail
+     */
     public void setUserEmail(String userEmail){this.userEmail = userEmail;
     }
 
+    /**
+     * Setter for userFavoritPets
+     * @param userFavoritePets
+     */
     public void setUserFavoritePets(ArrayList<Pet> userFavoritePets){
         this.userFavoritePets = userFavoritePets;
     }
 
+    /**
+     * Setter for userFavoritePets
+     * @param userFavoriteProducts
+     */
     public void setUserFavoriteProducts( ArrayList<Product>  userFavoriteProducts){
         this.userFavoriteProducts = userFavoriteProducts;
     }
@@ -65,7 +96,7 @@ public class User {
     public String getUserEmail() {
         return this.userEmail;
     }
-    
+
     public ArrayList<Pet> getUserFavoritePets() {
         return this.userFavoritePets;
     }
@@ -76,6 +107,14 @@ public class User {
 
     public ArrayList<News> getUserFavoriteNews() {
         return this.userFavoriteNews;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getKey() {
+        return this.key;
     }
 
 

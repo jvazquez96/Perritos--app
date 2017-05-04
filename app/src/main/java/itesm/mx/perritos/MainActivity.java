@@ -19,16 +19,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import itesm.mx.perritos.User.User;
 import itesm.mx.perritos.event.EventDetailActivity;
 import itesm.mx.perritos.event.Evento;
 import itesm.mx.perritos.event.EventosFragment;
@@ -90,6 +96,13 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private Product editableProduct;
     private int actualTab = 0;
 
+    private DatabaseReference mUsersDatabaseReference;
+    private ChildEventListener mChildEventListenerUsers;
+
+    private User mainUser;
+
+    private TextView textUserName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,12 +134,15 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View header = navigationView.getHeaderView(0);
+        textUserName = (TextView) header.findViewById(R.id.textView);
         navigationView.setNavigationItemSelectedListener(this);
 
         editablePet = null;
 
         // Initialize Firebase Componentes
         mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mUsersDatabaseReference = mFirebaseDatabase.getReference().child("Users");
         mFirebaseAuth = FirebaseAuth.getInstance();
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -134,9 +150,14 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // user signed in
+                    // if user is admin
                     if (user.getEmail().equals("jorgevzqz6@gmail.com") ||
                             user.getEmail().equals("Alexandro4v@gmail.com") ||
                             user.getEmail().equals("prueba@prueba.com")) {
+                        mainUser = new User(user.getDisplayName(),user.getEmail());
+                        textUserName.setText(user.getEmail());
+                        // TODO(jorge): Check which implementation we are going to follow in terms of favorites and users.
+//                        mUsersDatabaseReference.push().setValue(mainUser);
                         petFragment.setAdmin(true,getApplicationContext());
                         productFragment.setAdmin(true,getApplicationContext());
                         newsFragment.setAdmin(true,getApplicationContext());
@@ -162,6 +183,49 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         };
     }
 
+    private void attachDatabaseReadListener() {
+        if (mChildEventListenerUsers == null) {
+            mChildEventListenerUsers = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    User userToTest = dataSnapshot.getValue(User.class);
+                    if (userToTest.getUserEmail().equals(mainUser.getUserEmail())) {
+                        mainUser.setUserFavoritePets(userToTest.getUserFavoritePets());
+                        mainUser.setUserFavoriteNews(userToTest.getUserFavoriteNews());
+                        mainUser.setUserFavoriteProducts(userToTest.getUserFavoriteProducts());
+                    }
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            };
+        }
+        mUsersDatabaseReference.addChildEventListener(mChildEventListenerUsers);
+    }
+
+    private void deattachDatabaseREadListener() {
+        if (mChildEventListenerUsers != null) {
+            mUsersDatabaseReference.removeEventListener(mChildEventListenerUsers);
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main,menu);
@@ -170,6 +234,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.nav_sign_out) {
+            AuthUI.getInstance().signOut(this);
+        }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -195,12 +264,14 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     protected void onResume() {
         super.onResume();
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+        attachDatabaseReadListener();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         mFirebaseAuth.removeAuthStateListener(mAuthStateListener);
+        deattachDatabaseREadListener();
     }
 
 
