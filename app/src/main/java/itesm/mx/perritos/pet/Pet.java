@@ -193,12 +193,12 @@ public class Pet implements Serializable {
         this.listLikedUsers.add(user);
     }
 
-    public void removeLikedUser(String user) {
-        this.listLikedUsers.remove(user);
-    }
-
     public boolean isUserInList(String user) {
         return this.listLikedUsers.contains(user);
+    }
+
+    public void removeUserFromList (String user) {
+        this.listLikedUsers.remove(user);
     }
 
     @Override

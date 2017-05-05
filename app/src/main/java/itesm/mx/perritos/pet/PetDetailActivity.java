@@ -124,6 +124,10 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
                 Intent intent2 = new Intent();
                 if (pet.getFav()) {
                     pet.addLikedUser(userEmail);
+                } else {
+                    if (pet.isUserInList(userEmail)) {
+                        pet.removeUserFromList(userEmail);
+                    }
                 }
                 intent2.putExtra("Pet", pet);
                 intent2.putExtra("Delete", false);
