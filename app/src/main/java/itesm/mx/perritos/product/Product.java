@@ -1,6 +1,7 @@
 package itesm.mx.perritos.product;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by DELL1 on 28/03/2017.
@@ -14,6 +15,7 @@ public class Product implements Serializable {
     private String description;
     private String key;
     private boolean isVisible;
+    private ArrayList<String> listLikedUsers;
 
 
     /**
@@ -24,6 +26,7 @@ public class Product implements Serializable {
         dPrice = 5;
         photoUrl = null;
         description = "";
+        this.listLikedUsers = new ArrayList<>();
     }
 
     /**
@@ -38,6 +41,7 @@ public class Product implements Serializable {
         this.photoUrl = photoUrl;
         this.isFavorite = false;
         this.isVisible = isVisible;
+        this.listLikedUsers = new ArrayList<>();
     }
 
     /**
@@ -123,5 +127,25 @@ public class Product implements Serializable {
 
     public boolean getIsVisible() {
         return this.isVisible;
+    }
+
+    public void setListLikedUsers(ArrayList<String> listLikedUsers) {
+        this.listLikedUsers = listLikedUsers;
+    }
+
+    public ArrayList<String> getListLikedUsers() {
+        return this.listLikedUsers;
+    }
+
+    public void addLikedUser(String user) {
+        this.listLikedUsers.add(user);
+    }
+
+    public boolean isUserInList(String user) {
+        return this.listLikedUsers.contains(user);
+    }
+
+    public void removeUserFromList (String user) {
+        this.listLikedUsers.remove(user);
     }
 }

@@ -205,9 +205,9 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
                     } else {
                         if (editedProduct.getIsVisible()) {
                             boolean exist = false;
-                            for (int i = 0; i < adminProducts.size(); ++i) {
-                                if (adminProducts.get(i).getKey().equals(editedProduct.getKey())) {
-                                    adminProducts.set(i, editedProduct);
+                            for (int i = 0; i < userProducts.size(); ++i) {
+                                if (userProducts.get(i).getKey().equals(editedProduct.getKey())) {
+                                    userProducts.set(i, editedProduct);
                                     exist = true;
                                 }
                             }
@@ -259,6 +259,7 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
        } else {
            product1 = userProducts.get(position);
        }
+       editKey = product1.getKey();
        mListenerProductSelected.onProductSelectedListener(product1,false);
     }
 

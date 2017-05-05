@@ -88,6 +88,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private static final int RC_EDIT_PET_FAV = 5;
     private static final int RC_EDIT_EVENT = 6;
     private static final int RC_EDIT_EVENT_FAV = 7;
+    private static final int RC_EDIT_PRODUCT_FAV = 8;
+    private static final int RC_EDIT_NEWS_FAV = 9;
 
     private PetFragment petFragment;
     private EventosFragment eventosFragment;
@@ -309,6 +311,22 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     isDeleted = bundle.getBoolean("Delete");
                 }
                 petFragment.updatePet(editablePet,isDeleted);
+            } else if (requestCode == RC_EDIT_PRODUCT_FAV) {
+                Bundle bundle = data.getExtras();
+                boolean isDeleted = false;
+                if (bundle != null) {
+                    editableProduct = (Product) bundle.getSerializable("Product");
+                    isDeleted = bundle.getBoolean("Delete");
+                }
+                productFragment.updateProduct(editableProduct,isDeleted);
+            } else if (requestCode == RC_EDIT_NEWS_FAV) {
+                Bundle bundle = data.getExtras();
+                boolean isDeleted = false;
+                if (bundle != null) {
+                    editableNews = (News) bundle.getSerializable("News");
+                    isDeleted = bundle.getBoolean("Delete");
+                }
+                newsFragment.updateNews(editableNews,isDeleted);
             }
         }
     }
@@ -345,7 +363,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         } else {
             Intent productDetailIntent = new Intent(this, ProductDetailActivity.class);
             productDetailIntent.putExtras(bundle);
-            startActivity(productDetailIntent);
+            productDetailIntent.putExtra("User",CurrentUser.getmInstance().getUserEmail());
+            startActivityForResult(productDetailIntent,RC_EDIT_PRODUCT_FAV);
         }
     }
 
@@ -363,7 +382,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         } else {
             Intent newsDetailIntent = new Intent(this,NewsDetailActivity.class);
             newsDetailIntent.putExtras(bundle);
-            startActivity(newsDetailIntent);
+            newsDetailIntent.putExtra("User",CurrentUser.getmInstance().getUserEmail());
+            startActivityForResult(newsDetailIntent,RC_EDIT_NEWS_FAV);
         }
     }
 

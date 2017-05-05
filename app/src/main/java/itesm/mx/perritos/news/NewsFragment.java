@@ -188,7 +188,6 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                    Log.d("DEBUG_TAG","Child Changed");
                     News editNews = dataSnapshot.getValue(News.class);
                     if (isAdmin) {
                         for (int i = 0; i < adminNews.size(); ++i) {
@@ -285,6 +284,7 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
         } else {
             news1 = userNews.get(position);
         }
+        editKey = news1.getKey();
         mListenerNewsSelected.onNewsSelectedListener(news1,false);
     }
 

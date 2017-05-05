@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import itesm.mx.perritos.R;
+import itesm.mx.perritos.Utils.CurrentUser;
 
 /**
  * Created by jorgevazquez on 3/20/17.
@@ -46,10 +47,18 @@ public class NewsAdapter extends ArrayAdapter<News> {
         ImageView ivCover = (ImageView) convertView.findViewById(R.id.image_news);
         TextView tvTitle = (TextView) convertView.findViewById(R.id.text_title);
         TextView tvDescription = (TextView) convertView.findViewById(R.id.text_description);
+        ImageView ivLike = (ImageView) convertView.findViewById(R.id.petLikeBtn);
 
         Glide.with(ivCover.getContext()).load(news1.getPhotoUrl()).into(ivCover);
         tvTitle.setText(news1.getTitle());
         tvDescription.setText(news1.getDescription());
+
+        if (news1.isUserInList(CurrentUser.getmInstance().getUserEmail())) {
+            ivLike.setVisibility(View.VISIBLE);
+        } else {
+            ivLike.setVisibility(View.INVISIBLE);
+        }
+
 
         return convertView;
     }
