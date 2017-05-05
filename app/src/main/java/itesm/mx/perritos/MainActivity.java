@@ -316,6 +316,14 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     isDeleted = bundle.getBoolean("Delete");
                 }
                 productFragment.updateProduct(editableProduct,isDeleted);
+            } else if (requestCode == RC_EDIT_NEWS_FAV) {
+                Bundle bundle = data.getExtras();
+                boolean isDeleted = false;
+                if (bundle != null) {
+                    editableNews = (News) bundle.getSerializable("News");
+                    isDeleted = bundle.getBoolean("Delete");
+                }
+                newsFragment.updateNews(editableNews,isDeleted);
             }
         }
     }
@@ -378,7 +386,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         } else {
             Intent newsDetailIntent = new Intent(this,NewsDetailActivity.class);
             newsDetailIntent.putExtras(bundle);
-            startActivity(newsDetailIntent);
+            newsDetailIntent.putExtra("User",CurrentUser.getmInstance().getUserEmail());
+            startActivityForResult(newsDetailIntent,RC_EDIT_NEWS_FAV);
         }
     }
 

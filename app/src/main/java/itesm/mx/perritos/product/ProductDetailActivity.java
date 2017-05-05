@@ -25,7 +25,6 @@ public class ProductDetailActivity extends AppCompatActivity implements View.OnC
     private TextView textPrice;
     private ImageView favImage;
     private Product product;
-    private Boolean favButton;
     private Button btnSolicitudProduct;
     private String userEmail;
 
@@ -76,13 +75,11 @@ public class ProductDetailActivity extends AppCompatActivity implements View.OnC
                         getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp).getConstantState()
                 )) {
                     item.setIcon(R.drawable.heart);
-                    favButton = true;
                     product.setFav(true);
                     Toast.makeText(getApplicationContext(), "Agregado a Favoritos", Toast.LENGTH_SHORT).show();
                 } else {
                     item.setIcon(R.drawable.ic_favorite_border_white_24dp);
                     product.setFav(false);
-                    favButton = false;
                 }
                 return true;
             case android.R.id.home:
@@ -113,11 +110,4 @@ public class ProductDetailActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-    public void showLikebutton() {
-        favImage.setVisibility(View.VISIBLE);
-    }
-
-    public void hideLikebutton() {
-        favImage.setVisibility(View.VISIBLE);
-    }
 }
