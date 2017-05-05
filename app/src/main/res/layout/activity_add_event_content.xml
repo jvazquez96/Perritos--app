@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="16dp">
+
+        <EditText
+            android:id="@+id/edit_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Titulo del evento"
+            android:paddingTop="8dp"
+            android:textColor="@color/negro"
+            android:paddingBottom="8dp"
+            android:textSize="30sp"
+            android:maxLines="1"
+            android:fontFamily="sans-serif"/>
+
+        <EditText
+            android:id="@+id/edit_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Descripcion"
+            android:textColor="@color/negro"
+            android:paddingTop="24dp"
+            android:paddingBottom="8dp"
+            android:textSize="12sp"
+            android:fontFamily="sans-serif"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
+            android:paddingTop="16dp"
+            android:text="Desde:"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/text_startDate"
+                android:layout_width="0dp"
+                android:layout_weight="1.2"
+                android:layout_height="wrap_content"
+                android:shadowColor="@color/gris"
+                style="@android:style/Widget.Holo.Spinner"
+                android:text="Lunes, May 11, 2017"
+                android:layout_marginRight="16dp"/>
+
+            <TextView
+                android:id="@+id/text_startTime"
+                android:layout_width="0dp"
+                android:layout_weight="0.8"
+                android:shadowColor="@color/negro"
+                android:layout_height="wrap_content"
+                style="@android:style/Widget.Holo.Spinner"
+                android:text="14:20" />
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="4dp"
+            android:paddingTop="16dp"
+            android:textColor="@color/gris"
+            android:text="Hasta:"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/text_endDate"
+                android:layout_width="0dp"
+                android:layout_weight="1.2"
+                android:layout_height="wrap_content"
+                style="@android:style/Widget.Holo.Spinner"
+                android:textColor="@color/negro"
+                android:text="Lunes, May 11, 2017"
+                android:layout_marginRight="16dp"/>
+
+            <TextView
+                android:id="@+id/text_endTime"
+                android:layout_width="0dp"
+                android:shadowColor="@color/negro"
+                android:layout_weight="0.8"
+                android:layout_height="wrap_content"
+                style="@android:style/Widget.Holo.Spinner"
+                android:text="14:20" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="16dp"
+            android:layout_marginTop="8dp">
+
+            <CheckBox
+                android:id="@+id/check_visible"
+                android:layout_width="100dp"
+                android:layout_gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:text="Visible"
+                android:layout_alignBaseline="@+id/text_location"
+                android:layout_alignBottom="@+id/text_location"
+                android:layout_alignParentStart="true" />
+
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_alignTop="@+id/text_location"
+                android:layout_toStartOf="@+id/text_location"
+                android:background="@drawable/ic_location_on_black_24dp" />
+
+
+            <TextView
+                android:layout_alignParentRight="true"
+                android:id="@+id/text_location"
+                android:paddingLeft="8dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Agregar Lugar"/>
+
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/AgregarImagen"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="100dp"
+            android:background="@drawable/image_placeholder"/>
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

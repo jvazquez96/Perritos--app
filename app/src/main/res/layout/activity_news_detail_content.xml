@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="40dp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/cultura_icon"/>
+
+    <TextView
+        android:paddingTop="16dp"
+        android:id="@+id/text_title"
+        android:layout_width="300dp"
+        android:textColor="@color/negro"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:maxLines="3"
+        android:paddingBottom="8dp"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:text="Titulo de noticia de cultura perrona"/>
+
+    <View android:id="@+id/separator"
+        android:background="@color/gris"
+        android:layout_width="150dp"
+        android:layout_height="1dip"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerVertical ="true"
+        android:layout_alignParentTop="true"/>
+
+    <TextView
+        android:textAlignment="center"
+        android:paddingTop="8dp"
+        android:layout_width="200dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:paddingBottom="24dp"
+        android:lines="2"
+        android:text="Movimiento Cultura de Altura, Cultura Perrona A.C."/>/>
+
+
+        <ImageView
+            android:id="@+id/image_cover"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/perrito"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingRight="16dp"
+            android:paddingLeft="16dp">
+
+            <TextView
+                android:paddingTop="18dp"
+                android:textSize="16dp"
+                android:textColor="@color/negro"
+                android:id="@+id/text_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="textStart"
+                android:layout_marginBottom="50dp"
+                android:text="DESCRIPCION DELA NOTICIA"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

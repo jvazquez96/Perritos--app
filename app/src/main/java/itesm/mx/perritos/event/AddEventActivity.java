@@ -29,9 +29,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import com.bumptech.glide.Glide;
+
 import java.util.Calendar;
 
 import itesm.mx.perritos.R;
+import itesm.mx.perritos.pet.Pet;
 
 
 public class AddEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, View.OnClickListener, TimePickerDialog.OnTimeSetListener  {
@@ -41,23 +44,32 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
     private TextView textEndDate;
     private TextView textStartTime;
     private TextView textEndTime;
+    private Button btnEliminar;
+    private Button btnAceptar;
+
     private Toolbar tlToolbar;
     private EditText tvTituloEvento;
     private TextView tvDescripcionEvento;
     private TextView textHoraInicio;
     private TextView tvHoraFinal;
-    private Button ButonAgregar;
     private CheckBox LugarVisible;
     private TextView AgregarLugar;
-    private ImageButton AgregarImagen;
     private Evento MyEvent;
     private boolean StartDating = true;
+    private boolean isEditing;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
+        tlToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(tlToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        btnEliminar = (Button) findViewById(R.id.button_eliminar);
+        btnAceptar = (Button) findViewById(R.id.button_aceptar);
+
+
         textStartDate = (TextView) findViewById(R.id.text_startDate);
         textEndDate = (TextView) findViewById(R.id.text_endDate);
         textStartTime = (TextView) findViewById(R.id.text_startTime);
@@ -69,23 +81,29 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
         tvHoraFinal = (TextView) findViewById(R.id.text_startTime);
         LugarVisible = (CheckBox) findViewById(R.id.check_visible);
         AgregarLugar = (TextView) findViewById(R.id.text_location);
-        AgregarImagen = (ImageButton) findViewById(R.id.AgregarImagen);
-        ButonAgregar = (Button) findViewById(R.id.ButtonAgregarEvento);
-        setSupportActionBar(tlToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         textStartDate.setOnClickListener(this);
         textEndDate.setOnClickListener(this);
         textStartTime.setOnClickListener(this);
         textEndTime.setOnClickListener(this);
-        ButonAgregar.setOnClickListener(this);
-        tlToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(tlToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         textStartDate.setOnClickListener(this);
         textEndDate.setOnClickListener(this);
         getSupportActionBar().setTitle("Nuevo Evento");
+
+
+        btnEliminar.setOnClickListener(this);
+        btnAceptar.setOnClickListener(this);
+        isEditing = false;
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            isEditing = bundle.getBoolean("isEditing");
+            getSupportActionBar().setTitle("Editar Evento");
+            Evento evento = (Evento) bundle.getSerializable("Evento");
+        } else {
+            getSupportActionBar().setTitle("Nuevo evento");
+            btnEliminar.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -142,7 +160,7 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
                 startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
                 break;
 
-            case R.id.ButtonAgregarEvento:
+            case R.id.button_aceptar:
                 MyEvent = new Evento();
                 MyEvent.setStartDate(textStartDate.getText().toString());
                 MyEvent.setEndDate(textEndDate.getText().toString());
@@ -160,11 +178,14 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
                     intent = new Intent();
                     intent.putExtra("Event", MyEvent);
                     setResult(RESULT_OK,intent);
+                   // Toast.makeText(getApplicationContext(),"Logre mandar el Intent",Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
                     Toast.makeText(getApplicationContext(),"Por favor introduce todos los campos",Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case R.id.button_eliminar:
+                finish();
         }
     }
 
@@ -241,7 +262,7 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
         }
     }
 
-   /* @Override
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {

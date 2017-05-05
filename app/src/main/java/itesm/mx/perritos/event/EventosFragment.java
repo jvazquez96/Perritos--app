@@ -2,81 +2,100 @@ package itesm.mx.perritos.event;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.util.ArrayList;
 
 import itesm.mx.perritos.R;
 import itesm.mx.perritos.news.News;
+import itesm.mx.perritos.news.NewsAdapter;
+import itesm.mx.perritos.pet.Pet;
 
 import static android.app.Activity.RESULT_OK;
-import android.widget.ListView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-
-import itesm.mx.perritos.R;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 
-public class EventosFragment extends ListFragment implements View.OnClickListener{
+public class EventosFragment extends ListFragment implements View.OnClickListener, AdapterView.OnItemLongClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final int REQUEST_CODE_ADD_EVENT = 1;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnEventSelectedListener mListenerEventSelected;
-
-
-    private FloatingActionButton floatingActionButton;
-
-    private ArrayList<Evento> EventoList;
-    private ArrayAdapter<Evento> eventsAdapter;
-
     private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference mEventsDatabaseReference;
+    private DatabaseReference mEventsDataBaseReference;
     private ChildEventListener mChildEventListenerEventos;
 
+    private FloatingActionButton floatingActionButton;
+    private ArrayList<Evento> userEvents;
+    private ArrayList<Evento> adminEvents;
+    private ArrayAdapter<Evento> eventsAdapter;
+    private boolean isAdmin = true;
+    private  String editKey;
     public EventosFragment() {
         // Required empty public constructor
     }
 
-    /**
-     *
-     *
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EventosFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static EventosFragment newInstance(String param1, String param2) {
-        EventosFragment fragment = new EventosFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public void updateEvent(Evento evento, boolean isDeleted) {
+        if (isDeleted) {
+            mEventsDataBaseReference.child(editKey).removeValue();
+        } else {
+            mEventsDataBaseReference.child(editKey).setValue(evento);
+        }
     }
+
+    public void setAdmin(boolean isAdmin, Context context) {
+        this.isAdmin = isAdmin;
+        if (isAdmin) {
+            adminEvents = new ArrayList<Evento>();
+            eventsAdapter = new EventoAdapter(context,adminEvents);
+            if (floatingActionButton != null) {
+                floatingActionButton.setVisibility(View.VISIBLE);
+            }
+            if (getView() != null) {
+                getListView().setOnItemLongClickListener(this);
+            }
+        } else {
+            userEvents = new ArrayList<Evento>();
+            eventsAdapter = new EventoAdapter(context,userEvents);
+            if (floatingActionButton != null) {
+                floatingActionButton.setVisibility(View.INVISIBLE);
+            }
+            if (getView() != null) {
+                getListView().setOnItemLongClickListener(null);
+            }
+        }
+        setListAdapter(eventsAdapter);
+    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,72 +105,97 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
         mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mEventsDatabaseReference = mFirebaseDatabase.getReference().child("Event");
+        mEventsDataBaseReference = mFirebaseDatabase.getReference().child("Events");
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
-        EventoList = new ArrayList<>();
-        eventsAdapter = new EventoAdapter(getActivity(),EventoList);
-        setListAdapter(eventsAdapter);
-
-        View view  = inflater.inflate(R.layout.fragment_eventos, container, false);
-
-        floatingActionButton = (FloatingActionButton) view.findViewById(R.id.floating_add);
-        floatingActionButton.setOnClickListener(this);
-
-        return view;
-    }
-
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        super.onListItemClick(l, v, position, id);
-        Evento event = new Evento("Titulo","Descripcion",R.mipmap.ic_launcher);
-        mListenerEventSelected.onEventSelectedListener(event);
-    }
-
-    @Override
-    public void onClick(View v) {
-        Intent startAddEventActivity = new Intent(getActivity(),AddEventActivity.class);
-        startActivity(startAddEventActivity);
-    }
-
-
-        @Override
-        public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnEventSelectedListener) {
-            mListenerEventSelected = (OnEventSelectedListener) context;
+    public void onResume() {
+        super.onResume();
+        if (isAdmin) {
+            adminEvents = new ArrayList<Evento>();
+            eventsAdapter = new EventoAdapter(getActivity(),adminEvents);
+            floatingActionButton.setVisibility(View.VISIBLE);
+            getListView().setOnItemLongClickListener(this);
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement onEventSelectedListener");
+            userEvents = new ArrayList<Evento>();
+            eventsAdapter = new EventoAdapter(getActivity(),userEvents);
+            floatingActionButton.setVisibility(View.INVISIBLE);
+            getListView().setOnItemLongClickListener(null);
         }
+        setListAdapter(eventsAdapter);
+        attachDatabaseReadListener();
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        deattachDatabaseReadListener();
+        eventsAdapter.clear();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        floatingActionButton.setVisibility(View.INVISIBLE);
+    }
+
+
+
 
     private void attachDatabaseReadListener() {
         if (mChildEventListenerEventos  == null) {
             mChildEventListenerEventos = new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    Evento Event1 = dataSnapshot.getValue(Evento.class);
-                    if (Event1 != null) {
-                        EventoList.add(Event1);
+                    Evento evento = dataSnapshot.getValue(Evento.class);
+                    evento.setKey(dataSnapshot.getKey());
+                    if (isAdmin) {
+                        adminEvents.add(evento);
+                    } else {
+                        if (evento.getLugarVisible()) {
+                            userEvents.add(evento);
+                        }
                     }
                     eventsAdapter.notifyDataSetChanged();
                 }
 
                 @Override
                 public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                    Log.d("DEBUG_TAG","Child Changed");
+                    Evento editEvent = dataSnapshot.getValue(Evento.class);
+                    if (isAdmin) {
+                        for (int i = 0; i < adminEvents.size(); ++i) {
+                            if (adminEvents.get(i).getKey().equals(editEvent.getKey())) {
+                                adminEvents.set(i, editEvent);
+                            }
+                        }
+                    } else {
+                        if (editEvent.getLugarVisible()) {
+                            boolean exist = false;
+                            for (int i = 0; i < userEvents.size(); ++i) {
+                                if (userEvents.get(i).getKey().equals(editEvent.getKey())) {
+                                    userEvents.set(i, editEvent);
+                                    exist = true;
+                                }
+                            }
+                            if (!exist) {
+                                userEvents.add(editEvent);
+                            }
+                        }
+                    }
+                    eventsAdapter.notifyDataSetChanged();
                 }
+
 
                 @Override
                 public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                    Evento removedEvent = dataSnapshot.getValue(Evento.class);
+                    if (isAdmin) {
+                        adminEvents.remove(removedEvent);
+                    } else {
+                        userEvents.remove(removedEvent);
+                    }
+                    eventsAdapter.notifyDataSetChanged();
                 }
 
                 @Override
@@ -165,14 +209,64 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
                 }
             };
         }
-        mEventsDatabaseReference.addChildEventListener(mChildEventListenerEventos);
+        mEventsDataBaseReference.addChildEventListener(mChildEventListenerEventos);
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        attachDatabaseReadListener();
+
+    private void deattachDatabaseReadListener() {
+        if (mChildEventListenerEventos != null) {
+            mEventsDataBaseReference.removeEventListener(mChildEventListenerEventos);
+        }
     }
+
+
+    public void onClick(View v) {
+        Intent startAddEventActivity = new Intent(getActivity(),AddEventActivity.class);
+        startActivityForResult(startAddEventActivity,REQUEST_CODE_ADD_EVENT);
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CODE_ADD_EVENT) {
+                Bundle extras = data.getExtras();
+                Evento evento = (Evento) extras.get("Event");
+                mEventsDataBaseReference.push().setValue(evento);
+            }
+        }
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view  = inflater.inflate(R.layout.fragment_eventos, container, false);
+        floatingActionButton = (FloatingActionButton) view.findViewById(R.id.floating_add);
+        floatingActionButton.setOnClickListener(this);
+        return view;
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
+        getListView().setOnItemLongClickListener(this);
+    }
+
+
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        Evento evento = adminEvents.get(position);
+        mListenerEventSelected.onEventSelectedListener(evento , true);
+        editKey = evento.getKey();
+        return true;
+    }
+
+
 
     @Override
     public void onDetach() {
@@ -182,17 +276,34 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
 
 
 
-    public interface OnEventSelectedListener {
-        void onEventSelectedListener(Evento event);
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        Evento evento;
+        if (isAdmin) {
+            evento = adminEvents.get(position);
+        } else {
+            evento = userEvents.get(position);
+        }
+        editKey = evento.getKey();
+        mListenerEventSelected.onEventSelectedListener(evento,false);
     }
 
+
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-                Bundle extras = data.getExtras();
-                Evento evento1 = (Evento) extras.get("Event");
-                mEventsDatabaseReference.push().setValue(evento1);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnEventSelectedListener) {
+            mListenerEventSelected = (OnEventSelectedListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement onEventSelectedListener");
         }
+
     }
+
+    public interface OnEventSelectedListener {
+        void onEventSelectedListener(Evento event, boolean isEditing);
+    }
+
 }

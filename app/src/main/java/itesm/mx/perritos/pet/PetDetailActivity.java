@@ -2,6 +2,7 @@ package itesm.mx.perritos.pet;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -48,7 +49,6 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
     private ImageView favImage;
     private Bundle bundle;
     private  Button btnSolicitudPet;
-    private Boolean favButton;
     private Pet pet;
     private CollapsingToolbarLayout cool;
     private FirebaseDatabase mFirebaseDatabase;
@@ -58,6 +58,7 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
     private ArrayList<Pet> pets;
     private ArrayAdapter<Pet> petAdapter;
     private static final String DEBUG_TAG = "DEBUG_TAG";
+    private String userEmail;
 
 
 
@@ -67,6 +68,11 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_pet_detail);
          tlToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tlToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //Add the following code to make the up arrow white:
+        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_keyboard_backspace_white_24dp);
+        upArrow.setColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
         cool = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
 
@@ -84,9 +90,8 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
 
         if (bundle != null) {
             pet = (Pet) bundle.getSerializable("Pet");
-            Log.d("DEBUG_TAG", "Receiving pet");
+            userEmail = bundle.getString("User");
             Glide.with(ivPet.getContext()).load(pet.getPhotoUrl()).into(ivPet);
-            Log.d("DEBUG_TAG", "Photo url: " + pet.getPhotoUrl());
             tvName.setText(pet.getName());
             tvDescription.setText(pet.getDescription());
             tvDate.setText(simpleDateFormat.format(calendar.getTime()));
@@ -107,28 +112,29 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
                         getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp).getConstantState()
                 )) {
                     item.setIcon(R.drawable.heart);
-                    favButton = true;
-                    pet.setFav(true);
                     Toast.makeText(getApplicationContext(), "Agregado a Favoritos", Toast.LENGTH_SHORT).show();
+                    pet.setFav(true);
                 } else {
                     item.setIcon(R.drawable.ic_favorite_border_white_24dp);
                     pet.setFav(false);
-                    favButton = false;
                 }
                 return true;
             case android.R.id.home:
-                Intent intent = new Intent();
-                intent.putExtra("Pet", pet);
-                intent.putExtra("Delete", false);
-                setResult(RESULT_OK, intent);
-                finish();
-                return true;
-            case R.id.action_confirm:
+                Log.d(DEBUG_TAG,"CONFIRM!!");
                 Intent intent2 = new Intent();
+                if (pet.getFav()) {
+                    pet.addLikedUser(userEmail);
+                } else {
+                    if (pet.isUserInList(userEmail)) {
+                        Log.d(DEBUG_TAG,"REMOVING USER");
+                        pet.removeUserFromList(userEmail);
+                    }
+                }
                 intent2.putExtra("Pet", pet);
                 intent2.putExtra("Delete", false);
                 setResult(RESULT_OK, intent2);
                 finish();
+                return true;
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
@@ -139,7 +145,7 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.detail, menu);
-        if (pet.getFav()) {
+        if (pet.isUserInList(userEmail)) {
             menu.findItem(R.id.action_favorite_border).setIcon(R.drawable.heart);
         } else {
             menu.findItem(R.id.action_favorite_border).setIcon(R.drawable.ic_favorite_border_white_24dp);

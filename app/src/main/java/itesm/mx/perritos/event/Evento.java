@@ -13,6 +13,7 @@ public class Evento  implements Serializable{
     private String HoraFinal;
     private boolean LugarVisible;
     private String Lugar;
+    private String key;
 
     /**
      * Default constructor
@@ -128,5 +129,13 @@ public class Evento  implements Serializable{
 
     public void setLugar(String Lugar){
         this.Lugar = Lugar;
+    }
+
+    public String getKey(){
+        return key;
+    }
+
+    public void setKey(String key){
+        this.key = key;
     }
 }

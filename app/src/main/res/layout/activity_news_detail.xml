@@ -1,41 +1,25 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:layout_weight="8"
-    tools:context="itesm.mx.perritos.news.NewsDetailActivity">
-
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    tools:context="itesm.mx.perritos.event.AddEventActivity">
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:background="@color/colorPrimary"
-        app:theme="@style/ActionBarTheme"/>
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme">
 
-    <ImageView
-        android:id="@+id/image_cover"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="6"/>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="@color/colorPrimary"
+            app:theme="@style/ActionBarTheme"/>
 
-
-    <TextView
-        android:id="@+id/text_title"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-
-    <TextView
-        android:id="@+id/text_description"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
-
-
-</LinearLayout>
+    </android.support.design.widget.AppBarLayout>
+    <include layout="@layout/activity_news_detail_content"/>
+</android.support.design.widget.CoordinatorLayout>

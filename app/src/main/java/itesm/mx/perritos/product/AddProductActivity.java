@@ -61,8 +61,10 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
         editPrecio = (EditText) findViewById(R.id.edit_precio);
         checkVisible = (CheckBox) findViewById(R.id.check_visible);
         imgPicture = (ImageView) findViewById(R.id.image_cover);
-        btnDeleted = (Button) findViewById(R.id.button_delete);
-        btnOk = (Button) findViewById(R.id.action_confirm);
+
+        btnDeleted = (Button) findViewById(R.id.button_eliminar);
+        btnOk = (Button) findViewById(R.id.button_aceptar);
+
         btnDeleted.setOnClickListener(this);
         btnOk.setOnClickListener(this);
 
@@ -94,7 +96,7 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id == R.id.action_confirm) {
+        if (id == R.id.button_aceptar) {
             if (isAllDataCorrect()) {
                 product.setsName(editNombre.getText().toString());
                 product.setdPrice(Double.valueOf(editPrecio.getText().toString()));
@@ -105,7 +107,7 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
                 setResult(RESULT_OK, intent);
                 finish();
             }
-        } else if (id == R.id.button_delete) {
+        } else if (id == R.id.button_eliminar) {
             Intent intent = new Intent();
             intent.putExtra("Delete",true);
             product.setsName(editNombre.getText().toString());
