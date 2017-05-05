@@ -3,7 +3,7 @@
     android:id="@+id/popupLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
+    android:background="@color/blanco"
     android:orientation="vertical">
 
     <LinearLayout
@@ -107,7 +107,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:text="Agregar Foto"
-        android:textColor="@color/colorWhite" />
+        android:textColor="@color/blanco" />
 
 
 </RelativeLayout>

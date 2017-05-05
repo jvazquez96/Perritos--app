@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="bottom"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/button_eliminar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="bottom|end"
+        android:background="@color/colorPrimary"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="ELIMINAR EVETO"
+        android:textColor="@color/blanco" />
+    <Button
+        android:id="@+id/button_aceptar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
+        android:background="@color/colorSecondary"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="ACEPTAR"
+        android:textColor="@color/blanco" />
+
+
+
+</LinearLayout>

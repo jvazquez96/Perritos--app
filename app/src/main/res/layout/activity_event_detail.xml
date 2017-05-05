@@ -1,52 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical"
+tools:context="itesm.mx.perritos.event.EventDetailActivity">
+<android.support.design.widget.AppBarLayout
+    android:id="@+id/app_bar"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="itesm.mx.perritos.event.EventDetailActivity"
-    android:layout_weight="6">
-
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true"
+    android:theme="@style/AppTheme">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="@color/colorPrimary"
-        app:theme="@style/ActionBarTheme" />
+        app:theme="@style/ActionBarTheme"/>
 
-    <ImageView
-        android:id="@+id/image_cover"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:src="@mipmap/ic_launcher"
-        android:layout_weight="6"/>
+</android.support.design.widget.AppBarLayout>
+<include layout="@layout/activity_event_detail_content"/>
+<include layout="@layout/button_ir" />
+
+</android.support.design.widget.CoordinatorLayout>
 
 
-    <TextView
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:text="Evento"
-        android:layout_weight="1"/>
-
-    <TextView
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:text="Descripción"
-        android:layout_weight="1"/>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:id="@+id/ir_a_lugar_btn"
-        android:text="IR AL LUGAR"
-        android:background="@color/adopt"
-        android:textColor="@color/colorWhite"
-        android:layout_weight="1"/>
-
-</LinearLayout>

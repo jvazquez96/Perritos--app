@@ -44,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16dp"
-                android:textColor="@color/colorgrow"
+                android:textColor="@color/negro"
                 android:paddingBottom="8dp"
                 android:text="NAME"/>
 
@@ -58,7 +58,7 @@
                     android:id="@+id/text_date"
                     android:layout_width="wrap_content"
                     android:textSize="16dp"
-                    android:textColor="@color/colorgrow"
+                    android:textColor="@color/negro"
                     android:layout_height="wrap_content"
                     android:text="DATE"/>
 
@@ -70,7 +70,7 @@
             <TextView
                 android:paddingBottom="8dp"
                 android:textSize="16dp"
-                android:textColor="@color/colorgrow"
+                android:textColor="@color/negro"
                 android:id="@+id/text_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

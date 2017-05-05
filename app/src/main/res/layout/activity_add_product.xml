@@ -1,118 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="itesm.mx.perritos.product.AddProductActivity">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:background="@color/colorPrimary"
-        app:theme="@style/ActionBarTheme"/>
-
-    <LinearLayout
-        android:layout_below="@+id/toolbar"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
+    tools:context="itesm.mx.perritos.event.AddEventActivity">
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme">
 
-
-        <EditText
-            android:layout_marginTop="15dp"
-            android:id="@+id/edit_nombre"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Nombre del producto"
-            android:textColor="@color/colorgrow"
-            android:paddingBottom="8dp"
-            android:textSize="32sp"
-           />
+            android:layout_height="?actionBarSize"
+            android:background="@color/colorPrimary"
+            app:theme="@style/ActionBarTheme"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="24dp"
-            android:text="Precio en MXN:"/>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+    </android.support.design.widget.AppBarLayout>
 
+    <include layout="@layout/activity_add_product_content"/>
+    <include layout="@layout/button_aceptar_eliminar" />
 
-            <EditText
-                android:id="@+id/edit_precio"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Precio"
-                android:paddingBottom="8dp"
-                android:paddingRight="40dp"
-                android:textColor="@color/colorgrow"
-                android:textSize="16sp"
-                android:inputType="number|numberDecimal"/>
+</android.support.design.widget.CoordinatorLayout>
 
-            <CheckBox
-                android:id="@+id/check_visible"
-                android:layout_width="wrap_content"
-                android:layout_marginLeft="80dp"
-                android:layout_height="wrap_content"
-                android:text="Visible"/>
-
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="24dp"
-            android:text="Descripción:"/>
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/edit_description"
-            android:textSize="16sp"
-            android:textColor="@color/colorgrow"
-            android:hint="Descripción"/>
-
-
-        <ImageView
-            android:id="@+id/image_cover"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/image_placeholder"/>
-
-    </LinearLayout>
-
-
-    <Button
-        android:id="@+id/action_confirm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/button_delete"
-        android:textColor="#ffffff"
-        android:layout_alignParentEnd="true"
-        android:background="@color/adopt"
-        android:text="ACEPTAR"/>
-
-
-    <Button
-        android:id="@+id/button_delete"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:textColor="#ffffff"
-        android:background="@color/colorPrimary"
-        android:text="ELIMINAR PRODUCTO"/>
-
-
-</RelativeLayout>

@@ -2,6 +2,7 @@ package itesm.mx.perritos.pet;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -67,6 +68,11 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_pet_detail);
          tlToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tlToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //Add the following code to make the up arrow white:
+        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_keyboard_backspace_white_24dp);
+        upArrow.setColorFilter(getResources().getColor(android.R.color.white), PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
         cool = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
 
@@ -114,18 +120,13 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
                 }
                 return true;
             case android.R.id.home:
-                Intent intent = new Intent();
-                intent.putExtra("Pet", pet);
-                intent.putExtra("Delete", false);
-                setResult(RESULT_OK, intent);
-                finish();
-                return true;
-            case R.id.action_confirm:
+                Log.d(DEBUG_TAG,"CONFIRM!!");
                 Intent intent2 = new Intent();
                 if (pet.getFav()) {
                     pet.addLikedUser(userEmail);
                 } else {
                     if (pet.isUserInList(userEmail)) {
+                        Log.d(DEBUG_TAG,"REMOVING USER");
                         pet.removeUserFromList(userEmail);
                     }
                 }
@@ -133,6 +134,7 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
                 intent2.putExtra("Delete", false);
                 setResult(RESULT_OK, intent2);
                 finish();
+                return true;
             default:
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.

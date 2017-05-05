@@ -34,6 +34,8 @@
             android:gravity="left"
             android:text="Nombre del producto"
             android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/negro"
             android:layout_alignTop="@+id/linearLayout2"
             android:layout_toEndOf="@+id/image_evento"/>
 
@@ -74,7 +76,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="8dp"
                 android:text="$ 00.00"
-                android:textColor="@color/colorgrow" />
+                android:textColor="@color/negro" />
 
         </LinearLayout>
 
@@ -88,5 +90,5 @@
         android:layout_alignParentTop="true"
         android:background="?android:selectableItemBackground"
         android:src="@drawable/ic_favorite_black_24dp"
-        android:tint="@color/adopt" />
+        android:tint="@color/colorSecondary" />
 </RelativeLayout>
