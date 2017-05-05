@@ -14,6 +14,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -32,9 +34,7 @@ import com.google.firebase.storage.UploadTask;
 import com.bumptech.glide.Glide;
 
 import java.util.Calendar;
-
 import itesm.mx.perritos.R;
-import itesm.mx.perritos.pet.Pet;
 
 
 public class AddEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, View.OnClickListener, TimePickerDialog.OnTimeSetListener  {
@@ -105,6 +105,8 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
             btnEliminar.setVisibility(View.INVISIBLE);
         }
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -284,4 +286,5 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
             }
         }
     }*/
+
 }

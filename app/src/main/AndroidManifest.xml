@@ -28,4 +28,8 @@
             android:theme="@style/Base.Theme.AppCompat" />
     </application>
 
+    <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyCv451nm9wNXvwM_ub9KXcu7R1kqe98VWo"/>
+
 </manifest>

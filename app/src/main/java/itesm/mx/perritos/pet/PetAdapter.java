@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -74,6 +75,8 @@ public class PetAdapter extends ArrayAdapter<Pet> {
         TextView tvGender = (TextView) convertView.findViewById(R.id.text_gender);
         TextView tvAge = (TextView) convertView.findViewById(R.id.text_age);
         TextView tvDescription = (TextView) convertView.findViewById(R.id.text_description);
+        TextView tvGenderStatic = (TextView) convertView.findViewById(R.id.textView2);
+
         tvName.setText(pet.getName());
         tvGender.setText(pet.getGender());
         tvAge.setText(String.valueOf(pet.getAge()));
@@ -102,6 +105,14 @@ public class PetAdapter extends ArrayAdapter<Pet> {
             ivPetFav.setVisibility(View.VISIBLE);
         }else {
             ivPetFav.setVisibility(View.INVISIBLE);
+        }
+
+        if(tvGender.getText().equals("Hembra")){
+            tvGender.setTextColor(Color.parseColor("#ff6659"));
+            tvGenderStatic.setTextColor(Color.parseColor("#ff6659"));
+        }else{
+            tvGender.setTextColor(Color.parseColor("#768fff"));
+            tvGenderStatic.setTextColor(Color.parseColor("#768fff"));
         }
 
         return convertView;

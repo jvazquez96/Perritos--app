@@ -49,6 +49,8 @@ public class EventoAdapter extends ArrayAdapter<Evento> {
         tvDireccion.setText(eventos1.getLugar());
         tvTiempoFal.setText(eventos1.getStartDate() + " Dias");
 
+
+
         return convertView;
     }
 }
