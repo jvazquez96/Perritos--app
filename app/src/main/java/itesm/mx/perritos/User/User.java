@@ -11,52 +11,49 @@ import itesm.mx.perritos.product.Product;
  */
 
 public class User {
+
     private String userName;
     private String userEmail;
-    private ArrayList<Pet> userFavoritePets;
-    private ArrayList<Product> userFavoriteProducts;
-    private ArrayList<News> userFavoriteNews;
 
     public User() {
 
     }
 
     /**
+     * Constructor
      * @param userName
      * @param userEmail
-     * @param userFavoritePets Array of Pets selected as Favotives
-     * @param userFavoriteProducts Array of Products selected as Favotives
-     * @param userFavoriteNews Array of News selected as Favotives
      */
-
-    public User(String userName, String userEmail, ArrayList<Pet>  userFavoritePets, ArrayList<Product> userFavoriteProducts,ArrayList<News> userFavoriteNews) {
+    public User(String userName, String userEmail) {
         this.userName = userName;
         this.userEmail = userEmail;
-        this.userFavoritePets = userFavoritePets;
-        this.userFavoriteProducts = userFavoriteProducts;
-        this.userFavoriteNews = userFavoriteNews;
     }
 
-
+    /**
+     * Setter for userName
+     * @param userName
+     */
     public void setUserName(String userName){
         this.userName = userName;
     }
 
-    public void setUserEmail(String userEmail){
-        this.userEmail = userEmail;
+    /**
+     * Setter for userEmail
+     * @param userEmail
+     */
+    public void setUserEmail(String userEmail){this.userEmail = userEmail;
     }
 
-    public void setUserFavoritePets( ArrayList<Pet>  userFavoritePets){
-        this.userFavoritePets = userFavoritePets;
+    public String getUserName() {
+        return this.userName;
     }
 
-    public void setUserFavoriteProducts( ArrayList<Product>  userFavoriteProducts){
-        this.userFavoriteProducts = userFavoriteProducts;
+    public String getUserEmail() {
+        return this.userEmail;
     }
 
-    public void setUserFavoriteNews( ArrayList<News>  userFavoriteNews){
-        this.userFavoriteNews = userFavoriteNews;
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
-
-
 }

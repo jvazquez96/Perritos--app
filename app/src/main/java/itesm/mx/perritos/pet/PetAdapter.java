@@ -1,5 +1,7 @@
 package itesm.mx.perritos.pet;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,6 +30,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import itesm.mx.perritos.R;
+import itesm.mx.perritos.Utils.CurrentUser;
 
 import static java.lang.System.load;
 
@@ -38,10 +41,10 @@ import static java.lang.System.load;
 public class PetAdapter extends ArrayAdapter<Pet> {
 
     private ArrayList<Pet> pets;
+    private Application app;
 
     /**
      * Constructor
-     * @param context Application context
      * @param context Application context
      * @param pets List of pets
      */
@@ -94,7 +97,8 @@ public class PetAdapter extends ArrayAdapter<Pet> {
         });
 
         //Fav button
-        if(pet.getFav()) {
+
+        if(pet.isUserInList(CurrentUser.getmInstance().getUserEmail())) {
             ivPetFav.setVisibility(View.VISIBLE);
         }else {
             ivPetFav.setVisibility(View.INVISIBLE);

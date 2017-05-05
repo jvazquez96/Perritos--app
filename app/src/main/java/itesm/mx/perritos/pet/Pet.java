@@ -1,6 +1,7 @@
 package itesm.mx.perritos.pet;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by jorgevazquez on 3/17/17.
@@ -18,11 +19,13 @@ public class Pet implements Serializable {
     private String photoUrl;
     private boolean isVisible;
     private boolean isFavorite;
+    private ArrayList<String> listLikedUsers;
 
     /**
      *  Default constructor.
      */
     public Pet() {
+        this.listLikedUsers = new ArrayList<>();
     }
 
     /**
@@ -44,6 +47,7 @@ public class Pet implements Serializable {
         this.photoUrl = photoUrl;
         this.isVisible = isVisible;
         this.isFavorite = false;
+        this.listLikedUsers = new ArrayList<>();
     }
 
 
@@ -175,6 +179,26 @@ public class Pet implements Serializable {
 
     public boolean getFav() {
         return this.isFavorite;
+    }
+
+    public void setListLikedUsers(ArrayList<String> listLikedUsers) {
+        this.listLikedUsers = listLikedUsers;
+    }
+
+    public ArrayList<String> getListLikedUsers() {
+        return this.listLikedUsers;
+    }
+
+    public void addLikedUser(String user) {
+        this.listLikedUsers.add(user);
+    }
+
+    public boolean isUserInList(String user) {
+        return this.listLikedUsers.contains(user);
+    }
+
+    public void removeUserFromList (String user) {
+        this.listLikedUsers.remove(user);
     }
 
     @Override
