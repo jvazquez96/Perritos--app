@@ -29,6 +29,12 @@ public class EventoAdapter extends ArrayAdapter<Evento> {
         return this.eventos;
     }
 
+    public String Borrar_Año(String str) {
+        if (str != null && str.length() > 0) {
+            str = str.substring(0, str.length()-5);
+        }
+        return str;
+    }
 
     @NonNull
     @Override
@@ -47,7 +53,8 @@ public class EventoAdapter extends ArrayAdapter<Evento> {
         tvTitle.setText(eventos1.getTitle());
         tvDescription.setText(eventos1.getDescription());
         tvDireccion.setText(eventos1.getLugar());
-        tvTiempoFal.setText(eventos1.getStartDate() + " Dias");
+        String FechaCorta = Borrar_Año(eventos1.getStartDate());
+        tvTiempoFal.setText(FechaCorta);
 
         return convertView;
     }

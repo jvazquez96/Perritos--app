@@ -8,11 +8,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringDef;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -23,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import java.text.DateFormatSymbols;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,16 +45,14 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
     private static final int RC_PHOTO_PICKER = 2;
     private TextView textStartDate;
     private TextView textEndDate;
-    private TextView textStartTime;
-    private TextView textEndTime;
+    private TextView textHoraInicio;
+    private TextView tvHoraFinal;
     private Button btnEliminar;
     private Button btnAceptar;
 
     private Toolbar tlToolbar;
     private EditText tvTituloEvento;
     private TextView tvDescripcionEvento;
-    private TextView textHoraInicio;
-    private TextView tvHoraFinal;
     private CheckBox LugarVisible;
     private TextView AgregarLugar;
     private Evento MyEvent;
@@ -72,23 +73,19 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
 
         textStartDate = (TextView) findViewById(R.id.text_startDate);
         textEndDate = (TextView) findViewById(R.id.text_endDate);
-        textStartTime = (TextView) findViewById(R.id.text_startTime);
-        textEndTime = (TextView) findViewById(R.id.text_endTime);
         tlToolbar = (Toolbar) findViewById(R.id.toolbar);
         tvTituloEvento = (EditText) findViewById(R.id.edit_title);
         tvDescripcionEvento = (EditText) findViewById(R.id.edit_description);
         textHoraInicio = (TextView) findViewById(R.id.text_startTime);
-        tvHoraFinal = (TextView) findViewById(R.id.text_startTime);
+        tvHoraFinal = (TextView) findViewById(R.id.text_endTime);
         LugarVisible = (CheckBox) findViewById(R.id.check_visible);
         AgregarLugar = (TextView) findViewById(R.id.text_location);
 
 
         textStartDate.setOnClickListener(this);
         textEndDate.setOnClickListener(this);
-        textStartTime.setOnClickListener(this);
-        textEndTime.setOnClickListener(this);
-        textStartDate.setOnClickListener(this);
-        textEndDate.setOnClickListener(this);
+        textHoraInicio.setOnClickListener(this);
+        tvHoraFinal.setOnClickListener(this);
         getSupportActionBar().setTitle("Nuevo Evento");
 
 
@@ -99,7 +96,15 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
         if (bundle != null) {
             isEditing = bundle.getBoolean("isEditing");
             getSupportActionBar().setTitle("Editar Evento");
-            Evento evento = (Evento) bundle.getSerializable("Evento");
+            Evento evento = (Evento) bundle.getSerializable("Event");
+            textStartDate.setText(evento.getStartDate());
+            textEndDate.setText(evento.getEndDate());
+            tvTituloEvento.setText(evento.getTitle());
+            tvDescripcionEvento.setText(evento.getDescription());
+            textHoraInicio.setText(evento.getHoraInicio());
+            tvHoraFinal.setText(evento.getHoraFinal());
+            LugarVisible.setChecked(evento.getLugarVisible());
+            AgregarLugar.setText(evento.getLugar());
         } else {
             getSupportActionBar().setTitle("Nuevo evento");
             btnEliminar.setVisibility(View.INVISIBLE);
@@ -108,7 +113,7 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.confirm,menu);
+        getMenuInflater().inflate(R.menu.confirm_event,menu);
         return true;
     }
 
@@ -143,7 +148,7 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
                 break;
             case R.id.text_startTime:
                 StartDating = true;
-                showTimePickerDialog(textStartTime);
+                showTimePickerDialog(textHoraInicio);
                 break;
             case R.id.text_endDate:
                 StartDating = false;
@@ -151,7 +156,7 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
                 break;
             case R.id.text_endTime:
                 StartDating = false;
-                showTimePickerDialog(textEndTime);
+                showTimePickerDialog(tvHoraFinal);
                 break;
             case R.id.AgregarImagen:
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -185,6 +190,21 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
                 }
                 break;
             case R.id.button_eliminar:
+                intent = new Intent();
+                intent.putExtra("Delete",true);
+                MyEvent = new Evento();
+                MyEvent.setStartDate(textStartDate.getText().toString());
+                MyEvent.setEndDate(textEndDate.getText().toString());
+                MyEvent.setTitle(tvTituloEvento.getText().toString());
+                MyEvent.setDescription(tvDescripcionEvento.getText().toString());
+                MyEvent.setStartDate(textStartDate.getText().toString());
+                MyEvent.setHoraInicio(textHoraInicio.getText().toString());
+                MyEvent.setHoraFinal(tvHoraFinal.getText().toString());
+                MyEvent.setLugarVisible(LugarVisible.isChecked());
+                MyEvent.setLugar(AgregarLugar.getText().toString());
+                MyEvent.setTitle(tvTituloEvento.getText().toString());
+                setResult(RESULT_OK,intent);
+                Toast.makeText(getApplicationContext(),"Evento Eliminado",Toast.LENGTH_SHORT).show();
                 finish();
         }
     }
@@ -192,22 +212,45 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         if(StartDating){
-            textStartDate.setText(String.valueOf(dayOfMonth) + "/" + String.valueOf(month) + "/" + String.valueOf(year));
+            textStartDate.setText(String.valueOf(dayOfMonth) + " " + new DateFormatSymbols().getMonths()[month-1]  + " " + String.valueOf(year));
         }
         else{
-            textEndDate.setText(String.valueOf(dayOfMonth) + "/" + String.valueOf(month) + "/" + String.valueOf(year));
+            textEndDate.setText(String.valueOf(dayOfMonth) + " " + new DateFormatSymbols().getMonths()[month-1] + " " + String.valueOf(year));
         }
     }
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+        String TextHour;
+        String TextMin;
+        if(hourOfDay < 10){
+            TextHour = "0" + String.valueOf(hourOfDay) + ":";
+        } else{
+            TextHour = String.valueOf(hourOfDay) + ":";
+        }
+        if(minute < 10){
+            TextMin = "0" + String.valueOf(minute);
+        } else{
+            TextMin = String.valueOf(minute);
+        }
         if(StartDating){
-            textStartTime.setText(String.valueOf(hourOfDay) + ":" + String.valueOf(minute));
+            textHoraInicio.setText(TextHour + TextMin);
         }
         else{
-            textEndTime.setText(String.valueOf(hourOfDay) + ":" + String.valueOf(minute));
+            tvHoraFinal.setText(TextHour + TextMin);
         }
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
+    }
+
 
     public static class DatePickerFragment extends DialogFragment {
 

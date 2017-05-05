@@ -86,10 +86,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private static final int RC_EDIT_NEWS = 3;
     private static final int RC_EDIT_PRODUCT = 4;
     private static final int RC_EDIT_PET_FAV = 5;
-    private static final int RC_EDIT_EVENT = 6;
-    private static final int RC_EDIT_EVENT_FAV = 7;
-    private static final int RC_EDIT_PRODUCT_FAV = 8;
-    private static final int RC_EDIT_NEWS_FAV = 9;
+    private static final int RC_EDIT_PRODUCT_FAV = 6;
+    private static final int RC_EDIT_NEWS_FAV = 7;
+    private static final int RC_EDIT_EVENT = 8;
+    private static final int RC_EDIT_EVENT_FAV = 9;
+
 
     private PetFragment petFragment;
     private EventosFragment eventosFragment;

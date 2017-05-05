@@ -14,6 +14,7 @@ public class Evento  implements Serializable{
     private boolean LugarVisible;
     private String Lugar;
     private String key;
+    private boolean isFavorite;
 
     /**
      * Default constructor
@@ -103,7 +104,7 @@ public class Evento  implements Serializable{
         return this.HoraInicio;
     }
 
-    public void setHoraInicio(String Hora) {
+    public void setHoraInicio(String HoraInicio) {
         this.HoraInicio = HoraInicio;
     }
 
@@ -137,5 +138,13 @@ public class Evento  implements Serializable{
 
     public void setKey(String key){
         this.key = key;
+    }
+
+    public void setIsFav(boolean isFav){
+        this.isFavorite = isFav;
+    }
+
+    public boolean getIsFav(){
+        return isFavorite;
     }
 }

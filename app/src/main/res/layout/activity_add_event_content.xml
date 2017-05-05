@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:shadowColor="@color/gris"
                 style="@android:style/Widget.Holo.Spinner"
-                android:text="Lunes, May 11, 2017"
+                android:hint="Insertar Fecha"
                 android:layout_marginRight="16dp"/>
 
             <TextView
@@ -64,7 +64,7 @@
                 android:shadowColor="@color/negro"
                 android:layout_height="wrap_content"
                 style="@android:style/Widget.Holo.Spinner"
-                android:text="14:20" />
+                android:hint="Insertar Hora" />
 
         </LinearLayout>
 
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 style="@android:style/Widget.Holo.Spinner"
                 android:textColor="@color/negro"
-                android:text="Lunes, May 11, 2017"
+                android:hint="Insertar Fecha"
                 android:layout_marginRight="16dp"/>
 
             <TextView
@@ -99,7 +99,7 @@
                 android:layout_weight="0.8"
                 android:layout_height="wrap_content"
                 style="@android:style/Widget.Holo.Spinner"
-                android:text="14:20" />
+                android:hint="Insertar Hora" />
 
         </LinearLayout>
 
