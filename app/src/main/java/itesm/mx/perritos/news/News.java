@@ -1,6 +1,7 @@
 package itesm.mx.perritos.news;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by jorgevazquez on 3/20/17.
@@ -12,7 +13,9 @@ public class News implements Serializable {
     private String description;
     private String photoUrl;
     private String key;
+    private boolean isFavorite;
     private boolean isVisible;
+    private ArrayList<String> listLikedUsers;
 
     /**
      * Default constructor
@@ -22,6 +25,7 @@ public class News implements Serializable {
         this.description = "";
         photoUrl = null;
         isVisible = false;
+        this.listLikedUsers = new ArrayList<>();
     }
 
     /**
@@ -33,7 +37,9 @@ public class News implements Serializable {
         this.title = title;
         this.description = desciption;
         this.photoUrl = photoUrl;
+        this.isFavorite = false;
         this.isVisible = isVisible;
+        this.listLikedUsers = new ArrayList<>();
     }
 
     /**
@@ -77,6 +83,14 @@ public class News implements Serializable {
         this.photoUrl = photoUrl;
     }
 
+    public void setFavorite(boolean isFavorite) {
+        this.isFavorite = isFavorite;
+    }
+
+    public boolean isFavorite() {
+        return this.isFavorite;
+    }
+
     public String getPhotoUrl() {
        return this.photoUrl;
     }
@@ -103,5 +117,25 @@ public class News implements Serializable {
 
     public boolean getIsVisible() {
         return this.isVisible;
+    }
+
+    public void setListLikedUsers(ArrayList<String> listLikedUsers) {
+        this.listLikedUsers = listLikedUsers;
+    }
+
+    public ArrayList<String> getListLikedUsers() {
+        return this.listLikedUsers;
+    }
+
+    public void addLikedUser(String user) {
+        this.listLikedUsers.add(user);
+    }
+
+    public boolean isUserInList(String user) {
+        return this.listLikedUsers.contains(user);
+    }
+
+    public void removeUserFromList (String user) {
+        this.listLikedUsers.remove(user);
     }
 }

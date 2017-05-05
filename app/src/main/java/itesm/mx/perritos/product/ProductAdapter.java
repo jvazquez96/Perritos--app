@@ -20,6 +20,7 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import java.util.ArrayList;
 
 import itesm.mx.perritos.R;
+import itesm.mx.perritos.Utils.CurrentUser;
 
 /**
  * Created by DELL1 on 28/03/2017.
@@ -66,7 +67,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         tvNombre.setText(product.getsName());
         tvDescrip.setText(product.getDescription());
         //Fav button
-        if(product.getFav()) {
+        if(product.isUserInList(CurrentUser.getmInstance().getUserEmail())) {
             ivProductFav.setVisibility(View.VISIBLE);
         }else {
             ivProductFav.setVisibility(View.INVISIBLE);

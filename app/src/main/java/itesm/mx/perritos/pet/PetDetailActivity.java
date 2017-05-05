@@ -49,7 +49,6 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
     private ImageView favImage;
     private Bundle bundle;
     private  Button btnSolicitudPet;
-    private Boolean favButton;
     private Pet pet;
     private CollapsingToolbarLayout cool;
     private FirebaseDatabase mFirebaseDatabase;
@@ -59,6 +58,7 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
     private ArrayList<Pet> pets;
     private ArrayAdapter<Pet> petAdapter;
     private static final String DEBUG_TAG = "DEBUG_TAG";
+    private String userEmail;
 
 
 
@@ -90,9 +90,8 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
 
         if (bundle != null) {
             pet = (Pet) bundle.getSerializable("Pet");
-            Log.d("DEBUG_TAG", "Receiving pet");
+            userEmail = bundle.getString("User");
             Glide.with(ivPet.getContext()).load(pet.getPhotoUrl()).into(ivPet);
-            Log.d("DEBUG_TAG", "Photo url: " + pet.getPhotoUrl());
             tvName.setText(pet.getName());
             tvDescription.setText(pet.getDescription());
             tvDate.setText(simpleDateFormat.format(calendar.getTime()));
@@ -113,20 +112,25 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
                         getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp).getConstantState()
                 )) {
                     item.setIcon(R.drawable.heart);
-                    favButton = true;
-                    pet.setFav(true);
                     Toast.makeText(getApplicationContext(), "Agregado a Favoritos", Toast.LENGTH_SHORT).show();
+                    pet.setFav(true);
                 } else {
                     item.setIcon(R.drawable.ic_favorite_border_white_24dp);
                     pet.setFav(false);
-                    favButton = false;
                 }
                 return true;
             case android.R.id.home:
-                Intent intent = new Intent();
-                intent.putExtra("Pet", pet);
-                intent.putExtra("Delete", false);
-                setResult(RESULT_OK, intent);
+                Intent intent2 = new Intent();
+                if (pet.getFav()) {
+                    pet.addLikedUser(userEmail);
+                } else {
+                    if (pet.isUserInList(userEmail)) {
+                        pet.removeUserFromList(userEmail);
+                    }
+                }
+                intent2.putExtra("Pet", pet);
+                intent2.putExtra("Delete", false);
+                setResult(RESULT_OK, intent2);
                 finish();
                 return true;
             default:
@@ -139,7 +143,7 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.detail, menu);
-        if (pet.getFav()) {
+        if (pet.isUserInList(userEmail)) {
             menu.findItem(R.id.action_favorite_border).setIcon(R.drawable.heart);
         } else {
             menu.findItem(R.id.action_favorite_border).setIcon(R.drawable.ic_favorite_border_white_24dp);

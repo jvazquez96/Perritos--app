@@ -19,16 +19,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import itesm.mx.perritos.User.User;
+import itesm.mx.perritos.Utils.CurrentUser;
 import itesm.mx.perritos.event.EventDetailActivity;
 import itesm.mx.perritos.event.Evento;
 import itesm.mx.perritos.event.EventosFragment;
@@ -79,6 +86,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private static final int RC_EDIT_NEWS = 3;
     private static final int RC_EDIT_PRODUCT = 4;
     private static final int RC_EDIT_PET_FAV = 5;
+    private static final int RC_EDIT_PRODUCT_FAV = 6;
+    private static final int RC_EDIT_NEWS_FAV = 7;
 
     private PetFragment petFragment;
     private EventosFragment eventosFragment;
@@ -89,6 +98,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private News editableNews;
     private Product editableProduct;
     private int actualTab = 0;
+
+
+    private User mainUser;
+
+    private TextView textUserName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +135,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View header = navigationView.getHeaderView(0);
+        textUserName = (TextView) header.findViewById(R.id.textView);
         navigationView.setNavigationItemSelectedListener(this);
 
         editablePet = null;
@@ -134,9 +150,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // user signed in
+                    // if user is admin
                     if (user.getEmail().equals("jorgevzqz6@gmail.com") ||
                             user.getEmail().equals("alexandro4v@gmail.com") ||
                             user.getEmail().equals("prueba@prueba.com")) {
+                        textUserName.setText(user.getEmail());
                         petFragment.setAdmin(true,getApplicationContext());
                         productFragment.setAdmin(true,getApplicationContext());
                         newsFragment.setAdmin(true,getApplicationContext());
@@ -145,7 +163,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                         productFragment.setAdmin(false,getApplicationContext());
                         newsFragment.setAdmin(false,getApplicationContext());
                     }
+                    prepareUser(user.getEmail());
                 } else {
+                    cleanUser();
                     startActivityForResult(
                             AuthUI.getInstance()
                                     .createSignInIntentBuilder()
@@ -162,6 +182,14 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         };
     }
 
+    private void prepareUser(String userEmail) {
+        CurrentUser.getmInstance().setUserEmail(userEmail);
+    }
+
+    private void cleanUser() {
+        CurrentUser.getmInstance().setUserEmail(null);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main,menu);
@@ -170,6 +198,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.nav_sign_out) {
+            AuthUI.getInstance().signOut(this);
+        }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -275,6 +308,22 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     isDeleted = bundle.getBoolean("Delete");
                 }
                 petFragment.updatePet(editablePet,isDeleted);
+            } else if (requestCode == RC_EDIT_PRODUCT_FAV) {
+                Bundle bundle = data.getExtras();
+                boolean isDeleted = false;
+                if (bundle != null) {
+                    editableProduct = (Product) bundle.getSerializable("Product");
+                    isDeleted = bundle.getBoolean("Delete");
+                }
+                productFragment.updateProduct(editableProduct,isDeleted);
+            } else if (requestCode == RC_EDIT_NEWS_FAV) {
+                Bundle bundle = data.getExtras();
+                boolean isDeleted = false;
+                if (bundle != null) {
+                    editableNews = (News) bundle.getSerializable("News");
+                    isDeleted = bundle.getBoolean("Delete");
+                }
+                newsFragment.updateNews(editableNews,isDeleted);
             }
         }
     }
@@ -293,6 +342,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         } else {
             Intent petDetailIntent = new Intent(this, PetDetailActivity.class);
             petDetailIntent.putExtras(bundle);
+            petDetailIntent.putExtra("User",CurrentUser.getmInstance().getUserEmail());
             startActivityForResult(petDetailIntent, RC_EDIT_PET_FAV);
         }
     }
@@ -317,7 +367,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         } else {
             Intent productDetailIntent = new Intent(this, ProductDetailActivity.class);
             productDetailIntent.putExtras(bundle);
-            startActivity(productDetailIntent);
+            productDetailIntent.putExtra("User",CurrentUser.getmInstance().getUserEmail());
+            startActivityForResult(productDetailIntent,RC_EDIT_PRODUCT_FAV);
         }
     }
 
@@ -335,7 +386,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         } else {
             Intent newsDetailIntent = new Intent(this,NewsDetailActivity.class);
             newsDetailIntent.putExtras(bundle);
-            startActivity(newsDetailIntent);
+            newsDetailIntent.putExtra("User",CurrentUser.getmInstance().getUserEmail());
+            startActivityForResult(newsDetailIntent,RC_EDIT_NEWS_FAV);
         }
     }
 
