@@ -36,6 +36,7 @@ import java.util.List;
 
 import itesm.mx.perritos.User.User;
 import itesm.mx.perritos.Utils.CurrentUser;
+import itesm.mx.perritos.event.AddEventActivity;
 import itesm.mx.perritos.event.EventDetailActivity;
 import itesm.mx.perritos.event.Evento;
 import itesm.mx.perritos.event.EventosFragment;
@@ -59,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                                                                 EventosFragment.OnEventSelectedListener,
                                                                 ProductFragment.OnProductSelectedListener,
                                                                 NewsFragment.OnNewsSelectedListener{
-
 
     private TabLayout tlTabLayout;
     private Toolbar tbToolbar;
@@ -86,8 +86,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private static final int RC_EDIT_NEWS = 3;
     private static final int RC_EDIT_PRODUCT = 4;
     private static final int RC_EDIT_PET_FAV = 5;
-    private static final int RC_EDIT_PRODUCT_FAV = 6;
-    private static final int RC_EDIT_NEWS_FAV = 7;
+    private static final int RC_EDIT_EVENT = 6;
+    private static final int RC_EDIT_EVENT_FAV = 7;
+    private static final int RC_EDIT_PRODUCT_FAV = 8;
+    private static final int RC_EDIT_NEWS_FAV = 9;
 
     private PetFragment petFragment;
     private EventosFragment eventosFragment;
@@ -95,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private ProductFragment productFragment;
 
     private Pet editablePet;
+    private Evento editableEvent;
     private News editableNews;
     private Product editableProduct;
     private int actualTab = 0;
@@ -348,13 +351,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     }
 
     @Override
-    public void onEventSelectedListener(Evento event) {
-        Bundle bundle = new Bundle();
-        Intent eventDetailIntent = new Intent(this,EventDetailActivity.class);
-        startActivity(eventDetailIntent);
-    }
-
-    @Override
     public void onProductSelectedListener(Product product, boolean isEditing) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("Product",product);
@@ -388,6 +384,24 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             newsDetailIntent.putExtras(bundle);
             newsDetailIntent.putExtra("User",CurrentUser.getmInstance().getUserEmail());
             startActivityForResult(newsDetailIntent,RC_EDIT_NEWS_FAV);
+        }
+    }
+
+    @Override
+    public void onEventSelectedListener(Evento event, boolean isEditing) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("Event",event);
+        if (isEditing) {
+            // Editing event
+            Intent eventEditIntent= new Intent(this, AddEventActivity.class);
+            bundle.putBoolean("isEditing",true);
+            eventEditIntent.putExtras(bundle);
+            editableEvent = event;
+            startActivityForResult(eventEditIntent,RC_EDIT_EVENT);
+        } else {
+            Intent eventDetailIntent = new Intent(this, EventDetailActivity.class);
+            eventDetailIntent.putExtras(bundle);
+            startActivityForResult(eventDetailIntent, RC_EDIT_EVENT_FAV);
         }
     }
 

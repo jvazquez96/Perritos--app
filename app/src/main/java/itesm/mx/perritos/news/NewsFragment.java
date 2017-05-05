@@ -87,7 +87,7 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
         return fragment;
     }
 
-    public void updateNews(News news1, boolean isDeleted) {
+    public void updateNews(News news1, boolean isDeleted) { // flata
         if (isDeleted) {
             mNewsDatabaseReference.child(editKey).removeValue();
         } else {
@@ -95,7 +95,7 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
         }
     }
 
-    public void setAdmin(boolean isAdmin, Context context) {
+    public void setAdmin(boolean isAdmin, Context context) { // falta
         this.isAdmin = isAdmin;
         if (isAdmin) {
             adminNews = new ArrayList<>();
@@ -131,7 +131,7 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
     }
 
     @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) { // falta
         News news1 = adminNews.get(position);
         mListenerNewsSelected.onNewsSelectedListener(news1, true);
         editKey = news1.getKey();
@@ -139,7 +139,7 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
     }
 
     @Override
-    public void onResume() {
+    public void onResume() { // falta
         super.onResume();
         if (isAdmin) {
             adminNews = new ArrayList<>();

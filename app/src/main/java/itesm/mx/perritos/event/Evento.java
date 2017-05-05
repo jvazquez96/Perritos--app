@@ -1,11 +1,19 @@
 package itesm.mx.perritos.event;
 
 
-public class Evento {
+import java.io.Serializable;
 
+public class Evento  implements Serializable{
     private String title;
     private String description;
     private int idImage;
+    private String StartDate;
+    private String EndDate;
+    private String HoraInicio;
+    private String HoraFinal;
+    private boolean LugarVisible;
+    private String Lugar;
+    private String key;
 
     /**
      * Default constructor
@@ -74,5 +82,60 @@ public class Evento {
      */
     public int getIdImage() {
         return this.idImage;
+    }
+    public String getStartDate() {
+        return this.StartDate;
+    }
+
+    public void setStartDate(String StartDate) {
+        this.StartDate = StartDate;
+    }
+
+    public String getEndDate() {
+        return this.EndDate;
+    }
+
+    public void setEndDate(String EndDate) {
+        this.EndDate = EndDate;
+    }
+
+    public String getHoraInicio() {
+        return this.HoraInicio;
+    }
+
+    public void setHoraInicio(String Hora) {
+        this.HoraInicio = HoraInicio;
+    }
+
+    public String getHoraFinal(){
+        return this.HoraFinal;
+    }
+
+    public void setHoraFinal(String HoraFinal) {
+        this.HoraFinal = HoraFinal;
+    }
+
+    public void setLugarVisible(boolean LugarVisible){
+        this.LugarVisible = LugarVisible;
+    }
+
+    public boolean getLugarVisible(){
+        return LugarVisible;
+    }
+
+    public String getLugar(){
+        return Lugar;
+    }
+
+    public void setLugar(String Lugar){
+        this.Lugar = Lugar;
+    }
+
+    public String getKey(){
+        return key;
+    }
+
+    public void setKey(String key){
+        this.key = key;
     }
 }

@@ -14,17 +14,16 @@
         android:fitsSystemWindows="true"
         android:theme="@style/AppTheme">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:background="@color/colorPrimary"
-        app:theme="@style/ActionBarTheme"/>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="@color/colorPrimary"
+            app:theme="@style/ActionBarTheme"/>
 
     </android.support.design.widget.AppBarLayout>
     <include layout="@layout/activity_add_event_content"/>
+
     <include layout="@layout/button_aceptar_eliminar" />
 
 </android.support.design.widget.CoordinatorLayout>
-
-
