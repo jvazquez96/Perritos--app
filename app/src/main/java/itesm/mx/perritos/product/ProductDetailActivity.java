@@ -27,6 +27,7 @@ public class ProductDetailActivity extends AppCompatActivity implements View.OnC
     private Product product;
     private Boolean favButton;
     private Button btnSolicitudProduct;
+    private String userEmail;
 
 
     @Override
@@ -41,6 +42,7 @@ public class ProductDetailActivity extends AppCompatActivity implements View.OnC
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             product = (Product) bundle.getSerializable("Product");
+            userEmail = bundle.getString("User");
             Glide.with(imgPicture.getContext()).load(product.getPhotoUrl()).into(imgPicture);
             textName.setText(product.getsName());
             textPrice.setText(String.valueOf(product.getdPrice()));
@@ -53,7 +55,7 @@ public class ProductDetailActivity extends AppCompatActivity implements View.OnC
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.detail, menu);
-        if (product.getFav()) {
+        if (product.isUserInList(userEmail)) {
             menu.findItem(R.id.action_favorite_border).setIcon(R.drawable.heart);
         } else {
             menu.findItem(R.id.action_favorite_border).setIcon(R.drawable.ic_favorite_border_white_24dp);
@@ -85,6 +87,13 @@ public class ProductDetailActivity extends AppCompatActivity implements View.OnC
                 return true;
             case android.R.id.home:
                 Intent intent = new Intent();
+                if (product.getFav()) {
+                    product.addLikedUser(userEmail);
+                } else {
+                    if (product.isUserInList(userEmail)) {
+                        product.removeUserFromList(userEmail);
+                    }
+                }
                 intent.putExtra("Product", product);
                 intent.putExtra("Delete", false);
                 setResult(RESULT_OK, intent);

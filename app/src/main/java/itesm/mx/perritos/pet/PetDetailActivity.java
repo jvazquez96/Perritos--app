@@ -120,13 +120,11 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
                 }
                 return true;
             case android.R.id.home:
-                Log.d(DEBUG_TAG,"CONFIRM!!");
                 Intent intent2 = new Intent();
                 if (pet.getFav()) {
                     pet.addLikedUser(userEmail);
                 } else {
                     if (pet.isUserInList(userEmail)) {
-                        Log.d(DEBUG_TAG,"REMOVING USER");
                         pet.removeUserFromList(userEmail);
                     }
                 }
