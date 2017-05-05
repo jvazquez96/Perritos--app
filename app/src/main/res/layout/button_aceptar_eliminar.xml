@@ -14,7 +14,7 @@
         android:layout_gravity="bottom|end"
         android:background="@color/colorPrimary"
         android:gravity="center_vertical|center_horizontal"
-        android:text="ELIMINAR EVETO"
+        android:text="ELIMINAR"
         android:textColor="@color/blanco" />
     <Button
         android:id="@+id/button_aceptar"
