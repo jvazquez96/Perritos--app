@@ -64,6 +64,15 @@ public class ProductAdapter extends ArrayAdapter<Product> {
                 ivFoto.setImageDrawable(circularBitmapDrawable);
             }
         });
+
+        ImageView ivVisible = (ImageView) convertView.findViewById(R.id.productVisibleItem);
+
+        if(product.getIsVisible()){
+            ivVisible.setVisibility(View.INVISIBLE);
+        }else{
+            ivVisible.setVisibility(View.VISIBLE);
+        }
+
         tvNombre.setText(product.getsName());
         tvDescrip.setText(product.getDescription());
         //Fav button

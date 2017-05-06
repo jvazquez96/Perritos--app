@@ -1,6 +1,7 @@
 package itesm.mx.perritos.event;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import itesm.mx.perritos.R;
+import itesm.mx.perritos.Utils.CurrentUser;
 
 
 public class EventoAdapter extends ArrayAdapter<Evento> {
@@ -49,7 +51,32 @@ public class EventoAdapter extends ArrayAdapter<Evento> {
         tvDireccion.setText(eventos1.getLugar());
         tvTiempoFal.setText(eventos1.getStartDate() + " Dias");
 
+        ImageView ivVisible = (ImageView) convertView.findViewById(R.id.eventVisibleItem);
 
+        //VISIBLE
+        if(eventos1.getLugarVisible()){
+            ivVisible.setVisibility(View.INVISIBLE);
+        }else{
+            ivVisible.setVisibility(View.VISIBLE);
+        }
+
+
+        //Fav image para eventos  POR IMPLEMENTAR
+        /*
+        if(pet.isUserInList(CurrentUser.getmInstance().getUserEmail())) {
+            ivPetFav.setVisibility(View.VISIBLE);
+        }else {
+            ivPetFav.setVisibility(View.INVISIBLE);
+        }
+
+        if(tvGender.getText().equals("Hembra")){
+            tvGender.setTextColor(Color.parseColor("#ff6659"));
+            tvGenderStatic.setTextColor(Color.parseColor("#ff6659"));
+        }else{
+            tvGender.setTextColor(Color.parseColor("#768fff"));
+            tvGenderStatic.setTextColor(Color.parseColor("#768fff"));
+        }
+*/
 
         return convertView;
     }

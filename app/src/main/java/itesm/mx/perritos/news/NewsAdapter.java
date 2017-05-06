@@ -48,10 +48,26 @@ public class NewsAdapter extends ArrayAdapter<News> {
         TextView tvTitle = (TextView) convertView.findViewById(R.id.text_title);
         TextView tvDescription = (TextView) convertView.findViewById(R.id.text_description);
         ImageView ivLike = (ImageView) convertView.findViewById(R.id.petLikeBtn);
+        ImageView ivVisible = (ImageView) convertView.findViewById(R.id.newsVisibleItem);
 
         Glide.with(ivCover.getContext()).load(news1.getPhotoUrl()).into(ivCover);
         tvTitle.setText(news1.getTitle());
         tvDescription.setText(news1.getDescription());
+
+        //Visible news
+        final ImageView ivVisibleNews = (ImageView) convertView.findViewById(R.id.newsVisibleItem);
+        if(news1.getIsVisible() == true){
+            ivVisible.setVisibility(View.INVISIBLE);
+        }else{
+            ivVisible.setVisibility(View.VISIBLE);
+        }
+
+
+        if(news1.getIsVisible()){
+            ivVisible.setVisibility(View.INVISIBLE);
+        }else{
+            ivVisible.setVisibility(View.VISIBLE);
+        }
 
         if (news1.isUserInList(CurrentUser.getmInstance().getUserEmail())) {
             ivLike.setVisibility(View.VISIBLE);

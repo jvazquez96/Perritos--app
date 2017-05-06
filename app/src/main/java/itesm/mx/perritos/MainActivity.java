@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
@@ -427,4 +428,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             mFragmentList.add(fragment);
         }
     }
+
+
 }
