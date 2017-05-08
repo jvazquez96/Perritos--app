@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.ui.auth.AuthUI;
@@ -329,6 +330,24 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 }
                 newsFragment.updateNews(editableNews,isDeleted);
             }
+            else if (requestCode == RC_EDIT_EVENT_FAV) {
+                Bundle bundle = data.getExtras();
+                boolean isDeleted = false;
+                if (bundle != null) {
+                    editableEvent = (Evento) bundle.getSerializable("Event");
+                    isDeleted = bundle.getBoolean("Delete");
+                }
+                eventosFragment.updateEvent(editableEvent,isDeleted);
+            }
+            else if (requestCode == RC_EDIT_EVENT) {
+                Bundle bundle = data.getExtras();
+                boolean isDeleted = false;
+                if (bundle != null) {
+                    editableEvent = (Evento) bundle.getSerializable("Event");
+                    isDeleted = bundle.getBoolean("Delete");
+                }
+                eventosFragment.updateEvent(editableEvent,isDeleted);
+            }
         }
     }
 
@@ -402,6 +421,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         } else {
             Intent eventDetailIntent = new Intent(this, EventDetailActivity.class);
             eventDetailIntent.putExtras(bundle);
+            eventDetailIntent.putExtra("User",CurrentUser.getmInstance().getUserEmail());
             startActivityForResult(eventDetailIntent, RC_EDIT_EVENT_FAV);
         }
     }
@@ -428,4 +448,6 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             mFragmentList.add(fragment);
         }
     }
+
+
 }

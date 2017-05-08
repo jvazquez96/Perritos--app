@@ -1,7 +1,10 @@
 package itesm.mx.perritos.event;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -11,10 +14,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import itesm.mx.perritos.R;
 import itesm.mx.perritos.pet.Pet;
@@ -28,8 +33,10 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
     private TextView tvTituloEvento;
     private TextView tvDescripcionEvento;
     private TextView Direccion;
+    private ImageView ivCover;
     private Evento MyEvent;
     private Bundle bundle;
+    private String userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +53,7 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         tvDescripcionEvento = (TextView) findViewById(R.id.text_description);
         Direccion = (TextView) findViewById(R.id.text_Lugar);
         bundle = getIntent().getExtras();
+
         if(bundle != null){
             MyEvent = (Evento) bundle.getSerializable("Event");
             textStartDate.setText("Empieza " + MyEvent.getStartDate() + " a las " + MyEvent.getHoraInicio());
@@ -53,6 +61,21 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
             tvTituloEvento.setText(MyEvent.getTitle());
             tvDescripcionEvento.setText(MyEvent.getDescription());
             Direccion.setText(MyEvent.getLugar());
+            userEmail = bundle.getString("User");
+
+            ivCover = (ImageView) findViewById(R.id.image_cover);
+            if(MyEvent.getphotoURL() != null) {
+                // Glide library using circular image crop
+                Glide.with(ivCover.getContext()).load(MyEvent.getphotoURL()).asBitmap().centerCrop().into(new BitmapImageViewTarget(ivCover) {
+                    @Override
+                    protected void setResource(Bitmap resource) {
+                        RoundedBitmapDrawable circularBitmapDrawable =
+                                RoundedBitmapDrawableFactory.create(ivCover.getContext().getResources(), resource);
+                        circularBitmapDrawable.setCircular(true);
+                        ivCover.setImageDrawable(circularBitmapDrawable);
+                    }
+                });
+            }
         }
     }
 
@@ -80,6 +103,17 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                Intent intent2 = new Intent();
+                if (MyEvent.getIsFav()) {
+                    MyEvent.addLikedUser(userEmail);
+                } else {
+                    if (MyEvent.isUserInList(userEmail)) {
+                        MyEvent.removeUserFromList(userEmail);
+                    }
+                }
+                intent2.putExtra("Event", MyEvent);
+                intent2.putExtra("Delete", false);
+                setResult(RESULT_OK, intent2);
                 finish();
                 break;
 

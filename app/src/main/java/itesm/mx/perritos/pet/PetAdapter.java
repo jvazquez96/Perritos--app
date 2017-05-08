@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
@@ -25,9 +26,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.firebase.ui.auth.AuthUI;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import itesm.mx.perritos.R;
 import itesm.mx.perritos.Utils.CurrentUser;
@@ -42,6 +48,11 @@ public class PetAdapter extends ArrayAdapter<Pet> {
 
     private ArrayList<Pet> pets;
     private Application app;
+    // Firebase Objects
+    private FirebaseDatabase mFirebaseDatabase;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateListener;
+
 
     /**
      * Constructor
@@ -64,8 +75,7 @@ public class PetAdapter extends ArrayAdapter<Pet> {
     @NonNull
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Pet pet = pets.get(position);
-
+        final Pet pet = pets.get(position);
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.pet_info,parent,false);
         }
@@ -74,16 +84,14 @@ public class PetAdapter extends ArrayAdapter<Pet> {
         TextView tvGender = (TextView) convertView.findViewById(R.id.text_gender);
         TextView tvAge = (TextView) convertView.findViewById(R.id.text_age);
         TextView tvDescription = (TextView) convertView.findViewById(R.id.text_description);
+        TextView tvGenderStatic = (TextView) convertView.findViewById(R.id.textView2);
+
         tvName.setText(pet.getName());
         tvGender.setText(pet.getGender());
         tvAge.setText(String.valueOf(pet.getAge()));
         tvDescription.setText(pet.getDescription());
         final ImageView ivCover = (ImageView) convertView.findViewById(R.id.image_cover);
 
-        /**
-         * Code when using the image taked from galery
-         * Glide.with(ivCover.getContext()).load(pet.getPhotoUrl()).into(ivCover);
-         */
 
         // Glide library using circular image crop
        Glide.with(ivCover.getContext()).load(pet.getPhotoUrl()).asBitmap().centerCrop().into(new BitmapImageViewTarget(ivCover) {
@@ -96,12 +104,30 @@ public class PetAdapter extends ArrayAdapter<Pet> {
             }
         });
 
+        //Visible PET
+        final ImageView ivVisible = (ImageView) convertView.findViewById(R.id.petVisibleItem);
+
+        if(pet.getIsVisible() == true){
+            ivVisible.setVisibility(View.INVISIBLE);
+        }else{
+            ivVisible.setVisibility(View.VISIBLE);
+        }
+
+
         //Fav button
 
         if(pet.isUserInList(CurrentUser.getmInstance().getUserEmail())) {
             ivPetFav.setVisibility(View.VISIBLE);
         }else {
             ivPetFav.setVisibility(View.INVISIBLE);
+        }
+
+        if(tvGender.getText().equals("Hembra")){
+            tvGender.setTextColor(Color.parseColor("#ff6659"));
+            tvGenderStatic.setTextColor(Color.parseColor("#ff6659"));
+        }else{
+            tvGender.setTextColor(Color.parseColor("#768fff"));
+            tvGenderStatic.setTextColor(Color.parseColor("#768fff"));
         }
 
         return convertView;

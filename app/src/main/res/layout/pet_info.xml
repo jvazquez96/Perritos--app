@@ -20,18 +20,18 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="278dp"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
         android:nextFocusLeft="@id/image_cover"
         android:orientation="vertical"
-        android:layout_toEndOf="@+id/image_cover">
+        android:layout_toStartOf="@+id/petFavBtn">
 
 
         <TextView
             android:id="@+id/text_name"
-            android:layout_width="wrap_content"
+            android:layout_width="219dp"
             android:layout_height="wrap_content"
             android:text="Nombre de la mascota"
             android:paddingBottom="8dp"
@@ -96,7 +96,7 @@
 
             <TextView
                 android:id="@+id/text_description"
-                android:layout_width="196dp"
+                android:layout_width="match_parent"
                 android:textSize="14sp"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
@@ -113,9 +113,21 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:paddingLeft="12dp"
+        android:paddingLeft="16dp"
         android:background="?android:selectableItemBackground"
         android:tint="@color/colorSecondary"
         android:src="@drawable/ic_favorite_black_24dp"/>
+
+
+    <ImageView
+        android:id="@+id/petVisibleItem"
+        android:paddingLeft="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?android:selectableItemBackground"
+        android:tint="@color/gris"
+        android:src="@drawable/ic_visibility_off_black_24dp"
+        android:layout_alignBottom="@+id/linearLayout"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

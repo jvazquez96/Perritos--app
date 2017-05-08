@@ -23,7 +23,6 @@ tools:context="itesm.mx.perritos.event.EventDetailActivity">
 
 </android.support.design.widget.AppBarLayout>
 <include layout="@layout/activity_event_detail_content"/>
-<include layout="@layout/button_ir" />
 
 </android.support.design.widget.CoordinatorLayout>
 

@@ -2,6 +2,7 @@ package itesm.mx.perritos.event;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Evento  implements Serializable{
     private String title;
@@ -15,6 +16,8 @@ public class Evento  implements Serializable{
     private String Lugar;
     private String key;
     private boolean isFavorite;
+    private String photoURL;
+    private ArrayList<String> listLikedUsers;
 
     /**
      * Default constructor
@@ -23,6 +26,7 @@ public class Evento  implements Serializable{
         this.title = "";
         this.description = "";
         idImage = 0;
+        this.listLikedUsers = new ArrayList<>();
     }
 
     /**
@@ -30,10 +34,13 @@ public class Evento  implements Serializable{
      * @param title Title of the news
      * @param desciption Description of the news
      */
-    public Evento(String title, String desciption, int idImage) {
+    public Evento(String title, String desciption, int idImage, boolean LugarVisible) {
         this.title = title;
         this.description = desciption;
         this.idImage = idImage;
+        this.LugarVisible = LugarVisible;
+        this.isFavorite = false;
+        this.listLikedUsers = new ArrayList<>();
     }
 
     /**
@@ -146,5 +153,60 @@ public class Evento  implements Serializable{
 
     public boolean getIsFav(){
         return isFavorite;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
+    }
+
+    public String getphotoURL() {
+        return photoURL;
+    }
+
+    //==========FALTA POR IMPLMEMENTAR EN EVENTO (EJEMPLO DESDE PET)==========
+    //VARIABLE INICIAL:
+    //======================
+    //METODOS:
+
+     public void setListLikedUsers(ArrayList<String> listLikedUsers) {
+         if(listLikedUsers == null)
+             this.listLikedUsers = new ArrayList<>();
+         this.listLikedUsers = listLikedUsers;
+    }
+
+    public ArrayList<String> getListLikedUsers() {
+        if(listLikedUsers == null)
+            this.listLikedUsers = new ArrayList<>();
+        return this.listLikedUsers;
+    }
+
+    public void addLikedUser(String user) {
+        if(listLikedUsers == null)
+            this.listLikedUsers = new ArrayList<>();
+        this.listLikedUsers.add(user);
+    }
+
+    public boolean isUserInList(String user) {
+        if(listLikedUsers == null)
+            this.listLikedUsers = new ArrayList<>();
+        return this.listLikedUsers.contains(user);
+    }
+
+    public void removeUserFromList (String user) {
+        if(listLikedUsers == null)
+            this.listLikedUsers = new ArrayList<>();
+        this.listLikedUsers.remove(user);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Evento editedEvento = (Evento) obj;
+        return this.title.equals(editedEvento.getTitle()) && this.description.equals(editedEvento.getDescription()) &&
+                this.StartDate.equals(editedEvento.getStartDate()) &&
+                this.EndDate.equals(editedEvento.getEndDate()) &&
+                this.HoraInicio.equals(editedEvento.getHoraInicio()) &&
+                this.HoraFinal == editedEvento.getHoraFinal() &&
+                this.LugarVisible == editedEvento.getLugarVisible() &&
+                this.Lugar == editedEvento.getLugar();
     }
 }

@@ -59,7 +59,6 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
     private ArrayList<News> userNews;
     private ArrayList<News> adminNews;
     private ArrayAdapter<News> newsAdapter;
-
     private String editKey;
 
     private boolean isAdmin;

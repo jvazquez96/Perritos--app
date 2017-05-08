@@ -16,6 +16,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -29,15 +31,16 @@ import java.text.DateFormatSymbols;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import com.bumptech.glide.Glide;
 
 import java.util.Calendar;
-
 import itesm.mx.perritos.R;
-import itesm.mx.perritos.pet.Pet;
 
 
 public class AddEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, View.OnClickListener, TimePickerDialog.OnTimeSetListener  {
@@ -49,15 +52,24 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
     private TextView tvHoraFinal;
     private Button btnEliminar;
     private Button btnAceptar;
-
+    private Button AgregarImagen;
+    private ImageView ImagenEvento;
     private Toolbar tlToolbar;
     private EditText tvTituloEvento;
     private TextView tvDescripcionEvento;
     private CheckBox LugarVisible;
-    private TextView AgregarLugar;
+    private EditText AgregarLugar;
     private Evento MyEvent;
     private boolean StartDating = true;
     private boolean isEditing;
+    private StorageReference mEventPhotosStorageReference;
+    private FirebaseDatabase mFirebaseDatabase;
+    private FirebaseStorage mFirebaseStorage;
+
+
+    private Uri imageLink;
+    private String selectedImage;
+
 
 
     @Override
@@ -70,6 +82,13 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
         btnEliminar = (Button) findViewById(R.id.button_eliminar);
         btnAceptar = (Button) findViewById(R.id.button_aceptar);
 
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mFirebaseStorage = FirebaseStorage.getInstance();
+        mEventPhotosStorageReference = mFirebaseStorage.getReference().child("event_photos");
+        MyEvent = new Evento();
+
+        // AgregarImagen = (Button) findViewById(R.id.button_picture);
+
 
         textStartDate = (TextView) findViewById(R.id.text_startDate);
         textEndDate = (TextView) findViewById(R.id.text_endDate);
@@ -79,7 +98,8 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
         textHoraInicio = (TextView) findViewById(R.id.text_startTime);
         tvHoraFinal = (TextView) findViewById(R.id.text_endTime);
         LugarVisible = (CheckBox) findViewById(R.id.check_visible);
-        AgregarLugar = (TextView) findViewById(R.id.text_location);
+        AgregarLugar = (EditText) findViewById(R.id.autocomplete);
+        ImagenEvento = (ImageView) findViewById(R.id.ImagenEvento);
 
 
         textStartDate.setOnClickListener(this);
@@ -91,6 +111,7 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
 
         btnEliminar.setOnClickListener(this);
         btnAceptar.setOnClickListener(this);
+        //AgregarImagen.setOnClickListener(this);
         isEditing = false;
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -111,9 +132,11 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
         }
     }
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.confirm_event,menu);
+        getMenuInflater().inflate(R.menu.confirm,menu);
         return true;
     }
 
@@ -158,15 +181,8 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
                 StartDating = false;
                 showTimePickerDialog(tvHoraFinal);
                 break;
-            case R.id.AgregarImagen:
-                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/jpeg");
-                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
-                break;
 
             case R.id.button_aceptar:
-                MyEvent = new Evento();
                 MyEvent.setStartDate(textStartDate.getText().toString());
                 MyEvent.setEndDate(textEndDate.getText().toString());
                 MyEvent.setTitle(tvTituloEvento.getText().toString());
@@ -177,10 +193,9 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
                 MyEvent.setLugarVisible(LugarVisible.isChecked());
                 MyEvent.setLugar(AgregarLugar.getText().toString());
                 MyEvent.setTitle(tvTituloEvento.getText().toString());
-                //MyEvent.setIdImage(AgregarImagen.getId());
 
                 if (isAllDataCorrect()) {
-                    intent = new Intent();
+                    Intent intent = new Intent();
                     intent.putExtra("Event", MyEvent);
                     setResult(RESULT_OK,intent);
                    // Toast.makeText(getApplicationContext(),"Logre mandar el Intent",Toast.LENGTH_SHORT).show();
@@ -190,7 +205,7 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
                 }
                 break;
             case R.id.button_eliminar:
-                intent = new Intent();
+                Intent intent = new Intent();
                 intent.putExtra("Delete",true);
                 MyEvent = new Evento();
                 MyEvent.setStartDate(textStartDate.getText().toString());
@@ -246,6 +261,12 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                break;
+            case R.id.button_picture:
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/jpeg");
+                intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
+                startActivityForResult(Intent.createChooser(intent, "Complete action using"), RC_PHOTO_PICKER);
                 break;
         }
         return true;
@@ -305,26 +326,27 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
         }
     }
 
-    /*@Override
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == RC_PHOTO_PICKER) {
                 Uri imageLink = data.getData();
-                StorageReference photoRef = mPetPhotosStorageReference.child(imageLink.getLastPathSegment());
+                StorageReference photoRef = mEventPhotosStorageReference.child(imageLink.getLastPathSegment());
 
                 photoRef.putFile(imageLink).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Uri downloadUri = taskSnapshot.getDownloadUrl();
-                        Glide.with(imgCover.getContext())
+                        Glide.with(ImagenEvento.getContext())
                                 .load(downloadUri.toString())
-                                .into(imgCover);
+                                .into(ImagenEvento);
                         selectedImage = downloadUri.toString();
-                        pet.setPhotoUrl(downloadUri.toString());
+                        MyEvent.setPhotoURL(downloadUri.toString());
                     }
                 });
             }
         }
-    }*/
+    }
+
 }
