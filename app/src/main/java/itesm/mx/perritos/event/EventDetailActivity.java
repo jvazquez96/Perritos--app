@@ -8,6 +8,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -110,13 +111,6 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         switch (item.getItemId()) {
             case android.R.id.home:
                 Intent intent2 = new Intent();
-                if (MyEvent.getIsFav()) {
-                    MyEvent.addLikedUser(userEmail);
-                } else {
-                    if (MyEvent.isUserInList(userEmail)) {
-                        MyEvent.removeUserFromList(userEmail);
-                    }
-                }
                 intent2.putExtra("Event", MyEvent);
                 intent2.putExtra("Delete", false);
                 setResult(RESULT_OK, intent2);
@@ -124,18 +118,33 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.action_favorite_border:
-                if (item.getIcon().getConstantState().equals(
-                        getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp).getConstantState()
-                )) {
-                    item.setIcon(R.drawable.heart);
-                    Toast.makeText(getApplicationContext(), "Agregado a Favoritos", Toast.LENGTH_SHORT).show();
-                    MyEvent.setIsFav(true);
-                } else {
+                if(MyEvent.isUserInList(userEmail)){
+                    //Quitar evento como favorito
                     item.setIcon(R.drawable.ic_favorite_border_white_24dp);
+                    MyEvent.removeUserFromList(userEmail);
                     MyEvent.setIsFav(false);
+                }else{
+                    //Agregar a favoritos
+                    item.setIcon(R.drawable.heart);
+                    MyEvent.addLikedUser(userEmail);
+                    MyEvent.setIsFav(true);
+                    Toast.makeText(getApplicationContext(), "Agregado a Favoritos", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
         return true;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            Intent intent2 = new Intent();
+            intent2.putExtra("Event", MyEvent);
+            intent2.putExtra("Delete", false);
+            setResult(RESULT_OK, intent2);
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

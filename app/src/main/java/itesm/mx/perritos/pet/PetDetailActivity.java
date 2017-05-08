@@ -108,17 +108,6 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_favorite_border:
-               /*if (item.getIcon().getConstantState().equals(
-                        getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp).getConstantState()
-                )) {
-                    item.setIcon(R.drawable.heart);
-                    Toast.makeText(getApplicationContext(), "Agregado a Favoritos", Toast.LENGTH_SHORT).show();
-                    pet.setFav(true);
-                } else {
-                    item.setIcon(R.drawable.ic_favorite_border_white_24dp);
-                    pet.setFav(false);
-                }*/
-
                 if(pet.isUserInList(userEmail)){
                     Log.d("CORAZON", "elimina");
                     //Si ya es favorita se elimina

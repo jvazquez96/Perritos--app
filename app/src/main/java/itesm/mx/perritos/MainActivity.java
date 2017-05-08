@@ -162,10 +162,12 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                             user.getEmail().equals("prueba@prueba.com")) {
                         textUserName.setText(user.getEmail());
                         petFragment.setAdmin(true,getApplicationContext(), CurrentUser.getmInstance().getUserEmail());
+                        eventosFragment.setAdmin(true, getApplicationContext(), CurrentUser.getmInstance().getUserEmail());
                         productFragment.setAdmin(true,getApplicationContext());
                         newsFragment.setAdmin(true,getApplicationContext());
                     } else {
                         petFragment.setAdmin(false,getApplicationContext(), CurrentUser.getmInstance().getUserEmail());
+                        eventosFragment.setAdmin(false, getApplicationContext(), CurrentUser.getmInstance().getUserEmail());
                         productFragment.setAdmin(false,getApplicationContext());
                         newsFragment.setAdmin(false,getApplicationContext());
                     }
@@ -211,8 +213,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             petFragment.filterPets(CurrentUser.getmInstance().getUserEmail());
         }else if(id == R.id.nav_start){
             petFragment.setIsFilterOnOff();
+            eventosFragment.setFavoritesOff();
         }else if(id == R.id.nav_favorites){
             petFragment.filterFavorites(CurrentUser.getmInstance().getUserEmail());
+            eventosFragment.filterFavorites(CurrentUser.getmInstance().getUserEmail());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -133,7 +133,14 @@ public class PetFragment extends ListFragment implements View.OnClickListener, A
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        Pet pet = adminPets.get(position);
+        Pet pet;
+        if(isFilterOn){
+            pet = requestedPets.get(position);
+        }else if(isFavoritesOn){
+            pet = favoritesPets.get(position);
+        }else{
+            pet = adminPets.get(position);
+        }
         mListenerPetSelected.onPetSelectedListener(pet, true);
         editKey = pet.getKey();
         return true;

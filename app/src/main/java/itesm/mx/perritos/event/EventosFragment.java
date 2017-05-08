@@ -57,11 +57,15 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
     private FloatingActionButton floatingActionButton;
     private ArrayList<Evento> userEvents;
     private ArrayList<Evento> adminEvents;
+    private ArrayList<Evento> favoritesEvents;
     private ArrayAdapter<Evento> eventsAdapter;
     private boolean isAdmin = true;
+    private boolean isFavoritesOn;
     private  String editKey;
+    private String userEmail;
     public EventosFragment() {
         // Required empty public constructor
+        isFavoritesOn = false;
     }
 
     public void updateEvent(Evento evento, boolean isDeleted) {
@@ -72,9 +76,10 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
         }
     }
 
-    public void setAdmin(boolean isAdmin, Context context) {
+    public void setAdmin(boolean isAdmin, Context context, String user) {
         this.isAdmin = isAdmin;
-        if (isAdmin) {
+        this.userEmail = user;
+        /*if (isAdmin) {
             adminEvents = new ArrayList<Evento>();
             eventsAdapter = new EventoAdapter(context,adminEvents);
             if (floatingActionButton != null) {
@@ -93,7 +98,7 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
                 getListView().setOnItemLongClickListener(null);
             }
         }
-        setListAdapter(eventsAdapter);
+        setListAdapter(eventsAdapter);*/
     }
 
 
@@ -111,6 +116,7 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
     @Override
     public void onResume() {
         super.onResume();
+        favoritesEvents = new ArrayList<Evento>();
         if (isAdmin) {
             adminEvents = new ArrayList<Evento>();
             eventsAdapter = new EventoAdapter(getActivity(),adminEvents);
@@ -121,6 +127,11 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
             eventsAdapter = new EventoAdapter(getActivity(),userEvents);
             floatingActionButton.setVisibility(View.INVISIBLE);
             getListView().setOnItemLongClickListener(null);
+        }
+
+        if(isFavoritesOn){
+            eventsAdapter = new EventoAdapter(getActivity(), favoritesEvents);
+            getListView().setOnItemLongClickListener(this);
         }
         setListAdapter(eventsAdapter);
         attachDatabaseReadListener();
@@ -151,9 +162,13 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
                     evento.setKey(dataSnapshot.getKey());
                     if (isAdmin) {
                         adminEvents.add(evento);
+                        if(evento.isUserInList(userEmail))
+                            favoritesEvents.add(evento);
                     } else {
                         if (evento.getLugarVisible()) {
                             userEvents.add(evento);
+                            if(evento.isUserInList(userEmail))
+                                favoritesEvents.add(evento);
                         }
                     }
                     eventsAdapter.notifyDataSetChanged();
@@ -260,7 +275,12 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        Evento evento = adminEvents.get(position);
+        Evento evento;
+        if(isFavoritesOn){
+            evento = favoritesEvents.get(position);
+        }else {
+            evento = adminEvents.get(position);
+        }
         mListenerEventSelected.onEventSelectedListener(evento , true);
         editKey = evento.getKey();
         return true;
@@ -280,7 +300,10 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         Evento evento;
-        if (isAdmin) {
+
+        if(isFavoritesOn){
+            evento = favoritesEvents.get(position);
+        }else if (isAdmin) {
             evento = adminEvents.get(position);
         } else {
             evento = userEvents.get(position);
@@ -304,6 +327,35 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
 
     public interface OnEventSelectedListener {
         void onEventSelectedListener(Evento event, boolean isEditing);
+    }
+
+    public void filterFavorites(String user){
+        this.isFavoritesOn = true;
+        favoritesEvents = new ArrayList<Evento>();
+
+        if(isAdmin){
+            for(int i = 0; i < adminEvents.size(); ++i){
+                if(adminEvents.get(i).isUserInList(user))
+                    favoritesEvents.add(adminEvents.get(i));
+            }
+        }else{
+            for(int i = 0; i < userEvents.size(); ++i){
+                if(userEvents.get(i).isUserInList(user))
+                    favoritesEvents.add(userEvents.get(i));
+            }
+        }
+        eventsAdapter = new EventoAdapter(getContext(), favoritesEvents);
+        setListAdapter(eventsAdapter);
+    }
+
+    public void setFavoritesOff(){
+        this.isFavoritesOn = false;
+        if(isAdmin)
+            eventsAdapter = new EventoAdapter(getContext(), adminEvents);
+        else
+            eventsAdapter = new EventoAdapter(getContext(), userEvents);
+        setListAdapter(eventsAdapter);
+        favoritesEvents.clear();
     }
 
 }
