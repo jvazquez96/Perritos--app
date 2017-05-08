@@ -201,19 +201,24 @@ public class PetFragment extends ListFragment implements View.OnClickListener, A
                     pet.setKey(dataSnapshot.getKey());
                     if (isAdmin) {
                         adminPets.add(pet);
+
                         if(pet.isUserInRequestList(user))
                             requestedPets.add(pet);
+
                         if(pet.isUserInList(user))
                             favoritesPets.add(pet);
                     } else {
                         if (pet.getIsVisible()) {
-                            userPets.add(pet);
+
+
                             if(pet.isUserInRequestList(user))
                                 requestedPets.add(pet);
+
                             if(pet.isUserInList(user))
                                 favoritesPets.add(pet);
                         }
                     }
+
                     petAdapter.notifyDataSetChanged();
                 }
 
