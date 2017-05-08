@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
@@ -159,11 +160,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                             user.getEmail().equals("alexandro4v@gmail.com") ||
                             user.getEmail().equals("prueba@prueba.com")) {
                         textUserName.setText(user.getEmail());
-                        petFragment.setAdmin(true,getApplicationContext());
+                        petFragment.setAdmin(true,getApplicationContext(), CurrentUser.getmInstance().getUserEmail());
                         productFragment.setAdmin(true,getApplicationContext());
                         newsFragment.setAdmin(true,getApplicationContext());
                     } else {
-                        petFragment.setAdmin(false,getApplicationContext());
+                        petFragment.setAdmin(false,getApplicationContext(), CurrentUser.getmInstance().getUserEmail());
                         productFragment.setAdmin(false,getApplicationContext());
                         newsFragment.setAdmin(false,getApplicationContext());
                     }
@@ -205,6 +206,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         int id = item.getItemId();
         if (id == R.id.nav_sign_out) {
             AuthUI.getInstance().signOut(this);
+        }else if(id == R.id.nav_requests){
+            petFragment.filterPets(CurrentUser.getmInstance().getUserEmail());
+        }else if(id == R.id.nav_start){
+            petFragment.setisFilterOnOff();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -346,7 +351,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         } else {
             Intent petDetailIntent = new Intent(this, PetDetailActivity.class);
             petDetailIntent.putExtras(bundle);
-            petDetailIntent.putExtra("User",CurrentUser.getmInstance().getUserEmail());
+            petDetailIntent.putExtra("User", CurrentUser.getmInstance().getUserEmail());
             startActivityForResult(petDetailIntent, RC_EDIT_PET_FAV);
         }
     }

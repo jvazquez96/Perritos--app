@@ -61,7 +61,6 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
     private String userEmail;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -153,15 +152,24 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View v) {
-            String TO[] = {"nobody@mail.com"};
+            String TO[] = {"cultura.perrona.10@gmail.com"};
             Intent emailIntent = new Intent(Intent.ACTION_SEND);
             emailIntent.setData(Uri.EMPTY.parse("mailto:"));
             emailIntent.setType("text/plain");
             emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
             emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Solicitud de adopción");
-            emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
+            emailIntent.putExtra(Intent.EXTRA_TEXT, "Hola, mi nombre es "
+                    + "(Tu nombre)"
+                    + " y me gustaría recibir más información acerca del procedimiento de adopción para el acompañante de vida "
+                    + pet.getName()
+                    + ", ¡Saludos!");
             try {
                 startActivity(Intent.createChooser(emailIntent, "Solicitud de adopción por correo..."));
+                pet.addUserRequest(userEmail);
+                Intent intent3 = new Intent();
+                intent3.putExtra("Pet", pet);
+                intent3.putExtra("Delete", false);
+                setResult(RESULT_OK, intent3);
                 finish();
             } catch (android.content.ActivityNotFoundException ex) {
                 Toast.makeText(PetDetailActivity.this,

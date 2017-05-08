@@ -27,6 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -59,6 +60,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener, A
 
     private ArrayList<Pet> adminPets;
     private ArrayList<Pet> userPets;
+    private ArrayList<Pet> requestedPets;
     private ArrayAdapter<Pet> petAdapter;
 
     private FirebaseDatabase mFirebaseDatabase;
@@ -71,9 +73,13 @@ public class PetFragment extends ListFragment implements View.OnClickListener, A
 
     private boolean isAdmin;
 
+    private boolean isFilterOn;
+    private String user;
+
 
     public PetFragment() {
         // Required empty public constructor
+        isFilterOn = false;
     }
 
     public void updatePet(Pet pet, boolean isDeleted) {
@@ -84,9 +90,11 @@ public class PetFragment extends ListFragment implements View.OnClickListener, A
         }
     }
 
-    public void setAdmin(boolean isAdmin, Context context) {
+    public void setAdmin(boolean isAdmin, Context context, String user) {
+        Log.d("DEBUG", "setAdmin");
+        this.user = user;
         this.isAdmin = isAdmin;
-        if (isAdmin) {
+        /*if (isAdmin) {
             adminPets = new ArrayList<Pet>();
             petAdapter = new PetAdapter(context,adminPets);
             if (floatingAddButton != null) {
@@ -95,7 +103,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener, A
             if (getView() != null) {
                 getListView().setOnItemLongClickListener(this);
             }
-        } else {
+        } else{
             userPets = new ArrayList<Pet>();
             petAdapter = new PetAdapter(context,userPets);
             if (floatingAddButton != null) {
@@ -105,7 +113,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener, A
                 getListView().setOnItemLongClickListener(null);
             }
         }
-        setListAdapter(petAdapter);
+        setListAdapter(petAdapter);*/
     }
 
 
@@ -131,17 +139,24 @@ public class PetFragment extends ListFragment implements View.OnClickListener, A
     @Override
     public void onResume() {
         super.onResume();
+        requestedPets = new ArrayList<Pet>();
         if (isAdmin) {
             adminPets = new ArrayList<Pet>();
             petAdapter = new PetAdapter(getActivity(),adminPets);
             floatingAddButton.setVisibility(View.VISIBLE);
             getListView().setOnItemLongClickListener(this);
-        } else {
+        } else{
             userPets = new ArrayList<Pet>();
             petAdapter = new PetAdapter(getActivity(),userPets);
             floatingAddButton.setVisibility(View.INVISIBLE);
             getListView().setOnItemLongClickListener(null);
         }
+
+        if(isFilterOn) {
+            Log.d("SIZE", "isFilterOn");
+            petAdapter = new PetAdapter(getActivity(), requestedPets);
+        }
+
         setListAdapter(petAdapter);
         attachDatabaseReadListener();
     }
@@ -168,9 +183,13 @@ public class PetFragment extends ListFragment implements View.OnClickListener, A
                     pet.setKey(dataSnapshot.getKey());
                     if (isAdmin) {
                         adminPets.add(pet);
+                        if(pet.isUserInRequestList(user))
+                            requestedPets.add(pet);
                     } else {
                         if (pet.getIsVisible()) {
                             userPets.add(pet);
+                            if(pet.isUserInRequestList(user))
+                                requestedPets.add(pet);
                         }
                     }
                     petAdapter.notifyDataSetChanged();
@@ -308,5 +327,35 @@ public class PetFragment extends ListFragment implements View.OnClickListener, A
      */
     public interface OnPetSelectedListener {
         void onPetSelectedListener(Pet pet, boolean isEditing);
+    }
+
+    public void filterPets(String user){
+        isFilterOn = true;
+        requestedPets = new ArrayList<Pet>();
+
+        if(isAdmin){
+            for(int i = 0; i < adminPets.size(); ++i){
+                if(adminPets.get(i).isUserInRequestList(user))
+                    requestedPets.add(adminPets.get(i));
+            }
+        }else{
+            for(int i = 0; i < userPets.size(); ++i){
+                if(userPets.get(i).isUserInRequestList(user))
+                    requestedPets.add(userPets.get(i));
+            }
+        }
+
+        petAdapter = new PetAdapter(getContext(), requestedPets);
+        setListAdapter(petAdapter);
+    }
+
+    public void setisFilterOnOff(){
+        this.isFilterOn = false;
+        if(isAdmin)
+            petAdapter = new PetAdapter(getContext(), adminPets);
+        else
+            petAdapter = new PetAdapter(getContext(), userPets);
+        setListAdapter(petAdapter);
+        requestedPets.clear();
     }
 }

@@ -20,12 +20,14 @@ public class Pet implements Serializable {
     private boolean isVisible;
     private boolean isFavorite;
     private ArrayList<String> listLikedUsers;
+    private ArrayList<String> listUsersRequested;
 
     /**
      *  Default constructor.
      */
     public Pet() {
         this.listLikedUsers = new ArrayList<>();
+        this.listUsersRequested = new ArrayList<>();
     }
 
     /**
@@ -48,6 +50,7 @@ public class Pet implements Serializable {
         this.isVisible = isVisible;
         this.isFavorite = false;
         this.listLikedUsers = new ArrayList<>();
+        this.listUsersRequested = new ArrayList<>();
     }
 
 
@@ -199,6 +202,23 @@ public class Pet implements Serializable {
 
     public void removeUserFromList (String user) {
         this.listLikedUsers.remove(user);
+    }
+
+    public void setListUsersRequested(ArrayList<String> listUsersRequested){
+        this.listUsersRequested = listUsersRequested;
+    }
+
+    public ArrayList<String> getListUsersRequested() {
+        return listUsersRequested;
+    }
+
+    public void addUserRequest(String user){
+        if(!listUsersRequested.contains(user))
+            this.listUsersRequested.add(user);
+    }
+
+    public boolean isUserInRequestList(String user){
+        return this.listUsersRequested.contains(user);
     }
 
     @Override
