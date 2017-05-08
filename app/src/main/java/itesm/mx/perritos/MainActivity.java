@@ -217,6 +217,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         }else if(id == R.id.nav_requests){
             petFragment.filterPets(CurrentUser.getmInstance().getUserEmail());
             eventosFragment.filterEmpty();
+            newsFragment.filterEmpty();
+            productFragment.filterEmpty();
         }else if(id == R.id.nav_start){
             petFragment.setIsFilterOnOff();
             eventosFragment.setFavoritesOff();

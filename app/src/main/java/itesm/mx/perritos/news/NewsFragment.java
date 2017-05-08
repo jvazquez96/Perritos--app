@@ -60,10 +60,12 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
     private ArrayList<News> userNews;
     private ArrayList<News> adminNews;
     private ArrayList<News> favoriteNews;
+    private ArrayList<News> emptyArray;
     private ArrayAdapter<News> newsAdapter;
     private String editKey;
     private String userEmail;
     private boolean isFavoriteOn;
+    private boolean usingEmpty;
 
     private boolean isAdmin;
 
@@ -71,6 +73,7 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
     public NewsFragment() {
         // Required empty public constructor
         isFavoriteOn = false;
+        usingEmpty = false;
     }
 
     /**
@@ -140,6 +143,8 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
         News news1;
         if(isFavoriteOn)
             news1 = favoriteNews.get(position);
+        else if(usingEmpty)
+            news1 = emptyArray.get(position);
         else
             news1 = adminNews.get(position);
 
@@ -152,6 +157,7 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
     public void onResume() { // falta
         super.onResume();
         favoriteNews = new ArrayList<News>();
+        emptyArray = new ArrayList<News>();
         if (isAdmin) {
             adminNews = new ArrayList<>();
             newsAdapter = new NewsAdapter(getActivity(),adminNews);
@@ -166,6 +172,12 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
 
         if(isFavoriteOn){
             newsAdapter = new NewsAdapter(getActivity(), favoriteNews);
+            if(isAdmin)
+                getListView().setOnItemLongClickListener(this);
+        }
+
+        if(usingEmpty){
+            newsAdapter = new NewsAdapter(getActivity(), emptyArray);
             if(isAdmin)
                 getListView().setOnItemLongClickListener(this);
         }
@@ -302,6 +314,8 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
         News news1;
         if(isFavoriteOn){
             news1 = favoriteNews.get(position);
+        }else if(usingEmpty){
+            news1 = emptyArray.get(position);
         }else if (isAdmin) {
             news1 = adminNews.get(position);
         } else {
@@ -336,6 +350,7 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
 
     public void filterFavorites(String user){
         this.isFavoriteOn = true;
+        this.usingEmpty = false;
         favoriteNews = new ArrayList<News>();
         if(isAdmin){
             for(int i = 0; i < adminNews.size(); ++i){
@@ -352,8 +367,17 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
         setListAdapter(newsAdapter);
     }
 
+    public void filterEmpty(){
+        this.usingEmpty = true;
+        this.isFavoriteOn = false;
+        emptyArray = new ArrayList<News>();
+        newsAdapter = new NewsAdapter(getContext(), emptyArray);
+        setListAdapter(newsAdapter);
+    }
+
     public void setFavoritesOff(){
         this.isFavoriteOn = false;
+        this.usingEmpty = false;
         if(isAdmin)
             newsAdapter = new NewsAdapter(getContext(), adminNews);
         else

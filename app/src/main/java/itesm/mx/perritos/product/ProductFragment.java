@@ -54,17 +54,20 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
     private ArrayList<Product> adminProducts;
     private ArrayList<Product> userProducts;
     private ArrayList<Product> favoriteProducts;
+    private ArrayList<Product> emptyArray;
     private ArrayAdapter<Product> productAdapter;
 
     private String editKey;
 
     private boolean isAdmin;
     private boolean isFavoriteOn;
+    private boolean usingEmpty;
     private String userEmail;
 
     public ProductFragment() {
         // Required empty public constructor
         isFavoriteOn = false;
+        usingEmpty = false;
     }
 
     public void updateProduct(Product product, boolean isDeleted) {
@@ -151,6 +154,12 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
             if(isAdmin)
                 getListView().setOnItemLongClickListener(this);
         }
+
+        if(usingEmpty){
+            productAdapter = new ProductAdapter(getActivity(), emptyArray);
+            if(isAdmin)
+                getListView().setOnItemLongClickListener(this);
+        }
         setListAdapter(productAdapter);
         attachDatabaseReadListener();
     }
@@ -185,6 +194,8 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
         Product product;
         if(isFavoriteOn)
             product = favoriteProducts.get(position);
+        else if (usingEmpty)
+            product = emptyArray.get(position);
         else
             product = adminProducts.get(position);
         mListenerProductSelected.onProductSelectedListener(product, true);
@@ -276,6 +287,8 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
        Product product1;
        if(isFavoriteOn){
            product1 = favoriteProducts.get(position);
+       }else if(usingEmpty){
+           product1 = emptyArray.get(position);
        }else if (isAdmin) {
            product1 = adminProducts.get(position);
        } else {
@@ -326,6 +339,7 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
 
     public void filterFavorites(String user){
         this.isFavoriteOn = true;
+        this.usingEmpty = false;
         favoriteProducts = new ArrayList<Product>();
         if(isAdmin){
             for(int i = 0; i < adminProducts.size(); ++i){
@@ -342,8 +356,17 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
         setListAdapter(productAdapter);
     }
 
+    public void filterEmpty(){
+        this.usingEmpty = true;
+        this.isFavoriteOn = false;
+        emptyArray = new ArrayList<Product>();
+        productAdapter = new ProductAdapter(getContext(), emptyArray);
+        setListAdapter(productAdapter);
+    }
+
     public void setFavoritesOff(){
         this.isFavoriteOn = false;
+        this.usingEmpty = false;
         if(isAdmin)
             productAdapter = new ProductAdapter(getContext(), adminProducts);
         else
