@@ -61,6 +61,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener, A
     private ArrayList<Pet> adminPets;
     private ArrayList<Pet> userPets;
     private ArrayList<Pet> requestedPets;
+    private ArrayList<Pet> favoritesPets;
     private ArrayAdapter<Pet> petAdapter;
 
     private FirebaseDatabase mFirebaseDatabase;
@@ -74,12 +75,14 @@ public class PetFragment extends ListFragment implements View.OnClickListener, A
     private boolean isAdmin;
 
     private boolean isFilterOn;
+    private boolean isFavoritesOn;
     private String user;
 
 
     public PetFragment() {
         // Required empty public constructor
         isFilterOn = false;
+        isFavoritesOn = false;
     }
 
     public void updatePet(Pet pet, boolean isDeleted) {
@@ -140,6 +143,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener, A
     public void onResume() {
         super.onResume();
         requestedPets = new ArrayList<Pet>();
+        favoritesPets = new ArrayList<Pet>();
         if (isAdmin) {
             adminPets = new ArrayList<Pet>();
             petAdapter = new PetAdapter(getActivity(),adminPets);
@@ -153,8 +157,13 @@ public class PetFragment extends ListFragment implements View.OnClickListener, A
         }
 
         if(isFilterOn) {
-            Log.d("SIZE", "isFilterOn");
             petAdapter = new PetAdapter(getActivity(), requestedPets);
+            getListView().setOnItemLongClickListener(this);
+        }
+
+        if(isFavoritesOn) {
+            petAdapter = new PetAdapter(getActivity(), favoritesPets);
+            getListView().setOnItemLongClickListener(this);
         }
 
         setListAdapter(petAdapter);
@@ -185,11 +194,15 @@ public class PetFragment extends ListFragment implements View.OnClickListener, A
                         adminPets.add(pet);
                         if(pet.isUserInRequestList(user))
                             requestedPets.add(pet);
+                        if(pet.isUserInList(user))
+                            favoritesPets.add(pet);
                     } else {
                         if (pet.getIsVisible()) {
                             userPets.add(pet);
                             if(pet.isUserInRequestList(user))
                                 requestedPets.add(pet);
+                            if(pet.isUserInList(user))
+                                favoritesPets.add(pet);
                         }
                     }
                     petAdapter.notifyDataSetChanged();
@@ -301,7 +314,12 @@ public class PetFragment extends ListFragment implements View.OnClickListener, A
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         Pet pet;
-        if (isAdmin) {
+
+        if(isFilterOn){
+            pet = requestedPets.get(position);
+        }else if (isFavoritesOn){
+            pet = favoritesPets.get(position);
+        }else if (isAdmin) {
             pet = adminPets.get(position);
         } else  {
             pet = userPets.get(position);
@@ -330,7 +348,8 @@ public class PetFragment extends ListFragment implements View.OnClickListener, A
     }
 
     public void filterPets(String user){
-        isFilterOn = true;
+        this.isFilterOn = true;
+        this.isFavoritesOn = false;
         requestedPets = new ArrayList<Pet>();
 
         if(isAdmin){
@@ -349,8 +368,29 @@ public class PetFragment extends ListFragment implements View.OnClickListener, A
         setListAdapter(petAdapter);
     }
 
-    public void setisFilterOnOff(){
+    public void filterFavorites(String user){
+        this.isFavoritesOn = true;
         this.isFilterOn = false;
+        favoritesPets = new ArrayList<Pet>();
+
+        if(isAdmin){
+            for(int i = 0; i < adminPets.size(); ++i){
+                if(adminPets.get(i).isUserInList(user))
+                    favoritesPets.add(adminPets.get(i));
+            }
+        }else{
+            for(int i = 0; i < userPets.size(); ++i){
+                if(userPets.get(i).isUserInList(user))
+                    favoritesPets.add(userPets.get(i));
+            }
+        }
+        petAdapter = new PetAdapter(getContext(), favoritesPets);
+        setListAdapter(petAdapter);
+    }
+
+    public void setIsFilterOnOff(){
+        this.isFilterOn = false;
+        this.isFavoritesOn = false;
         if(isAdmin)
             petAdapter = new PetAdapter(getContext(), adminPets);
         else

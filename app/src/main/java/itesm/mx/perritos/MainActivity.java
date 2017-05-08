@@ -210,7 +210,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         }else if(id == R.id.nav_requests){
             petFragment.filterPets(CurrentUser.getmInstance().getUserEmail());
         }else if(id == R.id.nav_start){
-            petFragment.setisFilterOnOff();
+            petFragment.setIsFilterOnOff();
+        }else if(id == R.id.nav_favorites){
+            petFragment.filterFavorites(CurrentUser.getmInstance().getUserEmail());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

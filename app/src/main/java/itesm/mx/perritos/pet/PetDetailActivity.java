@@ -14,6 +14,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -107,7 +108,7 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_favorite_border:
-                if (item.getIcon().getConstantState().equals(
+               /*if (item.getIcon().getConstantState().equals(
                         getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp).getConstantState()
                 )) {
                     item.setIcon(R.drawable.heart);
@@ -116,17 +117,25 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
                 } else {
                     item.setIcon(R.drawable.ic_favorite_border_white_24dp);
                     pet.setFav(false);
+                }*/
+
+                if(pet.isUserInList(userEmail)){
+                    Log.d("CORAZON", "elimina");
+                    //Si ya es favorita se elimina
+                    item.setIcon(R.drawable.ic_favorite_border_white_24dp);
+                    pet.setFav(false);
+                    pet.removeUserFromList(userEmail);
+                }else{
+                    Log.d("CORAZON", "agrega");
+                    //Si no era favorita se agrega
+                    item.setIcon(R.drawable.heart);
+                    pet.setFav(true);
+                    pet.addLikedUser(userEmail);
+                    Toast.makeText(getApplicationContext(), "Agregado a Favoritos", Toast.LENGTH_SHORT).show();
                 }
                 return true;
             case android.R.id.home:
                 Intent intent2 = new Intent();
-                if (pet.getFav()) {
-                    pet.addLikedUser(userEmail);
-                } else {
-                    if (pet.isUserInList(userEmail)) {
-                        pet.removeUserFromList(userEmail);
-                    }
-                }
                 intent2.putExtra("Pet", pet);
                 intent2.putExtra("Delete", false);
                 setResult(RESULT_OK, intent2);
@@ -137,6 +146,19 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            Intent intent2 = new Intent();
+            intent2.putExtra("Pet", pet);
+            intent2.putExtra("Delete", false);
+            setResult(RESULT_OK, intent2);
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override
