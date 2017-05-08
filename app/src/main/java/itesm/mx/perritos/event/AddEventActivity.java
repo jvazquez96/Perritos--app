@@ -5,12 +5,15 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringDef;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -30,6 +33,7 @@ import android.widget.Toast;
 import java.text.DateFormatSymbols;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
@@ -41,6 +45,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.Calendar;
 import itesm.mx.perritos.R;
+import itesm.mx.perritos.Utils.CurrentUser;
 
 
 public class AddEventActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, View.OnClickListener, TimePickerDialog.OnTimeSetListener  {
@@ -65,7 +70,8 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
     private StorageReference mEventPhotosStorageReference;
     private FirebaseDatabase mFirebaseDatabase;
     private FirebaseStorage mFirebaseStorage;
-
+    private Uri downloadUri;
+    private boolean isFav;
 
     private Uri imageLink;
     private String selectedImage;
@@ -86,7 +92,7 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
         mFirebaseStorage = FirebaseStorage.getInstance();
         mEventPhotosStorageReference = mFirebaseStorage.getReference().child("event_photos");
         MyEvent = new Evento();
-
+        isFav = false;
         // AgregarImagen = (Button) findViewById(R.id.button_picture);
 
 
@@ -126,6 +132,20 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
             tvHoraFinal.setText(evento.getHoraFinal());
             LugarVisible.setChecked(evento.getLugarVisible());
             AgregarLugar.setText(evento.getLugar());
+            isFav = evento.isUserInList(CurrentUser.getmInstance().getUserEmail());
+            selectedImage = evento.getphotoURL();
+            if(evento.getphotoURL() != null) {
+                // Glide library using circular image crop
+                Glide.with(ImagenEvento.getContext()).load(evento.getphotoURL()).asBitmap().centerCrop().into(new BitmapImageViewTarget(ImagenEvento) {
+                    @Override
+                    protected void setResource(Bitmap resource) {
+                        RoundedBitmapDrawable circularBitmapDrawable =
+                                RoundedBitmapDrawableFactory.create(ImagenEvento.getContext().getResources(), resource);
+                        circularBitmapDrawable.setCircular(true);
+                        ImagenEvento.setImageDrawable(circularBitmapDrawable);
+                    }
+                });
+            }
         } else {
             getSupportActionBar().setTitle("Nuevo evento");
             btnEliminar.setVisibility(View.INVISIBLE);
@@ -193,7 +213,10 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
                 MyEvent.setLugarVisible(LugarVisible.isChecked());
                 MyEvent.setLugar(AgregarLugar.getText().toString());
                 MyEvent.setTitle(tvTituloEvento.getText().toString());
-
+                MyEvent.setPhotoURL(selectedImage);
+                if(isFav) {
+                    MyEvent.addLikedUser(CurrentUser.getmInstance().getUserEmail());
+                }
                 if (isAllDataCorrect()) {
                     Intent intent = new Intent();
                     intent.putExtra("Event", MyEvent);
@@ -218,6 +241,7 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
                 MyEvent.setLugarVisible(LugarVisible.isChecked());
                 MyEvent.setLugar(AgregarLugar.getText().toString());
                 MyEvent.setTitle(tvTituloEvento.getText().toString());
+               // MyEvent.setPhotoURL(downloadUri.toString());
                 setResult(RESULT_OK,intent);
                 Toast.makeText(getApplicationContext(),"Evento Eliminado",Toast.LENGTH_SHORT).show();
                 finish();
@@ -337,12 +361,11 @@ public class AddEventActivity extends AppCompatActivity implements DatePickerDia
                 photoRef.putFile(imageLink).addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Uri downloadUri = taskSnapshot.getDownloadUrl();
+                        downloadUri = taskSnapshot.getDownloadUrl();
                         Glide.with(ImagenEvento.getContext())
                                 .load(downloadUri.toString())
                                 .into(ImagenEvento);
                         selectedImage = downloadUri.toString();
-                        MyEvent.setPhotoURL(downloadUri.toString());
                     }
                 });
             }

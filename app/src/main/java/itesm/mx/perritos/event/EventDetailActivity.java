@@ -79,9 +79,15 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.detail,menu);
+        getMenuInflater().inflate(R.menu.detail, menu);
+        if (MyEvent.isUserInList(userEmail)) {
+            menu.findItem(R.id.action_favorite_border).setIcon(R.drawable.heart);
+        } else {
+            menu.findItem(R.id.action_favorite_border).setIcon(R.drawable.ic_favorite_border_white_24dp);
+        }
         return true;
     }
 
