@@ -91,7 +91,7 @@
          />
 
     <ImageView
-        android:id="@+id/petFavBtn"
+        android:id="@+id/EventFavBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="12dp"
@@ -112,5 +112,5 @@
         android:tint="@color/gris"
         android:src="@drawable/ic_visibility_off_black_24dp"
         android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/petFavBtn" />
+        android:layout_toStartOf="@+id/EventFavBtn" />
 </RelativeLayout>

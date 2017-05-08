@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:shadowColor="@color/gris"
                 style="@android:style/Widget.Holo.Spinner"
-                android:text="Lunes, May 11, 2017"
+                android:hint="Insertar Fecha"
                 android:layout_marginRight="16dp"/>
 
             <TextView
@@ -64,7 +64,7 @@
                 android:shadowColor="@color/negro"
                 android:layout_height="wrap_content"
                 style="@android:style/Widget.Holo.Spinner"
-                android:text="14:20" />
+                android:hint="Insertar Hora" />
 
         </LinearLayout>
 
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 style="@android:style/Widget.Holo.Spinner"
                 android:textColor="@color/negro"
-                android:text="Lunes, May 11, 2017"
+                android:hint="Insertar Fecha"
                 android:layout_marginRight="16dp"/>
 
             <TextView
@@ -99,7 +99,7 @@
                 android:layout_weight="0.8"
                 android:layout_height="wrap_content"
                 style="@android:style/Widget.Holo.Spinner"
-                android:text="14:20" />
+                android:hint="Insertar Hora" />
 
         </LinearLayout>
 
@@ -120,27 +120,6 @@
                 android:layout_alignBottom="@+id/text_location"
                 android:layout_alignParentStart="true" />
 
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_alignTop="@+id/text_location"
-                android:layout_toStartOf="@+id/text_location"
-                android:background="@drawable/ic_location_on_black_24dp" />
-
-
-            <TextView
-                android:layout_alignParentRight="true"
-                android:id="@+id/text_location"
-                android:paddingLeft="8dp"
-                android:layout_gravity="center_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Agregar Lugar"/>
-
-
         </LinearLayout>
 
         <AutoCompleteTextView
@@ -157,19 +136,13 @@
             android:layout_gravity="right"
             android:src="@drawable/powered_by_google_on_white" />
 
-        <Button
-            android:id="@+id/button_clear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Borrar texto" />
-        <ImageButton
-            android:id="@+id/AgregarImagen"
+        <ImageView
+            android:id="@+id/ImagenEvento"
             android:layout_gravity="center_horizontal"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_marginBottom="100dp"
-            android:background="@drawable/image_placeholder"/>
+            />
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

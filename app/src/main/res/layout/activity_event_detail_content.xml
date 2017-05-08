@@ -31,17 +31,32 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="13dp"
                     android:paddingTop="8dp"
-                    android:text="NOMBRE DEL EVENTO"
+                    android:hint="NOMBRE DEL EVENTO"
                     android:paddingBottom="8dp"
                     android:textStyle="bold"
                     android:textSize="24sp" />
 
 
                 <TextView
+                    android:id = "@+id/text_FechaInicial"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingTop="8dp"
-                    android:text="Descripción:"/>
+                    android:text="Fecha Inicial:"/>
+
+                <TextView
+                android:id = "@+id/text_FechaFinal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp"
+                android:text="Fecha Final:"/>
+
+                <TextView
+                    android:id = "@+id/text_Lugar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:text="Lugar:"/>
 
                 <TextView
                     android:id="@+id/text_description"

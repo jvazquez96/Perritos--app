@@ -88,10 +88,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private static final int RC_EDIT_NEWS = 3;
     private static final int RC_EDIT_PRODUCT = 4;
     private static final int RC_EDIT_PET_FAV = 5;
-    private static final int RC_EDIT_EVENT = 6;
-    private static final int RC_EDIT_EVENT_FAV = 7;
-    private static final int RC_EDIT_PRODUCT_FAV = 8;
-    private static final int RC_EDIT_NEWS_FAV = 9;
+    private static final int RC_EDIT_PRODUCT_FAV = 6;
+    private static final int RC_EDIT_NEWS_FAV = 7;
+    private static final int RC_EDIT_EVENT = 8;
+    private static final int RC_EDIT_EVENT_FAV = 9;
+
 
     private PetFragment petFragment;
     private EventosFragment eventosFragment;
@@ -334,6 +335,24 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 }
                 newsFragment.updateNews(editableNews,isDeleted);
             }
+            else if (requestCode == RC_EDIT_EVENT_FAV) {
+                Bundle bundle = data.getExtras();
+                boolean isDeleted = false;
+                if (bundle != null) {
+                    editableEvent = (Evento) bundle.getSerializable("Event");
+                    isDeleted = bundle.getBoolean("Delete");
+                }
+                eventosFragment.updateEvent(editableEvent,isDeleted);
+            }
+            else if (requestCode == RC_EDIT_EVENT) {
+                Bundle bundle = data.getExtras();
+                boolean isDeleted = false;
+                if (bundle != null) {
+                    editableEvent = (Evento) bundle.getSerializable("Event");
+                    isDeleted = bundle.getBoolean("Delete");
+                }
+                eventosFragment.updateEvent(editableEvent,isDeleted);
+            }
         }
     }
 
@@ -407,6 +426,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         } else {
             Intent eventDetailIntent = new Intent(this, EventDetailActivity.class);
             eventDetailIntent.putExtras(bundle);
+            eventDetailIntent.putExtra("User",CurrentUser.getmInstance().getUserEmail());
             startActivityForResult(eventDetailIntent, RC_EDIT_EVENT_FAV);
         }
     }

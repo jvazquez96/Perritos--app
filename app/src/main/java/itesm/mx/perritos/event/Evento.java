@@ -2,6 +2,7 @@ package itesm.mx.perritos.event;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Evento  implements Serializable{
     private String title;
@@ -12,9 +13,11 @@ public class Evento  implements Serializable{
     private String HoraInicio;
     private String HoraFinal;
     private boolean LugarVisible;
-    private boolean isFavorite;
     private String Lugar;
     private String key;
+    private boolean isFavorite;
+    private String photoURL;
+    private ArrayList<String> listLikedUsers;
 
     /**
      * Default constructor
@@ -23,6 +26,7 @@ public class Evento  implements Serializable{
         this.title = "";
         this.description = "";
         idImage = 0;
+        this.listLikedUsers = new ArrayList<>();
     }
 
     /**
@@ -36,6 +40,7 @@ public class Evento  implements Serializable{
         this.idImage = idImage;
         this.LugarVisible = LugarVisible;
         this.isFavorite = false;
+        this.listLikedUsers = new ArrayList<>();
     }
 
     /**
@@ -106,7 +111,7 @@ public class Evento  implements Serializable{
         return this.HoraInicio;
     }
 
-    public void setHoraInicio(String Hora) {
+    public void setHoraInicio(String HoraInicio) {
         this.HoraInicio = HoraInicio;
     }
 
@@ -142,48 +147,66 @@ public class Evento  implements Serializable{
         this.key = key;
     }
 
-    public void setFav(boolean fav) {
-        this.isFavorite = fav;
+    public void setIsFav(boolean isFav){
+        this.isFavorite = isFav;
     }
 
-    public boolean getFav() {
-        return this.isFavorite;
+    public boolean getIsFav(){
+        return isFavorite;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
+    }
+
+    public String getphotoURL() {
+        return photoURL;
     }
 
     //==========FALTA POR IMPLMEMENTAR EN EVENTO (EJEMPLO DESDE PET)==========
     //VARIABLE INICIAL:
-    //private ArrayList<String> listLikedUsers;
     //======================
     //METODOS:
-      /*
+
      public void setListLikedUsers(ArrayList<String> listLikedUsers) {
-        this.listLikedUsers = listLikedUsers;
+         if(listLikedUsers == null)
+             this.listLikedUsers = new ArrayList<>();
+         this.listLikedUsers = listLikedUsers;
     }
 
     public ArrayList<String> getListLikedUsers() {
+        if(listLikedUsers == null)
+            this.listLikedUsers = new ArrayList<>();
         return this.listLikedUsers;
     }
 
     public void addLikedUser(String user) {
+        if(listLikedUsers == null)
+            this.listLikedUsers = new ArrayList<>();
         this.listLikedUsers.add(user);
     }
 
     public boolean isUserInList(String user) {
+        if(listLikedUsers == null)
+            this.listLikedUsers = new ArrayList<>();
         return this.listLikedUsers.contains(user);
     }
 
     public void removeUserFromList (String user) {
+        if(listLikedUsers == null)
+            this.listLikedUsers = new ArrayList<>();
         this.listLikedUsers.remove(user);
     }
 
     @Override
     public boolean equals(Object obj) {
-        Pet editedPet = (Pet) obj;
-        return this.name.equals(editedPet.getName()) && this.gender.equals(editedPet.getGender()) &&
-                this.age.equals(editedPet.getAge()) &&
-                this.description.equals(editedPet.getDescription()) &&
-                this.photoUrl.equals(editedPet.getPhotoUrl()) &&
-                this.isVisible == editedPet.getIsVisible();
+        Evento editedEvento = (Evento) obj;
+        return this.title.equals(editedEvento.getTitle()) && this.description.equals(editedEvento.getDescription()) &&
+                this.StartDate.equals(editedEvento.getStartDate()) &&
+                this.EndDate.equals(editedEvento.getEndDate()) &&
+                this.HoraInicio.equals(editedEvento.getHoraInicio()) &&
+                this.HoraFinal == editedEvento.getHoraFinal() &&
+                this.LugarVisible == editedEvento.getLugarVisible() &&
+                this.Lugar == editedEvento.getLugar();
     }
-     */
 }
