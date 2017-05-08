@@ -110,6 +110,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     private TextView textUserName;
 
+    private Pet actualPet;
+    private Evento actualEvent;
+    private News actualNews;
+    private Product actualProduct;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -327,7 +332,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     editablePet = (Pet) bundle.getSerializable("Pet");
                     isDeleted = bundle.getBoolean("Delete");
                 }
-                petFragment.updatePet(editablePet,isDeleted);
+                if(actualPet.getFav() != editablePet.getFav())
+                    petFragment.updatePet(editablePet,isDeleted);
             } else if (requestCode == RC_EDIT_PRODUCT_FAV) {
                 Bundle bundle = data.getExtras();
                 boolean isDeleted = false;
@@ -335,7 +341,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     editableProduct = (Product) bundle.getSerializable("Product");
                     isDeleted = bundle.getBoolean("Delete");
                 }
-                productFragment.updateProduct(editableProduct,isDeleted);
+                if(actualProduct.getFav() != editableProduct.getFav())
+                    productFragment.updateProduct(editableProduct,isDeleted);
             } else if (requestCode == RC_EDIT_NEWS_FAV) {
                 Bundle bundle = data.getExtras();
                 boolean isDeleted = false;
@@ -343,7 +350,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     editableNews = (News) bundle.getSerializable("News");
                     isDeleted = bundle.getBoolean("Delete");
                 }
-                newsFragment.updateNews(editableNews,isDeleted);
+                if(actualNews.isFavorite() != editableNews.isFavorite())
+                    newsFragment.updateNews(editableNews,isDeleted);
             }
             else if (requestCode == RC_EDIT_EVENT_FAV) {
                 Bundle bundle = data.getExtras();
@@ -352,7 +360,8 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     editableEvent = (Evento) bundle.getSerializable("Event");
                     isDeleted = bundle.getBoolean("Delete");
                 }
-                eventosFragment.updateEvent(editableEvent,isDeleted);
+                if(actualEvent.getIsFav() != editableEvent.getIsFav())
+                    eventosFragment.updateEvent(editableEvent,isDeleted);
             }
             else if (requestCode == RC_EDIT_EVENT) {
                 Bundle bundle = data.getExtras();
@@ -378,6 +387,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             editablePet = pet;
             startActivityForResult(petEditIntent,RC_EDIT_PET);
         } else {
+            actualPet = pet;
             Intent petDetailIntent = new Intent(this, PetDetailActivity.class);
             petDetailIntent.putExtras(bundle);
             petDetailIntent.putExtra("User", CurrentUser.getmInstance().getUserEmail());
@@ -396,6 +406,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             editableProduct = product;
             startActivityForResult(productEditIntent,RC_EDIT_PRODUCT);
         } else {
+            actualProduct = product;
             Intent productDetailIntent = new Intent(this, ProductDetailActivity.class);
             productDetailIntent.putExtras(bundle);
             productDetailIntent.putExtra("User",CurrentUser.getmInstance().getUserEmail());
@@ -415,6 +426,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             editableNews = news;
             startActivityForResult(newsEditIntent,RC_EDIT_NEWS);
         } else {
+            actualNews = news;
             Intent newsDetailIntent = new Intent(this,NewsDetailActivity.class);
             newsDetailIntent.putExtras(bundle);
             newsDetailIntent.putExtra("User",CurrentUser.getmInstance().getUserEmail());
@@ -434,6 +446,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             editableEvent = event;
             startActivityForResult(eventEditIntent,RC_EDIT_EVENT);
         } else {
+            actualEvent = event;
             Intent eventDetailIntent = new Intent(this, EventDetailActivity.class);
             eventDetailIntent.putExtras(bundle);
             eventDetailIntent.putExtra("User",CurrentUser.getmInstance().getUserEmail());
