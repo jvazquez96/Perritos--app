@@ -81,7 +81,7 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
     public void setAdmin(boolean isAdmin, Context context, String user) {
         this.isAdmin = isAdmin;
         this.userEmail = user;
-        /*if (isAdmin) {
+        if (isAdmin) {
             adminProducts = new ArrayList<>();
             productAdapter  = new ProductAdapter(context,adminProducts);
             if (floatingActionButton != null) {
@@ -100,7 +100,7 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
                 getListView().setOnItemLongClickListener(null);
             }
         }
-        setListAdapter(productAdapter);*/
+        setListAdapter(productAdapter);
     }
 
 

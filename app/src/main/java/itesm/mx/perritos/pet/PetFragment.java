@@ -97,7 +97,9 @@ public class PetFragment extends ListFragment implements View.OnClickListener, A
         Log.d("DEBUG", "setAdmin");
         this.user = user;
         this.isAdmin = isAdmin;
-        /*if (isAdmin) {
+        requestedPets = new ArrayList<Pet>();
+        favoritesPets = new ArrayList<Pet>();
+        if (isAdmin) {
             adminPets = new ArrayList<Pet>();
             petAdapter = new PetAdapter(context,adminPets);
             if (floatingAddButton != null) {
@@ -116,7 +118,27 @@ public class PetFragment extends ListFragment implements View.OnClickListener, A
                 getListView().setOnItemLongClickListener(null);
             }
         }
-        setListAdapter(petAdapter);*/
+
+        if(isFilterOn) {
+            petAdapter = new PetAdapter(context, requestedPets);
+            if(isAdmin) {
+                if (getView() != null) {
+                    getListView().setOnItemLongClickListener(this);
+                }
+            }
+        }
+
+        if(isFavoritesOn) {
+            petAdapter = new PetAdapter(context, favoritesPets);
+            if(isAdmin) {
+                if (getView() != null) {
+                    getListView().setOnItemLongClickListener(this);
+                }
+            }
+        }
+
+        setListAdapter(petAdapter);
+        setListAdapter(petAdapter);
     }
 
 
@@ -210,6 +232,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener, A
                     } else {
                         if (pet.getIsVisible()) {
 
+                            userPets.add(pet);
 
                             if(pet.isUserInRequestList(user))
                                 requestedPets.add(pet);

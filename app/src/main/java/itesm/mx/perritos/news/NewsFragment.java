@@ -105,7 +105,7 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
     public void setAdmin(boolean isAdmin, Context context, String user) { // falta
         this.isAdmin = isAdmin;
         this.userEmail = user;
-        /*if (isAdmin) {
+        if (isAdmin) {
             adminNews = new ArrayList<>();
             newsAdapter = new NewsAdapter(context,adminNews);
             if (floatingAddButon != null) {
@@ -124,7 +124,7 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
                 getListView().setOnItemLongClickListener(null);
             }
         }
-        setListAdapter(newsAdapter);*/
+        setListAdapter(newsAdapter);
     }
 
     @Override
