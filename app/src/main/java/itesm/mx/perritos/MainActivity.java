@@ -114,6 +114,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private Evento actualEvent;
     private News actualNews;
     private Product actualProduct;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,8 +146,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         toggle.syncState();
 
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         View header = navigationView.getHeaderView(0);
+        //Home selected by default
+        navigationView.setCheckedItem(R.id.nav_start);
         textUserName = (TextView) header.findViewById(R.id.textView);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -296,6 +299,14 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         viewPager.setAdapter(adapter);
     }
 
+    public void setHomeByDefault(){
+        navigationView.setCheckedItem(R.id.nav_start);
+        petFragment.setIsFilterOnOff();
+        eventosFragment.setFavoritesOff();
+        newsFragment.setFavoritesOff();
+        productFragment.setFavoritesOff();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -325,6 +336,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 }
                 productFragment.updateProduct(editableProduct,isDeleted);
             } else if (requestCode == RC_SIGN_IN) {
+                setHomeByDefault();
                 if (resultCode == RESULT_CANCELED) {
                     finish();
                 }
