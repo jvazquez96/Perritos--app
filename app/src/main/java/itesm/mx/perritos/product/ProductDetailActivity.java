@@ -1,9 +1,11 @@
 package itesm.mx.perritos.product;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,6 +40,7 @@ public class ProductDetailActivity extends AppCompatActivity implements View.OnC
         imgPicture = (ImageView) findViewById(R.id.image_product);
         textName = (TextView) findViewById(R.id.text_name);
         textPrice = (TextView) findViewById(R.id.text_price);
+        btnSolicitudProduct = (Button) findViewById(R.id.btn_solicitud_producto);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             product = (Product) bundle.getSerializable("Product");
@@ -49,6 +52,7 @@ public class ProductDetailActivity extends AppCompatActivity implements View.OnC
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Producto");
+        btnSolicitudProduct.setOnClickListener(this);
     }
 
     @Override
@@ -65,32 +69,44 @@ public class ProductDetailActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void onClick(View v) {
-
+        String TO[] = {"cultura.perrona.10@gmail.com"};
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.setData(Uri.EMPTY.parse("mailto:"));
+        emailIntent.setType("text/plain");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Disponibilidad de producto");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "Hola, mi nombre es "
+                + "(Tu nombre)"
+                + " y me gustaría recibir más información acerca del producto "
+                + product.getsName()
+                + ", ¡Saludos!");
+        try {
+            startActivity(Intent.createChooser(emailIntent, "Solicitud de adopción por correo..."));
+            finish();
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(ProductDetailActivity.this,
+                    "No existe algún cliente de correo electronico en el dispositivo.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_favorite_border:
-                if (item.getIcon().getConstantState().equals(
-                        getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp).getConstantState()
-                )) {
+                if(product.isUserInList(userEmail)){
+                    //Quitar de favoritos
+                    item.setIcon(R.drawable.ic_favorite_border_white_24dp);
+                    product.removeUserFromList(userEmail);
+                    product.setFav(false);
+                }else{
+                    //Agregar
                     item.setIcon(R.drawable.heart);
+                    product.addLikedUser(userEmail);
                     product.setFav(true);
                     Toast.makeText(getApplicationContext(), "Agregado a Favoritos", Toast.LENGTH_SHORT).show();
-                } else {
-                    item.setIcon(R.drawable.ic_favorite_border_white_24dp);
-                    product.setFav(false);
                 }
                 return true;
             case android.R.id.home:
                 Intent intent = new Intent();
-                if (product.getFav()) {
-                    product.addLikedUser(userEmail);
-                } else {
-                    if (product.isUserInList(userEmail)) {
-                        product.removeUserFromList(userEmail);
-                    }
-                }
                 intent.putExtra("Product", product);
                 intent.putExtra("Delete", false);
                 setResult(RESULT_OK, intent);
@@ -110,4 +126,16 @@ public class ProductDetailActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            Intent intent = new Intent();
+            intent.putExtra("Product", product);
+            intent.putExtra("Delete", false);
+            setResult(RESULT_OK, intent);
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

@@ -53,14 +53,18 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
 
     private ArrayList<Product> adminProducts;
     private ArrayList<Product> userProducts;
+    private ArrayList<Product> favoriteProducts;
     private ArrayAdapter<Product> productAdapter;
 
     private String editKey;
 
     private boolean isAdmin;
+    private boolean isFavoriteOn;
+    private String userEmail;
 
     public ProductFragment() {
         // Required empty public constructor
+        isFavoriteOn = false;
     }
 
     public void updateProduct(Product product, boolean isDeleted) {
@@ -71,9 +75,10 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
         }
     }
 
-    public void setAdmin(boolean isAdmin, Context context) {
+    public void setAdmin(boolean isAdmin, Context context, String user) {
         this.isAdmin = isAdmin;
-        if (isAdmin) {
+        this.userEmail = user;
+        /*if (isAdmin) {
             adminProducts = new ArrayList<>();
             productAdapter  = new ProductAdapter(context,adminProducts);
             if (floatingActionButton != null) {
@@ -92,7 +97,7 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
                 getListView().setOnItemLongClickListener(null);
             }
         }
-        setListAdapter(productAdapter);
+        setListAdapter(productAdapter);*/
     }
 
 
@@ -128,6 +133,7 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
     @Override
     public void onResume() {
         super.onResume();
+        favoriteProducts = new ArrayList<Product>();
         if (isAdmin) {
             adminProducts = new ArrayList<Product>();
             productAdapter  = new ProductAdapter(getActivity(),adminProducts);
@@ -138,6 +144,12 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
             productAdapter = new ProductAdapter(getActivity(),userProducts);
             floatingActionButton.setVisibility(View.INVISIBLE);
             getListView().setOnItemLongClickListener(null);
+        }
+
+        if(isFavoriteOn){
+            productAdapter = new ProductAdapter(getActivity(), favoriteProducts);
+            if(isAdmin)
+                getListView().setOnItemLongClickListener(this);
         }
         setListAdapter(productAdapter);
         attachDatabaseReadListener();
@@ -170,7 +182,11 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        Product product = adminProducts.get(position);
+        Product product;
+        if(isFavoriteOn)
+            product = favoriteProducts.get(position);
+        else
+            product = adminProducts.get(position);
         mListenerProductSelected.onProductSelectedListener(product, true);
         editKey = product.getKey();
         return true;
@@ -185,9 +201,13 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
                     product1.setKey(dataSnapshot.getKey());
                     if (isAdmin) {
                         adminProducts.add(product1);
+                        if(product1.isUserInList(userEmail))
+                            favoriteProducts.add(product1);
                     } else {
                         if (product1.getIsVisible()) {
                             userProducts.add(product1);
+                            if(product1.isUserInList(userEmail))
+                                favoriteProducts.add(product1);
                         }
                     }
                     productAdapter.notifyDataSetChanged();
@@ -254,7 +274,9 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
     public void onListItemClick(ListView l, View v, int position, long id) {
        super.onListItemClick(l, v, position, id);
        Product product1;
-       if (isAdmin) {
+       if(isFavoriteOn){
+           product1 = favoriteProducts.get(position);
+       }else if (isAdmin) {
            product1 = adminProducts.get(position);
        } else {
            product1 = userProducts.get(position);
@@ -300,5 +322,33 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
 
     public interface OnProductSelectedListener{
         void onProductSelectedListener(Product product, boolean isEditing);
+    }
+
+    public void filterFavorites(String user){
+        this.isFavoriteOn = true;
+        favoriteProducts = new ArrayList<Product>();
+        if(isAdmin){
+            for(int i = 0; i < adminProducts.size(); ++i){
+                if(adminProducts.get(i).isUserInList(user))
+                    favoriteProducts.add(adminProducts.get(i));
+            }
+        }else{
+            for(int i = 0; i < userProducts.size(); ++i){
+                if(userProducts.get(i).isUserInList(user))
+                    favoriteProducts.add(userProducts.get(i));
+            }
+        }
+        productAdapter = new ProductAdapter(getContext(), favoriteProducts);
+        setListAdapter(productAdapter);
+    }
+
+    public void setFavoritesOff(){
+        this.isFavoriteOn = false;
+        if(isAdmin)
+            productAdapter = new ProductAdapter(getContext(), adminProducts);
+        else
+            productAdapter = new ProductAdapter(getContext(), userProducts);
+        setListAdapter(productAdapter);
+        favoriteProducts.clear();
     }
 }

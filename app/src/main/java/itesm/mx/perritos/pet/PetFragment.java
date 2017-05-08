@@ -165,12 +165,14 @@ public class PetFragment extends ListFragment implements View.OnClickListener, A
 
         if(isFilterOn) {
             petAdapter = new PetAdapter(getActivity(), requestedPets);
-            getListView().setOnItemLongClickListener(this);
+            if(isAdmin)
+                getListView().setOnItemLongClickListener(this);
         }
 
         if(isFavoritesOn) {
             petAdapter = new PetAdapter(getActivity(), favoritesPets);
-            getListView().setOnItemLongClickListener(this);
+            if(isAdmin)
+                getListView().setOnItemLongClickListener(this);
         }
 
         setListAdapter(petAdapter);

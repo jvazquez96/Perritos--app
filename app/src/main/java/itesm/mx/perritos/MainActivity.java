@@ -163,13 +163,13 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                         textUserName.setText(user.getEmail());
                         petFragment.setAdmin(true,getApplicationContext(), CurrentUser.getmInstance().getUserEmail());
                         eventosFragment.setAdmin(true, getApplicationContext(), CurrentUser.getmInstance().getUserEmail());
-                        productFragment.setAdmin(true,getApplicationContext());
-                        newsFragment.setAdmin(true,getApplicationContext());
+                        productFragment.setAdmin(true,getApplicationContext(), CurrentUser.getmInstance().getUserEmail());
+                        newsFragment.setAdmin(true,getApplicationContext(), CurrentUser.getmInstance().getUserEmail());
                     } else {
                         petFragment.setAdmin(false,getApplicationContext(), CurrentUser.getmInstance().getUserEmail());
                         eventosFragment.setAdmin(false, getApplicationContext(), CurrentUser.getmInstance().getUserEmail());
-                        productFragment.setAdmin(false,getApplicationContext());
-                        newsFragment.setAdmin(false,getApplicationContext());
+                        productFragment.setAdmin(false,getApplicationContext(), CurrentUser.getmInstance().getUserEmail());
+                        newsFragment.setAdmin(false,getApplicationContext(), CurrentUser.getmInstance().getUserEmail());
                     }
                     prepareUser(user.getEmail());
                 } else {
@@ -214,9 +214,13 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         }else if(id == R.id.nav_start){
             petFragment.setIsFilterOnOff();
             eventosFragment.setFavoritesOff();
+            newsFragment.setFavoritesOff();
+            productFragment.setFavoritesOff();
         }else if(id == R.id.nav_favorites){
             petFragment.filterFavorites(CurrentUser.getmInstance().getUserEmail());
             eventosFragment.filterFavorites(CurrentUser.getmInstance().getUserEmail());
+            newsFragment.filterFavorites(CurrentUser.getmInstance().getUserEmail());
+            productFragment.filterFavorites(CurrentUser.getmInstance().getUserEmail());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

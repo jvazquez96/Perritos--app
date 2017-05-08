@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -56,26 +57,21 @@ public class NewsDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch ( item.getItemId()) {
             case R.id.action_favorite_border:
-                if (item.getIcon().getConstantState().equals(
-                        getResources().getDrawable(R.drawable.ic_favorite_border_white_24dp).getConstantState()
-                )) {
+                if(news.isUserInList(userEmail)){
+                    //Quitar de favoritos
+                    item.setIcon(R.drawable.ic_favorite_border_white_24dp);
+                    news.removeUserFromList(userEmail);
+                    news.setFavorite(false);
+                }else{
+                    //Agregar a favoritos
                     item.setIcon(R.drawable.heart);
+                    news.addLikedUser(userEmail);
                     news.setFavorite(true);
                     Toast.makeText(getApplicationContext(), "Agregado a Favoritos", Toast.LENGTH_SHORT).show();
-                } else {
-                    item.setIcon(R.drawable.ic_favorite_border_white_24dp);
-                    news.setFavorite(false);
                 }
                 return true;
             case android.R.id.home:
                 Intent intent = new Intent();
-                if (news.isFavorite()) {
-                    news.addLikedUser(userEmail);
-                } else {
-                    if (news.isUserInList(userEmail)) {
-                        news.removeUserFromList(userEmail);
-                    }
-                }
                 intent.putExtra("News",news);
                 intent.putExtra("Delete",false);
                 setResult(RESULT_OK,intent);
@@ -95,6 +91,19 @@ public class NewsDetailActivity extends AppCompatActivity {
 
         }
         return true;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            Intent intent = new Intent();
+            intent.putExtra("News",news);
+            intent.putExtra("Delete",false);
+            setResult(RESULT_OK,intent);
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override

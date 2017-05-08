@@ -176,7 +176,8 @@ public class PetDetailActivity extends AppCompatActivity implements View.OnClick
                     + ", ¡Saludos!");
             try {
                 startActivity(Intent.createChooser(emailIntent, "Solicitud de adopción por correo..."));
-                pet.addUserRequest(userEmail);
+                if(!pet.isUserInRequestList(userEmail))
+                    pet.addUserRequest(userEmail);
                 Intent intent3 = new Intent();
                 intent3.putExtra("Pet", pet);
                 intent3.putExtra("Delete", false);

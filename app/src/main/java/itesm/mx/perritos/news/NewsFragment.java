@@ -18,6 +18,7 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
@@ -58,14 +59,18 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
 
     private ArrayList<News> userNews;
     private ArrayList<News> adminNews;
+    private ArrayList<News> favoriteNews;
     private ArrayAdapter<News> newsAdapter;
     private String editKey;
+    private String userEmail;
+    private boolean isFavoriteOn;
 
     private boolean isAdmin;
 
 
     public NewsFragment() {
         // Required empty public constructor
+        isFavoriteOn = false;
     }
 
     /**
@@ -94,9 +99,10 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
         }
     }
 
-    public void setAdmin(boolean isAdmin, Context context) { // falta
+    public void setAdmin(boolean isAdmin, Context context, String user) { // falta
         this.isAdmin = isAdmin;
-        if (isAdmin) {
+        this.userEmail = user;
+        /*if (isAdmin) {
             adminNews = new ArrayList<>();
             newsAdapter = new NewsAdapter(context,adminNews);
             if (floatingAddButon != null) {
@@ -115,7 +121,7 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
                 getListView().setOnItemLongClickListener(null);
             }
         }
-        setListAdapter(newsAdapter);
+        setListAdapter(newsAdapter);*/
     }
 
     @Override
@@ -131,7 +137,12 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) { // falta
-        News news1 = adminNews.get(position);
+        News news1;
+        if(isFavoriteOn)
+            news1 = favoriteNews.get(position);
+        else
+            news1 = adminNews.get(position);
+
         mListenerNewsSelected.onNewsSelectedListener(news1, true);
         editKey = news1.getKey();
         return true;
@@ -140,6 +151,7 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
     @Override
     public void onResume() { // falta
         super.onResume();
+        favoriteNews = new ArrayList<News>();
         if (isAdmin) {
             adminNews = new ArrayList<>();
             newsAdapter = new NewsAdapter(getActivity(),adminNews);
@@ -150,6 +162,12 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
             newsAdapter = new NewsAdapter(getActivity(),userNews);
             floatingAddButon.setVisibility(View.INVISIBLE);
             getListView().setOnItemLongClickListener(null);
+        }
+
+        if(isFavoriteOn){
+            newsAdapter = new NewsAdapter(getActivity(), favoriteNews);
+            if(isAdmin)
+                getListView().setOnItemLongClickListener(this);
         }
         setListAdapter(newsAdapter);
         attachDatabaseReadListener();
@@ -177,9 +195,13 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
                     news1.setKey(dataSnapshot.getKey());
                     if (isAdmin) {
                         adminNews.add(news1);
+                        if(news1.isUserInList(userEmail))
+                            favoriteNews.add(news1);
                     } else {
                         if (news1.getIsVisible()) {
                             userNews.add(news1);
+                            if(news1.isUserInList(userEmail))
+                                favoriteNews.add(news1);
                         }
                     }
                     newsAdapter.notifyDataSetChanged();
@@ -278,7 +300,9 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         News news1;
-        if (isAdmin) {
+        if(isFavoriteOn){
+            news1 = favoriteNews.get(position);
+        }else if (isAdmin) {
             news1 = adminNews.get(position);
         } else {
             news1 = userNews.get(position);
@@ -308,5 +332,33 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
 
     public interface OnNewsSelectedListener {
         void onNewsSelectedListener(News news, boolean isEditing);
+    }
+
+    public void filterFavorites(String user){
+        this.isFavoriteOn = true;
+        favoriteNews = new ArrayList<News>();
+        if(isAdmin){
+            for(int i = 0; i < adminNews.size(); ++i){
+                if(adminNews.get(i).isUserInList(user))
+                    favoriteNews.add(adminNews.get(i));
+            }
+        }else{
+            for(int i = 0; i < userNews.size(); ++i){
+                if(userNews.get(i).isUserInList(user))
+                    favoriteNews.add(userNews.get(i));
+            }
+        }
+        newsAdapter = new NewsAdapter(getContext(), favoriteNews);
+        setListAdapter(newsAdapter);
+    }
+
+    public void setFavoritesOff(){
+        this.isFavoriteOn = false;
+        if(isAdmin)
+            newsAdapter = new NewsAdapter(getContext(), adminNews);
+        else
+            newsAdapter = new NewsAdapter(getContext(), userNews);
+        setListAdapter(newsAdapter);
+        favoriteNews.clear();
     }
 }
