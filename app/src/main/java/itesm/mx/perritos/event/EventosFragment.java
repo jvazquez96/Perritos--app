@@ -82,7 +82,7 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
     public void setAdmin(boolean isAdmin, Context context, String user) {
         this.isAdmin = isAdmin;
         this.userEmail = user;
-        /*if (isAdmin) {
+        if (isAdmin) {
             adminEvents = new ArrayList<Evento>();
             eventsAdapter = new EventoAdapter(context,adminEvents);
             if (floatingActionButton != null) {
@@ -101,7 +101,7 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
                 getListView().setOnItemLongClickListener(null);
             }
         }
-        setListAdapter(eventsAdapter);*/
+        setListAdapter(eventsAdapter);
     }
 
 
