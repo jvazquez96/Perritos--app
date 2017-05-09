@@ -39,6 +39,7 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
 
     private EditText editNombre;
     private EditText editPrecio;
+    private EditText editDescription;
     private CheckBox checkVisible;
     private ImageView imgPicture;
     private Button btnPicture;
@@ -60,6 +61,7 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
         editNombre = (EditText) findViewById(R.id.edit_nombre);
         editPrecio = (EditText) findViewById(R.id.edit_precio);
         checkVisible = (CheckBox) findViewById(R.id.check_visible);
+        editNombre = (EditText) findViewById(R.id.edit_description);
         imgPicture = (ImageView) findViewById(R.id.image_cover);
 
         btnDeleted = (Button) findViewById(R.id.button_eliminar);
@@ -86,6 +88,7 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
             Glide.with(imgPicture.getContext()).load(product1.getPhotoUrl()).into(imgPicture);
             selectedImage = product1.getPhotoUrl();
             checkVisible.setChecked(product1.getIsVisible());
+            editNombre.setText(product1.getDescription());
         } else {
             getSupportActionBar().setTitle("Nuevo producto");
             btnDeleted.setVisibility(View.INVISIBLE);
@@ -102,6 +105,7 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
                 product.setdPrice(Double.valueOf(editPrecio.getText().toString()));
                 product.setPhotoUrl(selectedImage);
                 product.setVisible(checkVisible.isChecked());
+                product.setDescription(editDescription.getText().toString());
                 Intent intent = new Intent();
                 intent.putExtra("Product", product);
                 setResult(RESULT_OK, intent);
@@ -159,7 +163,7 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
 
 
     private boolean isAllDataCorrect() {
-        if (editNombre.getText().toString().length() == 0 || editPrecio.getText().toString().trim().length() == 0 || selectedImage == null) {
+        if (editNombre.getText().toString().length() == 0 || editPrecio.getText().toString().trim().length() == 0 || selectedImage == null || editDescription.getText().toString().trim().length() == 0) {
             return false;
         }
 
