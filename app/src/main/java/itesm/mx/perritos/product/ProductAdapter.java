@@ -53,6 +53,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         final ImageView ivFoto = (ImageView) convertView.findViewById(R.id.image_product);
         TextView tvNombre = (TextView) convertView.findViewById(R.id.text_productName);
         TextView tvDescrip = (TextView) convertView.findViewById(R.id.text_description);
+        TextView tvPrice = (TextView) convertView.findViewById(R.id.text_productPrecio);
 
         // Glide library using circular image crop
         Glide.with(ivFoto.getContext()).load(product.getPhotoUrl()).asBitmap().centerCrop().into(new BitmapImageViewTarget(ivFoto) {
@@ -75,6 +76,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
 
         tvNombre.setText(product.getsName());
         tvDescrip.setText(product.getDescription());
+        tvPrice.setText(String.valueOf("$" + product.getdPrice()));
         //Fav button
         if(product.isUserInList(CurrentUser.getmInstance().getUserEmail())) {
             ivProductFav.setVisibility(View.VISIBLE);

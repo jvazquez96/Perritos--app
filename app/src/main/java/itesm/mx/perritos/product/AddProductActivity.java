@@ -61,7 +61,7 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
         editNombre = (EditText) findViewById(R.id.edit_nombre);
         editPrecio = (EditText) findViewById(R.id.edit_precio);
         checkVisible = (CheckBox) findViewById(R.id.check_visible);
-        editNombre = (EditText) findViewById(R.id.edit_description);
+        editDescription = (EditText) findViewById(R.id.edit_description);
         imgPicture = (ImageView) findViewById(R.id.image_cover);
 
         btnDeleted = (Button) findViewById(R.id.button_eliminar);
@@ -84,11 +84,11 @@ public class AddProductActivity extends AppCompatActivity implements View.OnClic
             getSupportActionBar().setTitle("Editar product");
             Product product1 = (Product) bundle.getSerializable("Product");
             editNombre.setText(product1.getsName());
+            editDescription.setText(product1.getDescription());
             editPrecio.setText(String.valueOf(product1.getdPrice()));
             Glide.with(imgPicture.getContext()).load(product1.getPhotoUrl()).into(imgPicture);
             selectedImage = product1.getPhotoUrl();
             checkVisible.setChecked(product1.getIsVisible());
-            editNombre.setText(product1.getDescription());
         } else {
             getSupportActionBar().setTitle("Nuevo producto");
             btnDeleted.setVisibility(View.INVISIBLE);
