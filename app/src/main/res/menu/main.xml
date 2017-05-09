@@ -7,13 +7,6 @@
         android:orderInCategory="100"
         android:title="Log out"
         app:showAsAction="never"
-        android:icon="@drawable/ic_dots_vertical_white_24dp"/>
-
-    <item
-        android:id="@+id/action_search"
-        android:orderInCategory="99"
-        android:title="Search"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_magnify_white_24dp"/>
+        android:icon="@drawable/ic_dots_vertical_white_24dp"/>x`
 
 </menu>
