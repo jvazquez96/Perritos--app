@@ -401,6 +401,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener, A
             }
         }
 
+        Log.d("PET", Integer.toString(requestedPets.size()));
         petAdapter = new PetAdapter(getContext(), requestedPets);
         setListAdapter(petAdapter);
     }
