@@ -13,17 +13,21 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@android:drawable/sym_def_app_icon" />
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/cultura_icon"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cultura Perronoa" />
+        android:textStyle="bold"
+        android:textColor="@color/blanco"
+        android:text="Cultura Perrona" />
 
     <TextView
         android:id="@+id/textView"
+        android:textColor="@color/blanco"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="android.studio@android.com" />

@@ -77,19 +77,6 @@ public class EventoAdapter extends ArrayAdapter<Evento> {
             ivVisible.setVisibility(View.VISIBLE);
         }
 
-        final ImageView ivCover = (ImageView) convertView.findViewById(R.id.evento_icons);
-        if(eventos1.getphotoURL() != null) {
-            // Glide library using circular image crop
-            Glide.with(ivCover.getContext()).load(eventos1.getphotoURL()).asBitmap().centerCrop().into(new BitmapImageViewTarget(ivCover) {
-                @Override
-                protected void setResource(Bitmap resource) {
-                    RoundedBitmapDrawable circularBitmapDrawable =
-                            RoundedBitmapDrawableFactory.create(ivCover.getContext().getResources(), resource);
-                    circularBitmapDrawable.setCircular(true);
-                    ivCover.setImageDrawable(circularBitmapDrawable);
-                }
-            });
-        }
 
         //Fav image para eventos  POR IMPLEMENTAR
         if(eventos1.isUserInList(CurrentUser.getmInstance().getUserEmail())) {
