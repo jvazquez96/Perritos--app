@@ -9,23 +9,42 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id" tools:replace="android:value"/>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".pet.PetDetailActivity" />
-        <activity android:name=".event.AddEventActivity" />
-        <activity android:name=".news.AddNewsActivity" />
-        <activity android:name=".event.EventDetailActivity" />
-        <activity android:name=".news.NewsDetailActivity" />
-        <activity android:name=".product.AddProductActivity" />
-        <activity android:name=".product.ProductDetailActivity" />
-        <activity android:name=".pet.AddPetActivity"></activity>
+        <activity android:name=".pet.PetDetailActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".event.AddEventActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".news.AddNewsActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".event.EventDetailActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".news.NewsDetailActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".product.AddProductActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".product.ProductDetailActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".pet.AddPetActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
         <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
-            android:theme="@style/Base.Theme.AppCompat" />
+            android:theme="@style/Base.Theme.AppCompat"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"/>
     </application>
 
     <meta-data
