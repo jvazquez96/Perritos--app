@@ -96,6 +96,7 @@ public class PetFragment extends ListFragment implements View.OnClickListener, A
     public void setAdmin(boolean isAdmin, Context context, String user) {
         Log.d("DEBUG", "setAdmin");
         this.user = user;
+        Log.d(DEBUG_TAG,"PEEEEEROOOOO: " + user);
         this.isAdmin = isAdmin;
         requestedPets = new ArrayList<Pet>();
         favoritesPets = new ArrayList<Pet>();

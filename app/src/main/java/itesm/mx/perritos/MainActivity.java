@@ -1,6 +1,7 @@
 package itesm.mx.perritos;
 
 import android.content.Intent;
+import android.database.CursorIndexOutOfBoundsException;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -151,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         //Home selected by default
         navigationView.setCheckedItem(R.id.nav_start);
         textUserName = (TextView) header.findViewById(R.id.textView);
+
         navigationView.setNavigationItemSelectedListener(this);
 
         editablePet = null;
@@ -169,11 +171,14 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                             user.getEmail().equals("alexandro4v@gmail.com") ||
                             user.getEmail().equals("prueba@prueba.com")) {
                         textUserName.setText(user.getEmail());
+                        CurrentUser.getmInstance().setUserEmail(user.getEmail());
                         petFragment.setAdmin(true,getApplicationContext(), CurrentUser.getmInstance().getUserEmail());
                         eventosFragment.setAdmin(true, getApplicationContext(), CurrentUser.getmInstance().getUserEmail());
                         productFragment.setAdmin(true,getApplicationContext(), CurrentUser.getmInstance().getUserEmail());
                         newsFragment.setAdmin(true,getApplicationContext(), CurrentUser.getmInstance().getUserEmail());
                     } else {
+                        textUserName.setText(user.getEmail());
+                        CurrentUser.getmInstance().setUserEmail(user.getEmail());
                         petFragment.setAdmin(false,getApplicationContext(), CurrentUser.getmInstance().getUserEmail());
                         eventosFragment.setAdmin(false, getApplicationContext(), CurrentUser.getmInstance().getUserEmail());
                         productFragment.setAdmin(false,getApplicationContext(), CurrentUser.getmInstance().getUserEmail());
@@ -347,10 +352,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     editablePet = (Pet) bundle.getSerializable("Pet");
                     isDeleted = bundle.getBoolean("Delete");
                 }
-                if(actualPet.getFav() != editablePet.getFav() || actualPet.getListUsersRequested().size() != editablePet.getListUsersRequested().size()) {
-                    Log.d("PET", "SI");
-                    petFragment.updatePet(editablePet, isDeleted);
-                }
+                 if(actualPet.getListLikedUsers().size() != editablePet.getListLikedUsers().size() || actualPet.getListUsersRequested().size() != editablePet.getListUsersRequested().size()) {
+                     Log.d("PET", "SI");
+                     petFragment.updatePet(editablePet, isDeleted);
+                 }
             } else if (requestCode == RC_EDIT_PRODUCT_FAV) {
                 Bundle bundle = data.getExtras();
                 boolean isDeleted = false;
@@ -358,7 +363,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     editableProduct = (Product) bundle.getSerializable("Product");
                     isDeleted = bundle.getBoolean("Delete");
                 }
-                if(actualProduct.getFav() != editableProduct.getFav())
+                if(actualProduct.getListLikedUsers().size() != editableProduct.getListLikedUsers().size())
                     productFragment.updateProduct(editableProduct,isDeleted);
             } else if (requestCode == RC_EDIT_NEWS_FAV) {
                 Bundle bundle = data.getExtras();
@@ -367,7 +372,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     editableNews = (News) bundle.getSerializable("News");
                     isDeleted = bundle.getBoolean("Delete");
                 }
-                if(actualNews.isFavorite() != editableNews.isFavorite())
+                if(actualNews.getListLikedUsers().size() != editableNews.getListLikedUsers().size())
                     newsFragment.updateNews(editableNews,isDeleted);
             }
             else if (requestCode == RC_EDIT_EVENT_FAV) {
@@ -377,7 +382,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     editableEvent = (Evento) bundle.getSerializable("Event");
                     isDeleted = bundle.getBoolean("Delete");
                 }
-                if(actualEvent.getIsFav() != editableEvent.getIsFav())
+                if(actualEvent.getListLikedUsers().size() != editableEvent.getListLikedUsers().size())
                     eventosFragment.updateEvent(editableEvent,isDeleted);
             }
             else if (requestCode == RC_EDIT_EVENT) {
@@ -408,6 +413,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             Intent petDetailIntent = new Intent(this, PetDetailActivity.class);
             petDetailIntent.putExtras(bundle);
             petDetailIntent.putExtra("User", CurrentUser.getmInstance().getUserEmail());
+            Log.d(DEBUG_TAG,"User that is being checked: " + CurrentUser.getmInstance().getUserEmail());
             startActivityForResult(petDetailIntent, RC_EDIT_PET_FAV);
         }
     }
