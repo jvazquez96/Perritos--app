@@ -25,6 +25,7 @@ public class ProductDetailActivity extends AppCompatActivity implements View.OnC
     private ImageView imgPicture;
     private TextView textName;
     private TextView textPrice;
+    private TextView textDescription;
     private ImageView favImage;
     private Product product;
     private Button btnSolicitudProduct;
@@ -40,6 +41,7 @@ public class ProductDetailActivity extends AppCompatActivity implements View.OnC
         imgPicture = (ImageView) findViewById(R.id.image_product);
         textName = (TextView) findViewById(R.id.text_name);
         textPrice = (TextView) findViewById(R.id.text_price);
+        textDescription = (TextView) findViewById(R.id.text_description);
         btnSolicitudProduct = (Button) findViewById(R.id.btn_solicitud_producto);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -48,6 +50,7 @@ public class ProductDetailActivity extends AppCompatActivity implements View.OnC
             Glide.with(imgPicture.getContext()).load(product.getPhotoUrl()).into(imgPicture);
             textName.setText(product.getsName());
             textPrice.setText(String.valueOf(product.getdPrice()));
+            textDescription.setText(product.getDescription());
         }
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
