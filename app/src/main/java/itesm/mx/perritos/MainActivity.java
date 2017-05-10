@@ -347,8 +347,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     editablePet = (Pet) bundle.getSerializable("Pet");
                     isDeleted = bundle.getBoolean("Delete");
                 }
-                if(actualPet.getFav() != editablePet.getFav())
-                    petFragment.updatePet(editablePet,isDeleted);
+                if(actualPet.getFav() != editablePet.getFav() || actualPet.getListUsersRequested().size() != editablePet.getListUsersRequested().size()) {
+                    Log.d("PET", "SI");
+                    petFragment.updatePet(editablePet, isDeleted);
+                }
             } else if (requestCode == RC_EDIT_PRODUCT_FAV) {
                 Bundle bundle = data.getExtras();
                 boolean isDeleted = false;
