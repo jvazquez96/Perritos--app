@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     // if user is admin
                     if (user.getEmail().equals("jorgevzqz6@gmail.com") ||
                             user.getEmail().equals("alexandro4v@gmail.com") ||
-                            user.getEmail().equals("prueba@prueba.com")) {
+                            user.getEmail().equals("santiago_st_95@hotmail.com")) {
                         textUserName.setText(user.getEmail());
                         CurrentUser.getmInstance().setUserEmail(user.getEmail());
                         petFragment.setAdmin(true,getApplicationContext(), CurrentUser.getmInstance().getUserEmail());
