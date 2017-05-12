@@ -101,6 +101,22 @@ public class EventosFragment extends ListFragment implements View.OnClickListene
                 getListView().setOnItemLongClickListener(null);
             }
         }
+
+        if (isFavoritesOn) {
+            eventsAdapter = new EventoAdapter(context,favoritesEvents);
+            if (isAdmin) {
+                if (getView() != null) {
+                    getListView().setOnItemLongClickListener(this);
+                }
+            }
+        }
+
+        if(usingEmpty){
+            eventsAdapter = new EventoAdapter(getActivity(), emptyArray);
+            if(isAdmin)
+                getListView().setOnItemLongClickListener(this);
+        }
+
         setListAdapter(eventsAdapter);
     }
 

@@ -124,6 +124,22 @@ public class NewsFragment extends ListFragment implements View.OnClickListener, 
                 getListView().setOnItemLongClickListener(null);
             }
         }
+
+        if (isFavoriteOn) {
+            newsAdapter = new NewsAdapter(context,favoriteNews);
+            if (isAdmin) {
+                if (getView() != null) {
+                    getListView().setOnItemLongClickListener(this);
+                }
+            }
+        }
+
+        if(usingEmpty){
+            newsAdapter = new NewsAdapter(getActivity(), emptyArray);
+            if(isAdmin)
+                getListView().setOnItemLongClickListener(this);
+        }
+
         setListAdapter(newsAdapter);
     }
 

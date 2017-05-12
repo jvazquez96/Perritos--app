@@ -382,8 +382,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     editableEvent = (Evento) bundle.getSerializable("Event");
                     isDeleted = bundle.getBoolean("Delete");
                 }
-                if(actualEvent.getListLikedUsers().size() != editableEvent.getListLikedUsers().size())
-                    eventosFragment.updateEvent(editableEvent,isDeleted);
+                if(actualEvent.getListLikedUsers().size() != editableEvent.getListLikedUsers().size()) {
+                    eventosFragment.updateEvent(editableEvent, isDeleted);
+                    Log.d(DEBUG_TAG,"EVENT UPDATED");
+                }
             }
             else if (requestCode == RC_EDIT_EVENT) {
                 Bundle bundle = data.getExtras();

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,6 +101,24 @@ public class ProductFragment extends ListFragment implements View.OnClickListene
                 getListView().setOnItemLongClickListener(null);
             }
         }
+
+        if (isFavoriteOn) {
+            productAdapter = new ProductAdapter(context,favoriteProducts);
+            if (isAdmin) {
+                if (getView() != null) {
+                    getListView().setOnItemLongClickListener(this);
+                }
+            }
+        }
+
+        if(usingEmpty){
+            productAdapter = new ProductAdapter(getActivity(), emptyArray);
+            if(isAdmin)
+                getListView().setOnItemLongClickListener(this);
+        }
+
+        setListAdapter(productAdapter);
+
         setListAdapter(productAdapter);
     }
 
