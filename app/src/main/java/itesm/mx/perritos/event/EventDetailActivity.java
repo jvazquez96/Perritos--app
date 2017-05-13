@@ -57,8 +57,8 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
 
         if(bundle != null){
             MyEvent = (Evento) bundle.getSerializable("Event");
-            textStartDate.setText("Empieza " + MyEvent.getStartDate() + " a las " + MyEvent.getHoraInicio());
-            textEndDate.setText("Termina " + MyEvent.getEndDate() + " a las " + MyEvent.getHoraFinal());
+            textStartDate.setText("Empieza " + MyEvent.getStartDate() + " a las " + MyEvent.getHoraInicio() + " horas");
+            textEndDate.setText("Termina " + MyEvent.getEndDate() + " a las " + MyEvent.getHoraFinal() + " horas");
             tvTituloEvento.setText(MyEvent.getTitle());
             tvDescripcionEvento.setText(MyEvent.getDescription());
             Direccion.setText(MyEvent.getLugar());
