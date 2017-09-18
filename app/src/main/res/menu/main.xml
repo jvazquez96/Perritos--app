@@ -7,6 +7,14 @@
         android:orderInCategory="100"
         android:title="Cerrar sesion"
         app:showAsAction="never"
-        android:icon="@drawable/ic_dots_vertical_white_24dp"/>x`
+        android:icon="@drawable/ic_dots_vertical_white_24dp"/>
+
+
+    <item
+        android:id="@+id/action_info"
+        android:orderInCategory="100"
+        android:title="Desarrolladores"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_info_outline_white_24dp"/>
 
 </menu>

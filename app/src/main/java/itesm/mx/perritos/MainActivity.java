@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         tbToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(tbToolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setTitle("Cultura perrona");
+        getSupportActionBar().setTitle("Cultura Perrona");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -205,15 +205,15 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                     cleanUser();
                     startActivityForResult(
                             AuthUI.getInstance()
-                                    .createSignInIntentBuilder()
-                                    .setIsSmartLockEnabled(false)
-                                    .setProviders(Arrays.asList(
-                                            new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
-                                            new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
-                                            new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
-                                    .setTheme(R.style.LoginTheme)
-                                    .build(),
-                                    RC_SIGN_IN);
+
+                            .createSignInIntentBuilder()
+                            .setIsSmartLockEnabled(false)
+                            .setProviders(Arrays.asList(
+                                    new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(),
+                                    new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(),
+                                    new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build()))
+                            .setTheme(R.style.LoginTheme)
+                            .build(), RC_SIGN_IN);
                 }
             }
         };
