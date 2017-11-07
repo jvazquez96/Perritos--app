@@ -18,7 +18,7 @@
         android:layout_gravity="bottom|right|end"
         android:layout_margin="16dp"
         android:src="@drawable/ic_plus_white_48dp"
-        app:backgroundTint="@color/colorPrimary" />
+        app:backgroundTint="@color/colorSecondary" />
 
 
 </android.support.design.widget.CoordinatorLayout>
