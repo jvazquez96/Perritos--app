@@ -256,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             newsFragment.filterFavorites(CurrentUser.getmInstance().getUserEmail());
             productFragment.filterFavorites(CurrentUser.getmInstance().getUserEmail());
         }else if (id == R.id.action_info){
-            Intent intent = new Intent(this, infoActivity.class);
+            Intent intent = new Intent(this, InformationActivity.class);
             startActivity(intent);
         }
 
@@ -279,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 AuthUI.getInstance().signOut(this);
                 return true;
             case R.id.action_info:
-                Intent intent = new Intent(this, infoActivity.class);
+                Intent intent = new Intent(this, InformationActivity.class);
                 startActivity(intent);
                 return true;
         }

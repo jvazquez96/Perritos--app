@@ -6,17 +6,19 @@
     <meta-data
         android:name="com.google.android.geo.API_KEY"
         android:value="AIzaSyCv451nm9wNXvwM_ub9KXcu7R1kqe98VWo" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"
             tools:replace="android:value" />
+
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation"
@@ -27,7 +29,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".pet.PetDetailActivity"
             android:configChanges="orientation"
@@ -65,9 +66,10 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait"
             android:theme="@style/Base.Theme.AppCompat" />
-        <activity android:name=".infoActivity"></activity>
+        <activity
+            android:name=".InformationActivity"
+            android:label="@string/title_activity_information"
+            android:theme="@style/AppTheme"></activity>
     </application>
-
-
 
 </manifest>
