@@ -24,8 +24,8 @@
         android:layout_height="wrap_content"
         android:paddingTop="16dp"
         android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingBottom="50dp"
+        android:paddingRight="24dp"
+        android:paddingBottom="30dp"
         android:orientation="vertical">
 
         <TextView
@@ -44,6 +44,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
+            android:textColor="@color/gris"
             android:text="Costo MXN:"/>
 
         <TextView
@@ -51,13 +52,16 @@
             android:id="@+id/text_price"
             android:layout_height="wrap_content"
             android:text="Costo"
+            android:textStyle="bold"
+            android:textColor="@color/negro"
             android:paddingBottom="8dp"
-            android:textSize="16sp" />
+            android:textSize="24sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="8dp"
+            android:textColor="@color/gris"
             android:text="Descripción:"/>
 
         <TextView
@@ -65,6 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Descripcion"
+            android:textColor="@color/negro"
             android:paddingBottom="8dp"
             android:textSize="16sp" />
     </LinearLayout>
