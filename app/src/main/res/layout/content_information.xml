@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/colorPrimary"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="itesm.mx.perritos.InformationActivity"
+    tools:showIn="@layout/activity_information">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_marginBottom="16dp"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="16dp"
+                android:paddingRight="16dp"
+                android:paddingLeft="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:paddingBottom="16dp"
+                    android:text="Proyecto"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/gris"
+                    android:layout_marginBottom="8dp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingLeft="4dp">
+                    <ImageView
+                        android:id="@+id/icon_cultura"
+                        android:layout_width="45dp"
+                        android:layout_height="50dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginRight="4dp"
+                        android:layout_marginBottom="24dp"
+                        android:src="@drawable/iconculturalowex"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:layout_marginTop="16dp"
+                        android:layout_centerVertical="true"
+                        android:text="Cultura Perrona"
+                        android:layout_alignParentTop="true"
+                        android:layout_toRightOf="@+id/icon_cultura"
+                        android:layout_marginStart="9dp" />
+                    <ImageButton
+                        android:layout_marginTop="12dp"
+                        android:id="@+id/cultura_playstore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/blanco"
+                        android:paddingRight="8dp"
+                        android:layout_toLeftOf="@+id/cultura_git"
+                        android:src="@drawable/ic_github_circle_grey600_24dp"/>
+
+                    <ImageButton
+                        android:layout_marginTop="12dp"
+                        android:id="@+id/cultura_git"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/blanco"
+                        android:paddingLeft="8dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/ic_google_play_grey600_24dp"/>
+
+                </RelativeLayout>
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_marginBottom="16dp"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="16dp"
+                android:paddingRight="16dp"
+                android:paddingLeft="16dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:paddingBottom="16dp"
+                    android:text="Desarrolladores"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/gris"
+                    android:layout_marginBottom="16dp"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:textSize="15sp"
+                    android:text="Jorge Vazquez" />
+
+                <ImageButton
+                    android:id="@+id/jorge_linkedin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/blanco"
+                    android:paddingRight="8dp"
+                    android:layout_toLeftOf="@+id/jorge_mail"
+                    android:src="@drawable/ic_linkedin_box_grey600_24dp"/>
+
+                <ImageButton
+                    android:id="@+id/jorge_mail"
+                    android:layout_width="wrap_content"
+                    android:background="@color/blanco"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_email_grey600_24dp"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentLeft="true"
+                    android:textSize="15sp"
+                    android:text="Santiago Sandoval" />
+
+                <ImageButton
+                    android:id="@+id/santiago_linkedin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/blanco"
+                    android:paddingRight="8dp"
+                    android:layout_toLeftOf="@+id/santiago_mail"
+                    android:src="@drawable/ic_linkedin_box_grey600_24dp"/>
+
+                <ImageButton
+                    android:id="@+id/santiago_mail"
+                    android:layout_width="wrap_content"
+                    android:background="@color/blanco"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="8dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_email_grey600_24dp"/>
+            </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:textSize="15sp"
+                        android:text="Gerardo Suárez" />
+
+                    <ImageButton
+                        android:id="@+id/gera_linkedin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/blanco"
+                        android:paddingRight="8dp"
+                        android:layout_toLeftOf="@+id/gera_mail"
+                        android:src="@drawable/ic_linkedin_box_grey600_24dp"/>
+
+                    <ImageButton
+                        android:id="@+id/gera_mail"
+                        android:layout_width="wrap_content"
+                        android:background="@color/blanco"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="8dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/ic_email_grey600_24dp"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:layout_marginBottom="16dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentLeft="true"
+                        android:textSize="15sp"
+                        android:text="Alexandro Trujillo" />
+
+                    <ImageButton
+                        android:id="@+id/alex_linkedin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/blanco"
+                        android:paddingRight="8dp"
+                        android:layout_toLeftOf="@+id/alex_web"
+                        android:src="@drawable/ic_linkedin_box_grey600_24dp"/>
+
+                    <ImageButton
+                        android:id="@+id/alex_web"
+                        android:layout_width="wrap_content"
+                        android:background="@color/blanco"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="8dp"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/ic_web_grey600_24dp"/>
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_marginBottom="18dp"
+        android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:paddingBottom="16dp"
+            android:text="Asesora"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/gris"
+            android:layout_marginBottom="16dp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:textSize="15sp"
+                android:text="Martha Sordia" />
+
+            <ImageButton
+                android:id="@+id/martha_linkedin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/blanco"
+                android:paddingRight="8dp"
+                android:layout_toLeftOf="@+id/martha_mail"
+                android:src="@drawable/ic_linkedin_box_grey600_24dp"/>
+
+            <ImageButton
+                android:id="@+id/martha_mail"
+                android:layout_width="wrap_content"
+                android:background="@color/blanco"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_email_grey600_24dp"/>
+        </RelativeLayout>
+        </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_marginBottom="18dp"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentTop="true"
+                        android:paddingBottom="16dp"
+                        android:text="Institución"/>
+
+                    <ImageButton
+                        android:id="@+id/itesm_location"
+                        android:layout_width="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_height="wrap_content"
+                        android:background="@color/blanco"
+                        android:paddingRight="8dp"
+                        android:src="@drawable/ic_map_marker_grey600_24dp"/>
+
+
+
+                </RelativeLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/gris"
+                    android:layout_marginBottom="16dp"/>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="100sp"
+                    android:paddingRight="24dp"
+                    android:paddingLeft="24dp"
+                    android:src="@drawable/itesmlogo"/>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+</ScrollView>

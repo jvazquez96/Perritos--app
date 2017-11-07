@@ -233,9 +233,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         return true;
     }
 
+    //Barra (Burger) de opciones.
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
+
         if (id == R.id.nav_sign_out) {
             AuthUI.getInstance().signOut(this);
         }else if(id == R.id.nav_requests){
@@ -253,6 +255,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
             eventosFragment.filterFavorites(CurrentUser.getmInstance().getUserEmail());
             newsFragment.filterFavorites(CurrentUser.getmInstance().getUserEmail());
             productFragment.filterFavorites(CurrentUser.getmInstance().getUserEmail());
+        }else if (id == R.id.action_info){
+            Intent intent = new Intent(this, InformationActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -266,11 +271,16 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     }
 
+    //Barra principal en MainActivity (Info & 3PuntosParaCerrarSesión)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
                 AuthUI.getInstance().signOut(this);
+                return true;
+            case R.id.action_info:
+                Intent intent = new Intent(this, InformationActivity.class);
+                startActivity(intent);
                 return true;
         }
         return super.onOptionsItemSelected(item);

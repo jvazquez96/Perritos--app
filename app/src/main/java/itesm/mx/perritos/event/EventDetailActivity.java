@@ -73,8 +73,8 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
 
         if(bundle != null){
             MyEvent = (Evento) bundle.getSerializable("Event");
-            textStartDate.setText("Empieza " + MyEvent.getStartDate() + " a las " + MyEvent.getHoraInicio() + " horas");
-            textEndDate.setText("Termina " + MyEvent.getEndDate() + " a las " + MyEvent.getHoraFinal() + " horas");
+            textStartDate.setText(MyEvent.getStartDate() + " a las " + MyEvent.getHoraInicio() + " hrs");
+            textEndDate.setText(MyEvent.getEndDate() + " a las " + MyEvent.getHoraFinal() + " hrs");
             tvTituloEvento.setText(MyEvent.getTitle());
             tvDescripcionEvento.setText(MyEvent.getDescription());
             Direccion.setText(MyEvent.getLugar());
@@ -82,16 +82,8 @@ public class EventDetailActivity extends AppCompatActivity implements View.OnCli
 
             ivCover = (ImageView) findViewById(R.id.image_cover);
             if(MyEvent.getphotoURL() != null) {
-                // Glide library using circular image crop
-                Glide.with(ivCover.getContext()).load(MyEvent.getphotoURL()).asBitmap().centerCrop().into(new BitmapImageViewTarget(ivCover) {
-                    @Override
-                    protected void setResource(Bitmap resource) {
-                        RoundedBitmapDrawable circularBitmapDrawable =
-                                RoundedBitmapDrawableFactory.create(ivCover.getContext().getResources(), resource);
-                        circularBitmapDrawable.setCircular(true);
-                        ivCover.setImageDrawable(circularBitmapDrawable);
-                    }
-                });
+                Glide.with(ivCover.getContext()).load(MyEvent.getphotoURL()).into(ivCover);
+
             }
         }
     }
