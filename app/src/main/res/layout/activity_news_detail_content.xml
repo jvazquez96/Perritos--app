@@ -67,14 +67,15 @@
 
             <TextView
                 android:paddingTop="18dp"
-                android:textSize="16dp"
+                android:textSize="15sp"
+                android:lineSpacingExtra="4sp"
                 android:textColor="@color/negro"
                 android:id="@+id/text_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="textStart"
                 android:layout_marginBottom="50dp"
-                android:text="DESCRIPCION DELA NOTICIA"/>
+                android:text="DESCRIPCION DELA NOTICIADESCRIPCION DELA NOTICIADESCRIPCION DELA NOTICIA"/>
 
         </LinearLayout>
     </LinearLayout>
